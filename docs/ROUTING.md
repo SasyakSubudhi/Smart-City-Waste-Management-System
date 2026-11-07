@@ -23,3 +23,7 @@ Completion resolves all bin IDs before emptying any, so removing a bin after pla
 This is priority-based assignment, not geographic distance optimization. The SRS does not define coordinates or road distances. The existing bin module is unchanged.
 
 Run `python -m pytest --cov --cov-branch --cov-report=term-missing`. On 8 November 2026 the local combined suite passed 48 cases in 0.78 seconds, measuring 100% statement and branch coverage (96 statements, 38 branch outcomes). Runtime is environment-specific and CI must independently pass. This work was prepared with AI assistance for Shriya to inspect and understand before presenting it.
+
+## Validation after the bin fix
+
+On 8 November 2026, main's merged PR #1 validation fix was integrated into this branch. The exact combined bin/routing snapshot passed 56 tests locally in 0.53 seconds, with 98/98 statements and 40/40 branch outcomes covered. Live CI must also pass before merge. No alerts, SAD or other teammate implementation was added.
