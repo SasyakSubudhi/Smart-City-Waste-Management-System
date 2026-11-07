@@ -77,3 +77,16 @@ def test_tc_bin_10_registry_filter_by_status():
     r.add(Bin("B1", "x", 100, fill_level=95))
     r.add(Bin("B2", "x", 100, fill_level=10))
     assert [b.bin_id for b in r.by_status("FULL")] == ["B1"]
+
+
+@pytest.mark.parametrize("bad", [float("nan"), float("inf"), True, False, 50.5, "50", None])
+def test_tc_bin_11_non_integer_fill_level_rejected(bad):
+    b = Bin("B1", "x", 100)
+    with pytest.raises(ValueError):
+        b.update_fill_level(bad)
+    assert b.fill_level == 0
+
+
+def test_tc_bin_12_non_integer_fill_level_rejected_in_constructor():
+    with pytest.raises(ValueError):
+        Bin("B1", "x", 100, fill_level=float("nan"))
