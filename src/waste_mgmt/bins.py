@@ -23,7 +23,10 @@ class Bin:
         self.update_fill_level(self.fill_level)
 
     def update_fill_level(self, level: int) -> None:
-        """Set the sensor reading. Must be between 0 and 100 percent."""
+        """Set the sensor reading. Must be a whole number from 0 to 100 percent."""
+        # bool is a subclass of int and NaN passes range comparisons, so check the type first
+        if isinstance(level, bool) or not isinstance(level, int):
+            raise ValueError("fill level must be an integer")
         if level < 0 or level > 100:
             raise ValueError("fill level must be between 0 and 100")
         self.fill_level = level
