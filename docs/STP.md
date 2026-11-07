@@ -6,7 +6,7 @@ STP-SCWM-1.0, prepared 8 November 2026. Project: Smart City Waste Management Sys
 
 ## 2 Introduction and references
 
-Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and NFR-1 through NFR-4 in docs/SRS.md, currently proposed in PR #2. Bin management is proposed in PR #1. Routing depends on that bin API. These documents and branches are pending review, so final traceability must be rechecked when they merge. No physical sensors, dispatch hardware, shortest-path optimization, authentication or external services are in the supplied SRS scope.
+Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and NFR-1 through NFR-4 in docs/SRS.md, merged in PR #2. Bin management and the fill-level validation fix are merged in PR #1. Routing PR #3 is approved and pending merge, and depends on that bin API. Recheck final traceability when routing merges. No physical sensors, dispatch hardware, shortest-path optimization, authentication or external services are in the supplied SRS scope.
 
 ## 3 Test items and responsibilities
 
@@ -14,8 +14,8 @@ Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and 
 |---|---|---|
 | Bins and registry | FR-1, FR-2, FR-3 | Sasyak Subudhi |
 | Route selection, assignment, completion | FR-5, FR-6, FR-7 | Shriya Vasundhara Singh |
-| Alerts and their severity ordering | FR-4 | Team to confirm owner |
-| Summary statistics | FR-8 | Team to confirm owner |
+| Alerts and their severity ordering | FR-4 | Shreya Yashodhara Singh |
+| Summary statistics | FR-8 | Shruti Choudhary |
 | Integration tests, final reports, manual demo | All | Shared; assign reviewer for each change |
 
 Each author adds feature tests and runs them before pushing. Another teammate reviews each PR; the author does not approve their own PR. Owner merges only after actual approval and passing CI. This plan does not create or imply approvals.
@@ -43,7 +43,7 @@ Each author adds feature tests and runs them before pushing. Another teammate re
 
 Objectives: reject malformed input and prevent unintended bin-state changes. Validate routing threshold type/range, truck identity/capacity, duplicate trucks and forged duplicate/over-capacity routes. Test missing bins before completion and ensure no partial emptying; test repeated completion after a fresh reading. Restrict repository main changes through required PR review and CI. Never commit credentials or fabricate approvals. Authentication/network security testing is outside the current standalone package scope; add it if a UI or service introduces those boundaries.
 
-Known dependency limitation: the bin module's numeric checks currently allow some noninteger values despite the SRS integer assumption. Add cross-module type validation cases and report failures to its owner; do not claim this gap is closed by routing tests.
+Resolved dependency limitation: PR #1 is merged and fixes fill-level validation. The bin module now rejects NaN, infinity, booleans, decimals, strings and None with ValueError; out-of-range integers remain rejected. TC-BIN-11 (tc_bin_11) covers invalid readings and preservation of the existing fill level, and TC-BIN-12 (tc_bin_12) covers NaN passed to the constructor through the same validation check. This gap is fixed by the bin validation tests, not by routing tests.
 
 ### 5.2 Unit tests
 
@@ -76,7 +76,7 @@ The existing GitHub Actions Windows runner uses Python 3.12. Record actual CI re
 | Requirement | Test identifiers |
 |---|---|
 | FR-1 | TC-BIN-06 through TC-BIN-10, SYS-01, SYS-04 |
-| FR-2 | TC-BIN-03, SYS-02 |
+| FR-2 | TC-BIN-03, TC-BIN-11, TC-BIN-12, SYS-02 |
 | FR-3 | TC-BIN-04 |
 | FR-4 | TC-AL-01 through TC-AL-05 (planned), SYS-01, SYS-02 |
 | FR-5 | TC-RT-01 through TC-RT-04, TC-RT-06, TC-RT-07, TC-RT-09, TC-RT-10 |
@@ -112,4 +112,4 @@ Record actual dates; the original 2–6 November testing window has elapsed. Fin
 
 ## 12 Review and approvals
 
-Prepared for Shriya's review on 8 November 2026. Teammate approval: pending. Repository owner approval: pending. CI: refer to live PR checks. No approval is implied by this document.
+Prepared for Shriya's review on 8 November 2026. Dependency status: PR #1 and PR #2 are merged; routing PR #3 is approved and pending merge. For this STP, teammate approval: pending. Repository owner approval: pending. CI: refer to live PR checks. No approval of this STP is implied by this document.
