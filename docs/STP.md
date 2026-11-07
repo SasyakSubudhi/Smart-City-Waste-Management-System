@@ -6,7 +6,7 @@ STP-SCWM-1.0, prepared 8 November 2026. Project: Smart City Waste Management Sys
 
 ## 2 Introduction and references
 
-Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and NFR-1 through NFR-4 in docs/SRS.md, merged in PR #2. Bin management and the fill-level validation fix are merged in PR #1. Routing PR #3 is approved and pending merge, and depends on that bin API. Recheck final traceability when routing merges. No physical sensors, dispatch hardware, shortest-path optimization, authentication or external services are in the supplied SRS scope.
+Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and NFR-1 through NFR-4 in docs/SRS.md, merged in PR #2. Bin management and the fill-level validation fix are merged in PR #1. Routing PR #3 is merged and uses that bin API. Recheck final traceability when routing merges. No physical sensors, dispatch hardware, shortest-path optimization, authentication or external services are in the supplied SRS scope.
 
 ## 3 Test items and responsibilities
 
@@ -112,4 +112,4 @@ Record actual dates; the original 2–6 November testing window has elapsed. Fin
 
 ## 12 Review and approvals
 
-Prepared for Shriya's review on 8 November 2026. Dependency status: PR #1 and PR #2 are merged; routing PR #3 is approved and pending merge. For this STP, teammate approval: pending. Repository owner approval: pending. CI: refer to live PR checks. No approval of this STP is implied by this document.
+Prepared for Shriya's review on 8 November 2026. Dependency status: PR #1 and PR #2 are merged; routing PR #3 is merged. For this STP, teammate approval: pending. Repository owner approval: pending. CI: refer to live PR checks. No approval of this STP is implied by this document.
