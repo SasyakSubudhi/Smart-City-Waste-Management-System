@@ -14,15 +14,11 @@ Validate the standalone Python waste_mgmt package against FR-1 through FR-8 and 
 |---|---|---|
 | Bins and registry | FR-1, FR-2, FR-3 | Sasyak Subudhi |
 | Route selection, assignment, completion | FR-5, FR-6, FR-7 | Shriya Vasundhara Singh |
-| Alerts and their severity ordering | FR-4 | Shreya Yashodhara Singh (yasho-26singh) |
-| Summary statistics | FR-8 | Shruti Choudhary (codeninja-1234) |
-| Integration tests and final reports | All | Shruti Choudhary; review by Sasyak |
-| Architecture and design specification | All | Shreya Yashodhara Singh |
-| Manual demo | All | Shared; each member explains their module |
+| Alerts and their severity ordering | FR-4 | Team to confirm owner |
+| Summary statistics | FR-8 | Team to confirm owner |
+| Integration tests, final reports, manual demo | All | Shared; assign reviewer for each change |
 
 Each author adds feature tests and runs them before pushing. Another teammate reviews each PR; the author does not approve their own PR. Owner merges only after actual approval and passing CI. This plan does not create or imply approvals.
-
-Reviewer rotation from the supplied kit: Sasyak's work is reviewed by Shriya; Shriya's by Shreya; Shreya's by Shruti; Shruti's by Sasyak. See SHREYA_HANDOFF.md for the actual routing interface and integration examples. The kit's four working days are a task split, not a replacement for the course's two required sprints or evidence of their completion.
 
 ## 4 Features to test and acceptance criteria
 
