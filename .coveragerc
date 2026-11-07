@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = src/waste_mgmt
+
+[report]
+show_missing = True
