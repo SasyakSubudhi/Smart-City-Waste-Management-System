@@ -2,7 +2,7 @@
 
 ## 1 Test plan identifier
 
-STP-SCWM-1.0, prepared 8 November 2026. Project: Smart City Waste Management System. Responsible coordinator: Shriya Vasundhara Singh (vasun26shriya). AI-assisted draft for team review. IEEE-style test-plan structure; no claim of formal standards certification.
+STP-SCWM-1.0, prepared 8 November 2026. Project: Smart City Waste Management System. Responsible coordinator: Shriya Vasundhara Singh (vasun26shriya). Draft for team review. IEEE-style test-plan structure; no claim of formal standards certification.
 
 ## 2 Introduction and references
 
