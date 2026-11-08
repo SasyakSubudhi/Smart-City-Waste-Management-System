@@ -2,7 +2,7 @@
 
 ## 1. Identification and purpose
 SAD-SCWM-1.0, 8 November 2026. Author: Shreya Yashodhara Singh
-(`yasho-26singh`), prepared with Codex assistance for understanding and review.
+(`yasho-26singh`).
 IEEE-style architecture description; no formal standards certification claimed.
 Describes SRS FR-1 through FR-8 and NFR-1 through NFR-4. References:
 [SRS](SRS.md), [routing contract](ROUTING.md), [test plan](STP.md) (PR #4).

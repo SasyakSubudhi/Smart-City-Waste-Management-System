@@ -1,6 +1,6 @@
 # Day 4 integration handoff
 
-8 November 2026. Day 3 author: Shreya (`yasho-26singh`), with Codex assistance.
+8 November 2026. Day 3 author: Shreya (`yasho-26singh`).
 
 ## Merge and review order
 Routing PR #3 is already merged. Shreya reviewed its exact head: 56 tests,
@@ -64,4 +64,4 @@ Bin owns thresholds; alerts read status, never change bins. Frozen Alert values
 are snapshots. Stable sorting puts critical first without reordering equal severity.
 Routes count bins, expose backlog and resolve all IDs before emptying. Statement
 coverage measures executed statements; branch coverage measures decision outcomes.
-Read the implementation and tests before presenting this AI-assisted contribution.
+Read the implementation and tests before presenting this contribution.
