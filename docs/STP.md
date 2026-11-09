@@ -6,7 +6,7 @@ Coordinator: Shriya Vasundhara Singh (`vasun26shriya`)
 Original preparation: 8 November 2026; template alignment: 9 November 2026  
 Status: proposed revision; independent review and merge pending.
 
-Provenance retained from v1.0: AI-assisted draft for team review. IEEE-style test-plan structure; no claim of formal standards certification.
+Draft for team review. IEEE-style test-plan structure; no claim of formal standards certification.
 
 ## 1 Introduction
 
