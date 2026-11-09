@@ -72,10 +72,10 @@ A standalone Python application (package `waste_mgmt`) with four modules: bins, 
 - Produce summary statistics and a plain-text city report
 
 ### 2.3 User roles and characteristics
-Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API and the demo script (`demo.py`).
+Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. A command-line demo script (`demo.py`, PR #14) and a web UI (see 3.1) are pending and not yet merged.
 
 ### 2.4 Operating environment
-Python 3.10 or later on any operating system; CI runs Python 3.12 on Windows.
+Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run on Python 3.13; 3.10 and 3.11 have not been tested.
 
 ### 2.5 Constraints
 No external runtime dependencies (standard library only); no hardware, database or network service; capacity is counted in bins per truck, not litres.
@@ -83,7 +83,7 @@ No external runtime dependencies (standard library only); no hardware, database 
 ## 3. External interfaces
 
 ### 3.1 User interfaces
-No graphical interface. The product is used through the Python API and the command-line demo script `demo.py`, which prints each step of a collection cycle.
+The merged package has no graphical interface; it is used through the Python API. The original project request asks for a UI. A Streamlit web UI is planned (owner: Shreya Yashodhara Singh) and is not yet merged, and a command-line demo (`demo.py`, PR #14) is pending. Until the UI is merged, this is an open deviation that needs the instructor's acceptance; it is not treated as out of scope.
 
 ### 3.2 Hardware interfaces
 None. Sensor readings are simulated by calling `Bin.update_fill_level`.
@@ -126,8 +126,8 @@ Each requirement has a test reference in section 8.
 | NFR-2 | Performance | The full automated test suite shall run in under 10 seconds. | Elapsed time in the Unit Test Report |
 | NFR-3 | Quality | Statement and branch coverage shall each be at least 80%. | Code and Branch Coverage Reports |
 | NFR-4 | Process | Code shall be maintained in Git with changes merged only via reviewed pull requests passing CI. | GitHub pull request history and branch ruleset |
-| NFR-5 | Determinism | The same inputs shall always give the same ordering of alerts, routes and report lines. | Tie-break and stability tests |
-| NFR-6 | Portability | The system shall run on Python 3.10 or later using only the standard library. | CI run and `requirements.txt` |
+| NFR-5 | Determinism | The same inputs shall always give the same ordering of alerts, routes and report lines. | Tie-break and stability tests for alerts and routing; report-line ordering is not separately tested |
+| NFR-6 | Portability | The system shall run on Python 3.10 or later using only the standard library. | CI run on Python 3.12 only; 3.10 and 3.11 are untested |
 
 ### 5.2 Security
 
@@ -152,7 +152,7 @@ There is no user authentication, authorisation, encryption or network exposure, 
 
 ## 6. Quality attributes and acceptance tests
 - **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement.
-- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), system scenarios SYS-01 to SYS-04 (`tests/test_system.py`) and the demo script test.
+- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), and system scenarios SYS-01 to SYS-04 (`tests/test_system.py`). The demo script test is pending with PR #14.
 - **Evidence:** the four reports in `docs/` (Unit Test, System Validation, Code Coverage, Branch Coverage).
 
 ## 7. System models and diagrams
@@ -183,16 +183,16 @@ Test IDs come from the test function names (for example `TC-BIN-03` is `test_tc_
 | FR-12 | Plain-text alert format | Functional | Low | alerts | TC-AL-04 | P |
 | FR-13 | Validate trucks and fleet | Functional | Medium | routing | TC-RT-09, TC-RT-10 | P |
 | FR-14 | Validate threshold | Functional | Medium | routing | TC-RT-07 | P |
-| FR-15 | Safe route completion | Functional | High | routing | TC-RT-11, TC-RT-12, SYS-04 | P |
+| FR-15 | Safe route completion | Functional | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
 | FR-16 | Plain-text city report | Functional | Medium | reports | TC-RP-05, TC-RP-06 | P |
 | NFR-1 | Clear errors, no corruption | Non-functional | High | all | TC-BIN-02, TC-BIN-11, TC-RT-07 to 12 | P |
 | NFR-2 | Suite under 10 s | Non-functional | Medium | all | Unit Test Report timings | P |
 | NFR-3 | Coverage at least 80% | Non-functional | High | all | Code and Branch Coverage Reports | P |
 | NFR-4 | Reviewed pull requests with green CI | Non-functional | High | process | GitHub PR history, branch ruleset | P |
-| NFR-5 | Deterministic ordering | Non-functional | Medium | alerts, routing, reports | TC-AL-03, TC-RT-02 | P |
-| NFR-6 | Python 3.10+, standard library only | Non-functional | Low | all | CI run, `requirements.txt` | P |
+| NFR-5 | Deterministic ordering | Non-functional | Medium | alerts, routing, reports | TC-AL-03, TC-RT-02 (alerts and routing only) | Partial: report-line order not tested |
+| NFR-6 | Python 3.10+, standard library only | Non-functional | Low | all | CI run on Python 3.12 | Partial: 3.10 and 3.11 untested |
 | SR-1 | Validate reading type and range | Security | High | bins | TC-BIN-03, TC-BIN-11, TC-BIN-12 | P |
 | SR-2 | Validate bin creation | Security | High | bins | TC-BIN-02 | P |
-| SR-3 | Verify before change; no double completion | Security | High | routing | TC-RT-11, TC-RT-12, SYS-04 | P |
+| SR-3 | Verify before change; no double completion | Security | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
 | SR-4 | Alerts and reports are read-only | Security | Medium | alerts, reports | TC-AL-03, TC-RP-09 | P |
 | SR-5 | Protected main branch, no secrets committed | Security | High | process | GitHub ruleset "Protect main", PR history | P |
