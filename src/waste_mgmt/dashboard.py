@@ -7,7 +7,9 @@ def attempt(action, *args):
     """Return a domain result or its original validation/lookup error message."""
     try:
         return True, action(*args)
-    except (ValueError, KeyError) as error:
+    except KeyError as error:
+        return False, str(error.args[0]) if error.args else str(error)
+    except ValueError as error:
         return False, str(error)
 
 

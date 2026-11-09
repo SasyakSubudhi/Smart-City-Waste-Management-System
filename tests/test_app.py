@@ -72,7 +72,7 @@ def test_tc_ui_12_sensor_updates_alerts_and_report(app):
 
 def test_tc_ui_13_unknown_bin_error(app):
     reading(app, 90, "missing")
-    assert app.error[0].value == "'bin missing not found'"
+    assert app.error[0].value == "bin missing not found"
 
 
 @pytest.mark.parametrize("value", [-1, 101])
@@ -91,7 +91,7 @@ def test_tc_ui_15_remove_and_unknown_remove(app):
     assert app.success[0].value == "Bin removed."
     assert app.session_state.registry.all() == []
     click(app, "Remove bin")
-    assert app.error[0].value == "'bin B1 not found'"
+    assert app.error[0].value == "bin B1 not found"
 
 
 def test_tc_ui_16_plan_and_confirm_collection(app):

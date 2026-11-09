@@ -15,11 +15,13 @@ def test_tc_ui_01_attempt_returns_result_and_passes_arguments():
     assert attempt(pow, 2, 3) == (True, 8)
 
 
-@pytest.mark.parametrize("error", [ValueError("invalid"), KeyError("missing")])
-def test_tc_ui_02_attempt_preserves_domain_errors(error):
+@pytest.mark.parametrize("error,message", [(ValueError("invalid"), "invalid"),
+                                          (KeyError("missing"), "missing"),
+                                          (KeyError(), "")])
+def test_tc_ui_02_attempt_preserves_domain_errors(error, message):
     def fail():
         raise error
-    assert attempt(fail) == (False, str(error))
+    assert attempt(fail) == (False, message)
 
 
 def test_tc_ui_03_unexpected_errors_propagate():

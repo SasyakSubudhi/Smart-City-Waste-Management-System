@@ -26,7 +26,8 @@ current baseline; app.py calls the package interfaces directly.
 
 Registry and plan live in `st.session_state`, isolated per browser session.
 There is no persistence: a new session starts empty. Forms submit explicitly.
-Package ValueError and KeyError messages appear through `st.error`; successful
+Package ValueError and KeyError messages appear through `st.error`; the KeyError
+payload is displayed without Python's surrounding representation quotes. Successful
 operations use `st.success`. Reading fields deliberately allow out-of-range
 integers so the package remains responsible for validation. Errors do not clear
 a valid saved plan. Successful bin edits clear the plan to avoid stale IDs or
@@ -65,9 +66,13 @@ confirmation delegates emptying to complete_route.
 ## Validation snapshot (9 November 2026)
 
 On Windows/Python 3.13.7 with Streamlit 1.67.0, the expanded suite passed
-108 tests: 154/154 statements and 56/56 branch outcomes covered. The first run
-took 65.36 seconds; the older sub-10-second full-suite target is not established
-for the added AppTest suite. CI separately validates Windows/Python 3.12.
+108 tests before the error-message follow-up: 154/154 statements and 56/56 branch
+outcomes covered. The first run took 65.36 seconds and a clean rerun took 55.73
+seconds. The expanded AppTest suite exceeds the older sub-10-second target;
+NFR-2 needs a team-agreed update or a separate performance criterion. CI separately
+validates Windows/Python 3.12. The follow-up adds an empty-KeyError adapter case;
+its current execution results are recorded in the PR rather than overwriting this
+historical measurement.
 A live `python -m streamlit run app.py` session was opened in Chrome and all four
 tabs were clicked: register UI-DEMO, set reading to 95, inspect alerts, plan and
 confirm collection, and verify report total 1 / mean 0.0% / full 0 afterward.
