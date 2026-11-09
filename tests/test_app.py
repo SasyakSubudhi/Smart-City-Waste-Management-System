@@ -142,3 +142,32 @@ def test_tc_ui_20_sessions_are_isolated(app):
     register(app)
     other = AppTest.from_file(str(APP), default_timeout=15).run()
     assert other.session_state.registry.all() == []
+
+
+def test_tc_ui_24_severity_filter_and_reset(app):
+    register(app)
+    reading(app, 95)
+    register(app, "B2")
+    reading(app, 80, "B2")
+    assert app.selectbox(key="alert_severity").value == "All"
+    assert app.dataframe[1].value["Severity"].tolist() == ["CRITICAL", "WARNING"]
+    for severity, expected in [("CRITICAL", ["B1"]), ("WARNING", ["B2"]),
+                               ("All", ["B1", "B2"])]:
+        app.selectbox(key="alert_severity").select(severity).run()
+        assert not app.exception
+        assert app.dataframe[1].value["Bin ID"].tolist() == expected
+    assert app.session_state.registry.get("B1").fill_level == 95
+    assert app.session_state.registry.get("B2").fill_level == 80
+
+
+def test_tc_ui_25_filter_no_match_and_collection_refresh(app):
+    register(app)
+    reading(app, 80)
+    app.selectbox(key="alert_severity").select("CRITICAL").run()
+    assert any(i.value == "No alerts match this severity." for i in app.info)
+    app.selectbox(key="alert_severity").select("WARNING").run()
+    click(app, "Plan routes")
+    click(app, "Confirm all collections")
+    assert app.selectbox(key="alert_severity").value == "WARNING"
+    assert any(i.value == "No alerts match this severity." for i in app.info)
+    assert app.session_state.registry.get("B1").fill_level == 0

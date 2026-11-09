@@ -1,7 +1,7 @@
 import pytest
 from waste_mgmt.bins import Bin, BinRegistry
 from waste_mgmt.routing import Truck, plan_routes, complete_route
-from waste_mgmt.dashboard import attempt, bin_rows, alert_rows, route_rows
+from waste_mgmt.dashboard import attempt, bin_rows, alert_rows, route_rows, filter_alert_rows
 
 
 def city():
@@ -59,3 +59,23 @@ def test_tc_ui_07_route_rows_show_completion_without_mutation():
     assert registry.get("B").fill_level == 95
     complete_route(plan.routes[0], registry)
     assert route_rows(plan)[0]["Completed"] is True
+
+
+@pytest.mark.parametrize("severity,expected", [("All",["B","A"]),
+                                             ("CRITICAL",["B"]),("WARNING",["A"])])
+def test_tc_ui_21_filter_preserves_rows_order_and_source(severity, expected):
+    rows = alert_rows(city())
+    result = filter_alert_rows(rows, severity)
+    assert [row["Bin ID"] for row in result] == expected
+    result[0]["Severity"] = "changed in view"
+    assert [row["Severity"] for row in rows] == ["CRITICAL", "WARNING"]
+
+
+def test_tc_ui_22_filter_empty_and_no_match():
+    assert filter_alert_rows([]) == []
+    assert filter_alert_rows([{"Severity":"WARNING"}], "CRITICAL") == []
+
+
+def test_tc_ui_23_filter_invalid_severity():
+    with pytest.raises(ValueError, match="severity must be All, CRITICAL or WARNING"):
+        filter_alert_rows([], "invalid")

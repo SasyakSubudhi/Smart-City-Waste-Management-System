@@ -56,6 +56,9 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-UI-05 | dashboard | Alert rows preserve priority and format | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_05_alert_rows_preserve_priority_and_format` |
 | TC-UI-06 | dashboard | Route rows none and empty | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_06_route_rows_none_and_empty` |
 | TC-UI-07 | dashboard | Route rows show completion without mutation | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_07_route_rows_show_completion_without_mutation` |
+| TC-UI-21 | dashboard | Filter preserves rows order and source | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_21_filter_preserves_rows_order_and_source` |
+| TC-UI-22 | dashboard | Filter empty and no match | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_22_filter_empty_and_no_match` |
+| TC-UI-23 | dashboard | Filter invalid severity | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_23_filter_invalid_severity` |
 | TC-UI-08 | app | Start empty | FR-1..8 | UI | `test_app.py::test_tc_ui_08_start_empty` |
 | TC-UI-09 | app | Register and persist | FR-1..8 | UI | `test_app.py::test_tc_ui_09_register_and_persist` |
 | TC-UI-10 | app | Duplicate id error | FR-1..8 | UI | `test_app.py::test_tc_ui_10_duplicate_id_error` |
@@ -69,3 +72,5 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-UI-18 | app | Backlog and empty fleet | FR-1..8 | UI | `test_app.py::test_tc_ui_18_backlog_and_empty_fleet` |
 | TC-UI-19 | app | Edit invalidates saved plan | FR-1..8 | UI | `test_app.py::test_tc_ui_19_edit_invalidates_saved_plan` |
 | TC-UI-20 | app | Sessions are isolated | FR-1..8 | UI | `test_app.py::test_tc_ui_20_sessions_are_isolated` |
+| TC-UI-24 | app | Severity filter and reset | FR-1..8 | UI | `test_app.py::test_tc_ui_24_severity_filter_and_reset` |
+| TC-UI-25 | app | Filter no match and collection refresh | FR-1..8 | UI | `test_app.py::test_tc_ui_25_filter_no_match_and_collection_refresh` |

@@ -24,6 +24,13 @@ def alert_rows(registry):
              "Alert": format_alert(a)} for a in generate_alerts(registry.all())]
 
 
+def filter_alert_rows(rows, severity="All"):
+    """Return a fresh view of alert rows without changing their priority order."""
+    if severity not in ("All", "CRITICAL", "WARNING"):
+        raise ValueError("severity must be All, CRITICAL or WARNING")
+    return [dict(row) for row in rows if severity == "All" or row["Severity"] == severity]
+
+
 def route_rows(plan):
     if plan is None:
         return []
