@@ -73,6 +73,18 @@ NFR-2 needs a team-agreed update or a separate performance criterion. CI separat
 validates Windows/Python 3.12. The follow-up adds an empty-KeyError adapter case;
 its current execution results are recorded in the PR rather than overwriting this
 historical measurement.
+
+### Measured follow-up run
+
+On 9 November 2026, from `feature/web-ui` at runtime revision `f4651fd`,
+`python -m pytest --cov --cov-branch --cov-report=term-missing` completed on
+Windows/Python 3.13.7 with Streamlit 1.67.0: **109 passed in 23.49 seconds**,
+156/156 statements and 56/56 branch outcomes covered (100% each). This is pytest's
+reported test-session time, excluding dependency installation and the browser
+click-through. It exceeds the 10-second full-suite target; it does not claim a
+UI response-time measurement or predict other machines' timing. Earlier recorded
+times above are historical runs, not replacements for this observation.
+
 A live `python -m streamlit run app.py` session was opened in Chrome and all four
 tabs were clicked: register UI-DEMO, set reading to 95, inspect alerts, plan and
 confirm collection, and verify report total 1 / mean 0.0% / full 0 afterward.
