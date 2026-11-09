@@ -49,3 +49,23 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | SYS-02 | system | Sensor update changes alert and routing | FR-1..7 | System | `test_system.py::test_sys_02_sensor_update_changes_alert_and_routing` |
 | SYS-03 | system | Limited truck capacity leaves unassigned bins | FR-1..7 | System | `test_system.py::test_sys_03_limited_truck_capacity_leaves_unassigned_bins` |
 | SYS-04 | system | Removed bin and stale route are safe | FR-1..7 | System | `test_system.py::test_sys_04_removed_bin_and_stale_route_are_safe` |
+| TC-UI-01 | dashboard | Attempt returns result and passes arguments | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_01_attempt_returns_result_and_passes_arguments` |
+| TC-UI-02 | dashboard | Attempt preserves domain errors | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_02_attempt_preserves_domain_errors` |
+| TC-UI-03 | dashboard | Unexpected errors propagate | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_03_unexpected_errors_propagate` |
+| TC-UI-04 | dashboard | Bin rows are read only | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_04_bin_rows_are_read_only` |
+| TC-UI-05 | dashboard | Alert rows preserve priority and format | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_05_alert_rows_preserve_priority_and_format` |
+| TC-UI-06 | dashboard | Route rows none and empty | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_06_route_rows_none_and_empty` |
+| TC-UI-07 | dashboard | Route rows show completion without mutation | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_07_route_rows_show_completion_without_mutation` |
+| TC-UI-08 | app | Start empty | FR-1..8 | UI | `test_app.py::test_tc_ui_08_start_empty` |
+| TC-UI-09 | app | Register and persist | FR-1..8 | UI | `test_app.py::test_tc_ui_09_register_and_persist` |
+| TC-UI-10 | app | Duplicate id error | FR-1..8 | UI | `test_app.py::test_tc_ui_10_duplicate_id_error` |
+| TC-UI-11 | app | Empty id error | FR-1..8 | UI | `test_app.py::test_tc_ui_11_empty_id_error` |
+| TC-UI-12 | app | Sensor updates alerts and report | FR-1..8 | UI | `test_app.py::test_tc_ui_12_sensor_updates_alerts_and_report` |
+| TC-UI-13 | app | Unknown bin error | FR-1..8 | UI | `test_app.py::test_tc_ui_13_unknown_bin_error` |
+| TC-UI-14 | app | Out of range preserves state | FR-1..8 | UI | `test_app.py::test_tc_ui_14_out_of_range_preserves_state` |
+| TC-UI-15 | app | Remove and unknown remove | FR-1..8 | UI | `test_app.py::test_tc_ui_15_remove_and_unknown_remove` |
+| TC-UI-16 | app | Plan and confirm collection | FR-1..8 | UI | `test_app.py::test_tc_ui_16_plan_and_confirm_collection` |
+| TC-UI-17 | app | Nothing due | FR-1..8 | UI | `test_app.py::test_tc_ui_17_nothing_due` |
+| TC-UI-18 | app | Backlog and empty fleet | FR-1..8 | UI | `test_app.py::test_tc_ui_18_backlog_and_empty_fleet` |
+| TC-UI-19 | app | Edit invalidates saved plan | FR-1..8 | UI | `test_app.py::test_tc_ui_19_edit_invalidates_saved_plan` |
+| TC-UI-20 | app | Sessions are isolated | FR-1..8 | UI | `test_app.py::test_tc_ui_20_sessions_are_isolated` |

@@ -6,7 +6,7 @@ import ast
 import pathlib
 
 ROOT = pathlib.Path(__file__).parent
-REQ = {"BIN": "FR-1..3", "RT": "FR-5..7", "AL": "FR-4", "RP": "FR-8", "SYS": "FR-1..7"}
+REQ = {"BIN": "FR-1..3", "RT": "FR-5..7", "AL": "FR-4", "RP": "FR-8", "SYS": "FR-1..7", "UI": "FR-1..8"}
 lines = [
     "# Test Case Document", "",
     "**Project:** Smart City Waste Management System", "",
@@ -15,7 +15,7 @@ lines = [
     "| Test ID | Module | Description | Requirement | Type | Automated in |",
     "|---|---|---|---|---|---|",
 ]
-for m in ("bins", "routing", "alerts", "reports", "system"):
+for m in ("bins", "routing", "alerts", "reports", "system", "dashboard", "app"):
     p = ROOT / "tests" / f"test_{m}.py"
     if not p.exists():
         continue
@@ -29,7 +29,7 @@ for m in ("bins", "routing", "alerts", "reports", "system"):
         else:
             tid, desc = "-".join(parts[1:3]).upper(), " ".join(parts[3:])
             group = "SYS"
-        typ = "System" if m == "system" else "Unit"
+        typ = "UI" if m == "app" else ("System" if m == "system" else "Unit")
         lines.append(f"| {tid} | {m} | {desc.capitalize()} | {REQ[group]} | {typ} | `{p.name}::{fn.name}` |")
 (ROOT / "docs").mkdir(exist_ok=True)
 (ROOT / "docs" / "Test_Case_Document.md").write_text("\n".join(lines) + "\n")
