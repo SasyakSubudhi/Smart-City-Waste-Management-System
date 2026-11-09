@@ -1,4 +1,5 @@
 import time
+import os
 import datetime
 import json
 import platform
@@ -23,18 +24,24 @@ def run(cmd):
         text=True
     )
 
-
 def git_commit():
-    result = run(["git", "rev-parse", "--short", "HEAD"])
-    commit = result.stdout.strip() if result.returncode == 0 else "unknown"
+    commit = (
+        os.environ.get("REPORT_COMMIT")
+        or run(["git", "rev-parse", "--short", "HEAD"]).stdout.strip()
+        or "unknown"
+    )
+
+    commit = commit[:7]
 
     dirty = run(
         ["git", "status", "--porcelain", "--", "src", "tests"]
     )
+
     if dirty.returncode == 0 and dirty.stdout.strip():
         commit += " (+ uncommitted source/test changes)"
 
     return commit
+
 
 
 def header(title):
