@@ -1,4 +1,4 @@
-
+import time
 import datetime
 import json
 import platform
@@ -340,19 +340,55 @@ def write_coverage_reports(coverage, proc, errors):
     return stmt_ok and overall_ok, br_ok and overall_ok, stmt_pct, br_pct
 
 
+
+
+def append_pipeline_timing(total_time, unit_time, system_time, coverage_time):
+    timing = (
+        "## Execution Time\n\n"
+        f"- Unit tests: {unit_time:.2f} seconds\n"
+        f"- System tests: {system_time:.2f} seconds\n"
+        f"- Coverage run: {coverage_time:.2f} seconds\n"
+        f"- Total validation pipeline: {total_time:.2f} seconds\n"
+    )
+
+    filenames = [
+        "Unit_Test_Report.md",
+        "System_Validation_Report.md",
+        "Code_Coverage_Report.md",
+        "Branch_Coverage_Report.md",
+    ]
+
+    for filename in filenames:
+        report = DOCS / filename
+        if report.is_file():
+            content = report.read_text()
+            marker = "\n## Execution Time"
+            if marker in content:
+                content = content.split(marker, 1)[0]
+            report.write_text(content.rstrip() + "\n\n" + timing)
+
+
 def main():
+    total_start = time.perf_counter()
+
+    unit_start = time.perf_counter()
     unit_rows, unit_proc, unit_errors = run_pytest(
         ["tests", "--ignore=tests/test_system.py"],
         "unit.xml"
     )
+    unit_time = time.perf_counter() - unit_start
+
     unit_ok = write_test_report(
         "Unit Test Report", unit_rows, unit_proc, unit_errors
     )
 
+    system_start = time.perf_counter()
     system_rows, system_proc, system_errors = run_pytest(
         ["tests/test_system.py"],
         "system.xml"
     )
+    system_time = time.perf_counter() - system_start
+
     system_ok = write_test_report(
         "System Validation Report",
         system_rows,
@@ -361,25 +397,31 @@ def main():
         system=True
     )
 
+    coverage_start = time.perf_counter()
     coverage, cov_proc, cov_errors = run_coverage()
+    coverage_time = time.perf_counter() - coverage_start
+
     stmt_ok, br_ok, stmt_pct, br_pct = write_coverage_reports(
         coverage, cov_proc, cov_errors
     )
 
+    total_time = time.perf_counter() - total_start
+    append_pipeline_timing(total_time, unit_time, system_time, coverage_time)
     ok = unit_ok and system_ok and stmt_ok and br_ok
 
     unit_total, unit_passed, _, _ = counts(unit_rows)
     sys_total, sys_passed, _, _ = counts(system_rows)
 
     print(
-        f"Unit: {unit_passed}/{unit_total} passed | "
-        f"System: {sys_passed}/{sys_total} passed | "
+        f"Unit: {unit_passed}/{unit_total} passed ({unit_time:.2f}s) | "
+        f"System: {sys_passed}/{sys_total} passed ({system_time:.2f}s) | "
+        f"Coverage: {coverage_time:.2f}s | "
         f"Statement: {stmt_pct:.1f}% | Branch: {br_pct:.1f}%"
     )
+    print(f"Total report generation time: {total_time:.2f}s")
     print("RESULT:", "PASS" if ok else "FAIL (see reports and evidence)")
 
     return 0 if ok else 1
-
 
 if __name__ == "__main__":
     sys.exit(main())
