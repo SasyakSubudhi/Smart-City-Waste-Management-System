@@ -36,6 +36,9 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-AL-04 | alerts | Format | FR-4 | Unit | `test_alerts.py::test_tc_al_04_format` |
 | TC-AL-05 | alerts | Updated reading empty and snapshot | FR-4 | Unit | `test_alerts.py::test_tc_al_05_updated_reading_empty_and_snapshot` |
 | TC-AL-06 | alerts | Registry route completion and backlog | FR-4 | Unit | `test_alerts.py::test_tc_al_06_registry_route_completion_and_backlog` |
+| TC-AL-07 | alerts | Mixed boundaries in one batch | FR-4 | Unit | `test_alerts.py::test_tc_al_07_mixed_boundaries_in_one_batch` |
+| TC-AL-08 | alerts | Many equal severity keep input order | FR-4 | Unit | `test_alerts.py::test_tc_al_08_many_equal_severity_keep_input_order` |
+| TC-AL-09 | alerts | Emptying preserves saved alert and its format | FR-4 | Unit | `test_alerts.py::test_tc_al_09_emptying_preserves_saved_alert_and_its_format` |
 | TC-RP-01 | reports | Average empty list | FR-8 | Unit | `test_reports.py::test_tc_rp_01_average_empty_list` |
 | TC-RP-02 | reports | Average fill level | FR-8 | Unit | `test_reports.py::test_tc_rp_02_average_fill_level` |
 | TC-RP-03 | reports | Status summary | FR-8 | Unit | `test_reports.py::test_tc_rp_03_status_summary` |

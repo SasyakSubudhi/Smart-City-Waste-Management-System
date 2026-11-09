@@ -62,3 +62,40 @@ def test_tc_al_06_registry_route_completion_and_backlog():
     complete_route(plan.routes[0],registry)
     assert [a.bin_id for a in generate_alerts(registry.all())] == ["B"]
     assert registry.get("C").fill_level == 10
+
+
+def test_tc_al_07_mixed_boundaries_in_one_batch():
+    bins = [make_bin(f"B{level}", level) for level in (69, 70, 89, 90, 100)]
+    alerts = generate_alerts(bins)
+    assert [(a.bin_id, a.severity) for a in alerts] == [
+        ("B90", "CRITICAL"), ("B100", "CRITICAL"),
+        ("B70", "WARNING"), ("B89", "WARNING"),
+    ]
+    assert [b.fill_level for b in bins] == [69, 70, 89, 90, 100]
+
+
+@pytest.mark.parametrize("level,severity", [(80, "WARNING"), (95, "CRITICAL")])
+def test_tc_al_08_many_equal_severity_keep_input_order(level, severity):
+    # Reverse IDs and alternating fill values catch accidental ID/fill sorting.
+    bins = [make_bin(f"B{i:02d}", level + i % 2) for i in range(39, -1, -1)]
+    expected = [b.bin_id for b in bins]
+    first = generate_alerts(bins)
+    second = generate_alerts(bins)
+    assert [a.bin_id for a in first] == expected
+    assert all(a.severity == severity for a in first)
+    assert first == second
+    assert first is not second
+
+
+@pytest.mark.parametrize("level,severity", [(70, "WARNING"), (90, "CRITICAL")])
+def test_tc_al_09_emptying_preserves_saved_alert_and_its_format(level, severity):
+    bin = make_bin("saved", level)
+    alerts = generate_alerts([bin])
+    expected_message = f"Bin saved at City centre is {level}% full"
+    expected_text = f"[{severity}] {expected_message}"
+    bin.empty()
+    # The old snapshot keeps its reading and severity after source state changes.
+    assert alerts[0].message == expected_message
+    assert alerts[0].severity == severity
+    assert format_alert(alerts[0]) == expected_text
+    assert generate_alerts([bin]) == []
