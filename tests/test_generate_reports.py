@@ -149,6 +149,10 @@ def test_failed_coverage_command_fails(monkeypatch, tmp_path):
 
 def test_main_returns_failure_when_unit_tests_fail(monkeypatch):
     monkeypatch.setattr(
+        reports, "append_pipeline_timing", lambda *args: None
+    )
+
+    monkeypatch.setattr(
         reports,
         "run_pytest",
         lambda args, junit: (
