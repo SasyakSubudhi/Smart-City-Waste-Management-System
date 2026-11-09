@@ -89,13 +89,13 @@ The existing GitHub Actions Windows runner uses Python 3.12. Record actual CI re
 | FR-12 | TC-AL-04 |
 | FR-13 | TC-RT-09, TC-RT-10 |
 | FR-14 | TC-RT-07 |
-| FR-15 | TC-RT-11, TC-RT-12, SYS-04 |
+| FR-15 | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 |
 | FR-16 | TC-RP-05, TC-RP-06 |
-| NFR-5 | TC-AL-03, TC-RT-02 |
-| NFR-6 | CI run on Python 3.12 |
+| NFR-5 | TC-AL-03, TC-RT-02 (alerts and routing; report-line ordering is not separately tested) |
+| NFR-6 | CI run on Python 3.12 only; Python 3.10 and 3.11 are untested |
 | SR-1 | TC-BIN-03, TC-BIN-11, TC-BIN-12 |
 | SR-2 | TC-BIN-02 |
-| SR-3 | TC-RT-11, TC-RT-12, SYS-04 |
+| SR-3 | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 |
 | SR-4 | TC-AL-03, TC-RP-09 |
 | SR-5 | GitHub ruleset and pull request history |
 
@@ -123,7 +123,7 @@ Python 3.10+ as specified in SRS; CI Python 3.12 on Windows; pytest and pytest-c
 
 ## 11 Schedule and risks
 
-Actual work dates were 7–10 November 2026 (see docs/DEVIATIONS.md). All feature PRs are merged, system cases are automated and the reports are generated from the final run. Remaining risks: no UI, no real sensor integration and no road-distance routing, all recorded as out of scope.
+The original testing window (2–6 November) has elapsed. The git history shows work on 7, 8 and 9 November 2026 (see docs/DEVIATIONS.md). Merged: bins, routing, alerts, reports, SAD, STP, system tests and the four test reports. Pending: this SRS/STP update (PR #13), the demo script (PR #14), the web UI, the project backlog evidence and the two sprint videos. Remaining risks: the original request asks for a UI and none is merged yet, so this is an open deviation that needs the instructor's acceptance if the UI is not delivered; real sensor integration and road-distance routing are not implemented and are recorded in docs/DEVIATIONS.md. Python 3.10 and 3.11 have not been tested.
 
 ## 12 Review and approvals
 
