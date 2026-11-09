@@ -12,7 +12,7 @@ Provenance retained from v1.0: AI-assisted draft for team review. IEEE-style tes
 
 Purpose: define scope, strategy, environments, responsibilities, evidence and exit decisions for the standalone Python package. This revision follows the supplied Test_Plan_Template for SE (1).docx sections 1–15, including security validation in 5.1. It plans and records the evidence boundary; it does not sign off the whole course submission.
 
-References: docs/SRS.md (merged v1 baseline; proposed v2 in PR #13), docs/SAD.md, docs/ROUTING.md, tests/, .github/workflows/ci.yml, the supplied Test Plan template, and the course checklist. Jira is not required; GitHub branches, PRs and checks supply collaboration evidence.
+References: docs/SRS.md (merged SRS v2.0 on main, from PR #13), docs/SAD.md, docs/ROUTING.md, tests/, .github/workflows/ci.yml, the supplied Test Plan template, and the course checklist. Jira is not required; GitHub branches, PRs and checks supply collaboration evidence.
 
 Definitions: FR = functional requirement; NFR = nonfunctional requirement; SR = security requirement; RTM = requirements traceability matrix; CI = continuous integration. A test ID names a scenario; parametrized pytest instances are counted separately.
 
@@ -111,7 +111,7 @@ Observed local environment: Windows, Python 3.13.7. CI configuration: Windows ru
 
 Course targets: backlog 12 October; Sprint 1 19–23 October; Sprint 2 26–30 October; testing 2–6 November 2026. Those targets are historical and are not replaced by invented completion dates. Repository work is evidenced on 7–9 November; confirm the current submission deadline with the instructor.
 
-As checked on 9 November: the four core modules and system cases are merged; SRS v2 corrections #13, demo #14 and UI #16 are open. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
+As checked on 9 November: the four core modules, system cases and SRS v2.0 corrections in PR #13 are merged; demo #14, UI #16, SAD update #17 and this STP revision #18 are open. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
 
 Remaining sequence: review accepted requirement changes, integrate approved source/UI/demo work, rerun regression, have the evidence owner regenerate final reports, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
 
@@ -139,7 +139,7 @@ Ownership boundary: Sasyak owns SRS/setup/bins and his correction PRs; Shriya ow
 
 | Risk | Mitigation / unresolved boundary |
 |---|---|
-| Requirement/document drift across open PRs | Base this STP follow-up on PR #13; review its small dependent diff and retarget to main after #13 merges |
+| Requirement/document drift across open PRs | Review this STP follow-up against merged SRS v2.0 on main and reconcile later accepted requirement changes |
 | Old routing kit interface | Preserve registry/object APIs and run the integrated regression suite |
 | Report evidence becomes stale | Keep tested source, actual run date/platform and exit status; evidence owner regenerates after source integration |
 | Coverage mistaken for acceptance | Check each requirement's assertions and process/manual evidence, not only percentages |
@@ -149,7 +149,7 @@ Ownership boundary: Sasyak owns SRS/setup/bins and his correction PRs; Shriya ow
 
 ## 11 Assumptions & Dependencies
 
-This revision depends on PR #13's proposed requirement IDs and current corrected traceability. It must not overwrite Sasyak's SRS/deviations changes. Its acceptance does not merge #13. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
+This revision uses the requirement IDs and corrected traceability of merged SRS v2.0 on main (PR #13). PR #13 is already merged; this STP revision preserves its SRS/deviations changes. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
 
 ## 12 Suspension & Resumption Criteria
 
@@ -189,7 +189,7 @@ Also suspend final sign-off when the tested revision cannot be identified or a r
 | SR-4 | TC-AL-03, TC-RP-09 |
 | SR-5 | GitHub ruleset and pull request history |
 
-This exceeds the course's 7–10 minimum test-case requirement. The listed automated IDs exist in `tests/`; process checks and compatibility targets are not automated test IDs. FR-9 to FR-16, NFR-5, NFR-6 and SR-1 to SR-5 refer to the proposed SRS v2.0 in PR #13 and remain dependent on its acceptance. Keep the Test Case Document synchronized with actual test names after sprint changes.
+This exceeds the course's 7–10 minimum test-case requirement. The listed automated IDs exist in `tests/`; process checks and compatibility targets are not automated test IDs. FR-9 to FR-16, NFR-5, NFR-6 and SR-1 to SR-5 refer to the merged SRS v2.0 on main (PR #13). Keep the Test Case Document synchronized with actual test names after sprint changes.
 
 This is requirement-to-evidence planning. It does not replace case-level expected/actual records. NFR-5/6 are explicitly partial, process requirements need repository evidence, and a clean test run does not prove every planned scope item is delivered.
 
