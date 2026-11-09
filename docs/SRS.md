@@ -1,7 +1,7 @@
 # Software Requirements Specification (SRS)
 
 **Project:** Smart City Waste Management System
-**Version:** 2.0
+**Version:** 2.1 (proposed; approval pending)
 **Date:** 9 November 2026
 **Authors:** Sasyak Subudhi (PES1UG24AM256), Shriya Vasundhara Singh (PES1UG24AM269), Shreya Yashodhara Singh (PES1UG24AM266), Shruti Choudhary (PES1UG24AM271)
 **Course:** Software Engineering, PES University
@@ -12,7 +12,7 @@
 |---|---|---|---|---|
 | 1.0 | 7 Nov 2026 | Sasyak Subudhi | Initial SRS: FR-1 to FR-8, NFR-1 to NFR-4 (PR #2) | Merged after review |
 | 2.0 | 9 Nov 2026 | Sasyak Subudhi | Added FR-9 to FR-16, NFR-5 and NFR-6, security objectives and requirements, external interfaces, two use-case diagrams and a requirements traceability matrix; FR-2 tightened to whole numbers (see `docs/DEVIATIONS.md`) | Merged after independent review (PR #13) |
-| 2.1 | 9 Nov 2026 | Sasyak Subudhi | Clarified NFR-2 (performance) and NFR-6 (portability) for the proposed Streamlit web UI in PR #16, which is not merged yet. No requirement is claimed as met for the UI | Pending teammate review |
+| 2.1 | 9 Nov 2026 | Sasyak Subudhi | Updated for the Streamlit web UI now merged in PR #16 (with SAD #17 and STP #18): clarified NFR-2 (performance) and NFR-6 (portability), separated the domain package from the UI and its dependencies, and qualified the no-network statements. No instructor acceptance is claimed | Pending teammate review |
 
 ## Approvals
 | Role | Name | Signature / Email | Date |
@@ -36,7 +36,7 @@
 This document specifies the requirements of a Smart City Waste Management System that monitors the fill level of public waste bins, raises alerts for bins that need emptying, plans collection routes for garbage trucks, and produces summary reports for city administrators.
 
 ### 1.2 Scope
-The system receives fill-level readings (simulated sensor data), classifies each bin, alerts operators, assigns due bins to trucks and summarises city-wide status. It does not control physical hardware, does not use road distances or coordinates, and has no network service or user authentication (see 5.3 and `docs/DEVIATIONS.md`).
+The system receives fill-level readings (simulated sensor data), classifies each bin, alerts operators, assigns due bins to trucks and summarises city-wide status. It does not control physical hardware and does not use road distances or coordinates. The domain package has no network service or user authentication; the Streamlit web UI (see 3.1) adds a browser-to-local-server boundary but no authentication (see 5.3 and `docs/DEVIATIONS.md`).
 
 ### 1.3 Audience
 Developers, testers, the repository owner who reviews pull requests, and course evaluators.
@@ -62,7 +62,7 @@ Developers, testers, the repository owner who reviews pull requests, and course 
 ## 2. Overall description
 
 ### 2.1 Product perspective
-A standalone Python application (package `waste_mgmt`) with four modules: bins, alerts, routing and reports. See `docs/SAD.md` for the architecture.
+A standalone Python application: the domain package `waste_mgmt` with four modules (bins, alerts, routing and reports), plus a Streamlit web dashboard (`app.py`, `src/waste_mgmt/dashboard.py`) that calls the package's public APIs. See `docs/SAD.md` for the architecture and `docs/UI.md` for the UI.
 
 ### 2.2 Major product functions
 - Register, list, filter and remove bins, with validation
@@ -73,27 +73,27 @@ A standalone Python application (package `waste_mgmt`) with four modules: bins, 
 - Produce summary statistics and a plain-text city report
 
 ### 2.3 User roles and characteristics
-Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. A command-line demo script (`demo.py`, PR #14) and a web UI (see 3.1) are pending and not yet merged.
+Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. The Streamlit web UI (see 3.1) is merged (PR #16); a command-line demo script (`demo.py`, PR #14) is pending and not yet merged.
 
 ### 2.4 Operating environment
-Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run on Python 3.13; 3.10 and 3.11 have not been tested.
+Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run locally on Windows with Python 3.13.7 (not part of CI); 3.10 and 3.11 have not been tested.
 
 ### 2.5 Constraints
-The core package `waste_mgmt` (bins, alerts, routing, reports) uses only the Python standard library at runtime. The proposed web UI (PR #16, not merged) adds one runtime dependency, Streamlit (`streamlit>=1.40` in `requirements.txt`); the tests need `pytest` and `pytest-cov`. There is no hardware, database or network service; capacity is counted in bins per truck, not litres.
+The domain package `waste_mgmt` (bins, alerts, routing, reports) uses only the Python standard library at runtime and has no network service. The merged web UI (PR #16) adds one direct dependency declared in `requirements.txt`, Streamlit (`streamlit>=1.40`), which brings transitive packages, and it runs through a local Streamlit server viewed in a browser; the tests need `pytest` and `pytest-cov`. There is no hardware or database; capacity is counted in bins per truck, not litres.
 
 ## 3. External interfaces
 
 ### 3.1 User interfaces
-The merged package has no graphical interface; it is used through the Python API. The original project request asks for a UI. A Streamlit web UI is planned (owner: Shreya Yashodhara Singh) and is not yet merged, and a command-line demo (`demo.py`, PR #14) is pending. Until the UI is merged, this is an open deviation that needs the instructor's acceptance; it is not treated as out of scope.
+The domain package has no graphical interface of its own and is used through the Python API. The original project request asks for a UI. A four-tab Streamlit web dashboard (owner: Shreya Yashodhara Singh; `app.py`, `docs/UI.md`) is merged in PR #16 and calls the package's public APIs; a command-line demo (`demo.py`, PR #14) is pending. This records that the UI exists; it does not claim instructor acceptance, production readiness or a browser or accessibility evaluation beyond the automated tests.
 
 ### 3.2 Hardware interfaces
 None. Sensor readings are simulated by calling `Bin.update_fill_level`.
 
 ### 3.3 Software interfaces
-Public Python API of the `waste_mgmt` package: `Bin`, `BinRegistry`, `generate_alerts`, `format_alert`, `Truck`, `plan_routes`, `complete_route`, and the report functions. Contracts and error behaviour are in section 7 of `docs/SAD.md`.
+Public Python API of the `waste_mgmt` package: `Bin`, `BinRegistry`, `generate_alerts`, `format_alert`, `Truck`, `plan_routes`, `complete_route`, and the report functions. Contracts and error behaviour are in section 4.3 of `docs/SAD.md`.
 
 ### 3.4 Communications
-None. There is no network communication.
+None for the domain package: it makes no network calls. The Streamlit UI is served by a local Streamlit server and viewed in a browser; no sensor network, TLS, authentication or deployment is specified or tested.
 
 ## 4. System features (functional requirements)
 
@@ -124,11 +124,11 @@ Each requirement has a test reference in section 8.
 | ID | Category | Requirement | Measurement |
 |---|---|---|---|
 | NFR-1 | Reliability | Invalid input shall raise a clear error rather than silently corrupt data. | Invalid-input tests pass and leave existing state unchanged |
-| NFR-2 | Performance | The automated test suite for the core package (bins, alerts, routing, reports and system scenarios) shall run in under 10 seconds. The web UI tests (PR #16) are measured and reported separately; no time limit is set for them in this version. | Elapsed time in the Unit Test Report. Core suite: 2.95 s to 6.49 s observed on 86 tests. The UI suite was observed at 33.99 s in an independent run of PR #16, so a whole-repository run does not meet 10 s once the UI is merged |
+| NFR-2 | Performance | The original target is that the full automated test suite runs in under 10 seconds. Proposed revision, awaiting team and instructor acceptance: apply the 10 second limit to the core-package tests (bins, alerts, routing, reports and system scenarios) and agree a separate criterion for the dashboard tests. | Historical core-only observations on the 86-test baseline, before UI integration: 2.95 s and 6.49 s in independent runs and 4.26 s in the 9 Nov recording run (Windows, Python 3.13.7); these are not a fresh selective-core run after integration. Full expanded suite at PR #16's head: 109 passed in 33.99 s (independent run, Windows, Python 3.13.7; 156/156 statements and 56/56 branch outcomes for `src/waste_mgmt`). UI-only time has not been measured. The original whole-suite target is therefore not met |
 | NFR-3 | Quality | Statement and branch coverage shall each be at least 80%. | Code and Branch Coverage Reports |
 | NFR-4 | Process | Code shall be maintained in Git with changes merged only via reviewed pull requests passing CI. | GitHub pull request history and branch ruleset |
 | NFR-5 | Determinism | The same inputs shall always give the same ordering of alerts, routes and report lines. | Tie-break and stability tests for alerts and routing; report-line ordering is not separately tested |
-| NFR-6 | Portability | The core package shall run on Python 3.10 or later using only the standard library. The optional web UI additionally requires Streamlit, so the standard-library-only statement does not apply to it. | CI run on Python 3.12 only (also run on 3.13); 3.10 and 3.11 are untested, and the UI has not been tested on any version other than those runs |
+| NFR-6 | Portability | The domain package shall run on Python 3.10 or later using only the standard library. The Streamlit UI is a separate layer with its own declared dependency (`streamlit>=1.40`, plus transitive packages), so the standard-library-only statement does not apply to it. | CI: Windows, Python 3.12. Observed local run (not CI): Windows, Python 3.13.7. Python 3.10 and 3.11 are untested; no portability or UI performance acceptance is claimed beyond these observations |
 
 ### 5.2 Security
 
@@ -149,11 +149,11 @@ Each requirement has a test reference in section 8.
 | SR-5 | Changes to the main branch shall require a pull request with an independent approval and a passing CI check; credentials shall never be committed. | SO-3 |
 
 ### 5.3 Known security limitations
-There is no user authentication, authorisation, encryption or network exposure, because the system is a standalone package. These would need to be added if a web interface or service is introduced.
+The domain package has no user authentication, authorisation, encryption or network exposure. The Streamlit UI adds a browser-to-local-server boundary; no authentication, TLS, deployment or network-sensor feature is specified or tested. These would need to be added before the system is deployed as a service.
 
 ## 6. Quality attributes and acceptance tests
-- **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement. NFR-2 and NFR-6 are partial (see section 5.1 and section 8); the instructor's view on the UI and on test-suite time is not yet known.
-- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), and system scenarios SYS-01 to SYS-04 (`tests/test_system.py`). The demo script test is pending with PR #14.
+- **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement. NFR-2 and NFR-6 are partial (see section 5.1 and section 8); the instructor's view on the UI and on test-suite time is not recorded.
+- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), system scenarios SYS-01 to SYS-04 (`tests/test_system.py`), and the dashboard tests (`tests/test_dashboard.py`, `tests/test_app.py`). The demo script test is pending with PR #14.
 - **Evidence:** the four reports in `docs/` (Unit Test, System Validation, Code Coverage, Branch Coverage).
 
 ## 7. System models and diagrams
@@ -187,11 +187,11 @@ Test IDs come from the test function names (for example `TC-BIN-03` is `test_tc_
 | FR-15 | Safe route completion | Functional | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
 | FR-16 | Plain-text city report | Functional | Medium | reports | TC-RP-05, TC-RP-06 | P |
 | NFR-1 | Clear errors, no corruption | Non-functional | High | all | TC-BIN-02, TC-BIN-11, TC-RT-07 to 12 | P |
-| NFR-2 | Core suite under 10 s (UI tests reported separately) | Non-functional | Medium | all | Unit Test Report timings | Partial: core suite met; UI suite observed at 33.99 s, not covered by the limit |
+| NFR-2 | Test suite under 10 s (core/UI split proposed) | Non-functional | Medium | all | Unit Test Report timings | Partial: full expanded suite 109 passed in 33.99 s exceeds 10 s; proposed split awaits acceptance |
 | NFR-3 | Coverage at least 80% | Non-functional | High | all | Code and Branch Coverage Reports | P |
 | NFR-4 | Reviewed pull requests with green CI | Non-functional | High | process | GitHub PR history, branch ruleset | P |
 | NFR-5 | Deterministic ordering | Non-functional | Medium | alerts, routing, reports | TC-AL-03, TC-RT-02 (alerts and routing only) | Partial: report-line order not tested |
-| NFR-6 | Python 3.10+; core standard library only (UI needs Streamlit) | Non-functional | Low | all | CI run on Python 3.12 | Partial: 3.10 and 3.11 untested; UI dependency noted |
+| NFR-6 | Python 3.10+; domain package standard library only (UI needs Streamlit) | Non-functional | Low | all | CI Python 3.12; local Python 3.13.7 | Partial: 3.10 and 3.11 untested; UI dependency noted |
 | SR-1 | Validate reading type and range | Security | High | bins | TC-BIN-03, TC-BIN-11, TC-BIN-12 | P |
 | SR-2 | Validate bin creation | Security | High | bins | TC-BIN-02 | P |
 | SR-3 | Verify before change; no double completion | Security | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
