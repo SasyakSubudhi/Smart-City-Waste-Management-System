@@ -1,11 +1,11 @@
 # Software Architecture and Design Specification
 
 **Project:** Smart City Waste Management System
-**Document:** SAD-SCWM-1.1
+**Document:** SAD-SCWM-1.2
 **Author:** Shreya Yashodhara Singh (`yasho-26singh`)
 **Date:** 9 November 2026
 **Status:** Follow-up revision for independent review; no institutional acceptance claimed
-**Source baseline:** main `1344aaf94155af94c4832ed0a3bfc371f8ff1f63`
+**Integrated source/requirements baseline:** main `9403092e093f604711d45bc95d553ce258995850`
 
 ## Revision History
 
@@ -13,6 +13,7 @@
 |---|---|---|---|
 | 1.0 | 8 November 2026 | Shreya | Initial SAD, merged in PR #6; editorial cleanup in #7 |
 | 1.1 | 9 November 2026 | Shreya | Align with integrated reports/STP; follow supplied SAD template; add risks, stakeholder concerns, security assessment and provisional SRS v2 crosswalk |
+| 1.2 | 9 November 2026 | Shreya | Add proposed UI sequence; reconcile accepted SRS v2 and merged recording evidence |
 
 ## Approvals
 
@@ -61,8 +62,9 @@ the distinction between merged behavior, historical measurements and pending PRs
 [Test Case Document](Test_Case_Document.md), [Day 3 validation](DAY3_VALIDATION.md),
 [Unit Test Report](Unit_Test_Report.md), [System Validation Report](System_Validation_Report.md),
 [Code Coverage Report](Code_Coverage_Report.md), [Branch Coverage Report](Branch_Coverage_Report.md).
-The merged SRS still defines FR-1..8/NFR-1..4. SRS v2 PR #13 is unmerged and
-under review; its additional IDs are explicitly provisional in section 3.8.
+SRS v2 PR #13 is now merged in the stated baseline. Section 3.8 allocates its
+FR-1..16, NFR-1..6 and SR-1..5. The review/merge does not by itself prove every
+quality requirement; partial portability, ordering and process evidence stay qualified.
 
 ## 3. Architecture
 
@@ -189,11 +191,12 @@ counts, empty waste-type means and `No bins registered.`.
 | Data loss | No hidden disk writes | Process memory is volatile; persistence is a future requirement |
 | Outdated alerts/reports | Read-only regeneration from current registry | Caller must refresh snapshots after changes |
 | Large fleet/data | Simple priority sort and bounded assignment | No real-city load benchmark; unbounded inputs may exhaust resources |
-| Documentation drift | Baseline and provisional-ID crosswalk | Reconcile after #13/#14/#16 merge; do not rewrite another owner's deliverables |
+| Documentation drift | Baseline and provisional-ID crosswalk | SRS #13 is reconciled; recheck after #14/#16 merge without rewriting other owners' deliverables |
 | Misstated evidence | Keep historical snapshots and exact run counts separate | Course acceptance, recordings, board fields and full version range remain unverified |
 
 ### 3.8 Traceability to Requirements
-The following rows allocate the **merged SRS** to real code/tests. They identify
+The first table covers the original FR-1..8/NFR-1..4, which remain in SRS v2.
+The second table extends allocation to the accepted SRS v2 IDs using real code/tests. They identify
 existing verification, not a promise of certification or all-environment coverage.
 
 | Requirement | Design responsibility | Verification |
@@ -212,10 +215,9 @@ existing verification, not a promise of certification or all-environment coverag
 | NFR-4 | GitHub branches, reviews, CI | Live PR and Actions evidence |
 
 
-Proposed SRS v2 crosswalk ([PR #13](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/13)):
-these IDs are draft until accepted; reconcile them after that PR resolves.
+Accepted SRS v2 crosswalk ([PR #13](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/13), merged into the stated baseline):
 
-| Proposed ID | Component/contract | Existing evidence / qualification |
+| SRS v2 ID | Component/contract | Existing evidence / qualification |
 |---|---|---|
 | FR-9 | Bin constructor validation | TC-BIN-02 |
 | FR-10 | Bin.empty | TC-BIN-05; SYS-01 |
@@ -428,15 +430,18 @@ demo and its acceptance test are also pending integration.
 
 ### 4.6 Open Issues & Next Steps
 1. Reviewer approves this revision; maintainer merges after checks. No self-approval.
-2. Reconcile draft SRS v2 IDs and affected documents after PR #13 is accepted.
+2. SRS v2 allocation is reconciled here after PR #13 merged. Coordinate remaining
+   cross-document references with their owners; do not claim unverified acceptance.
 3. Recheck architecture/dependencies after demo/UI merge; distinguish application
    server communication from the currently standalone domain package.
 4. Coordinate final evidence with Shruti; do not overwrite archived measurements.
 5. Confirm actual course deadline/extension: supplied testing window was 2-6
    November and has elapsed. Do not backdate work or claim instructor acceptance.
-6. Record the required 1-minute and 2-minute working-product sprint videos and
-   verify backlog owners/points and actual two-sprint outcomes with the team.
-   Four teammate workdays do not prove four course sprints.
+6. PR #15 has merged the 60-second and 120-second silent outcome recordings.
+   They show package APIs through a recording display aid, not the proposed web UI.
+   Their actual recording date is 9 November 2026; no retrospective sprint timing
+   or instructor acceptance is inferred. Verify backlog owners/points and actual
+   two-sprint outcomes with the team; four workdays do not prove four course sprints.
 
 ## 5. Appendices
 
@@ -463,9 +468,10 @@ are in 4.3 and the threat assessment is in 3.9. No ATM-specific technologies,
 availability promises, PCI-DSS claims, signatures or dates have been copied.
 
 Source of truth is the stated main baseline and linked project documents in
-section 2.2. Open PR #13 is a proposed requirement mapping, not accepted evidence.
-Old SAD section-7 API references in pending SRS changes should be updated by that
-document's owner to section 4.3 after this revision is accepted.
+section 2.2. PR #13 supplies accepted requirement IDs; individual verification
+limitations in section 3.8 remain separate from approval of the requirements.
+The SRS still references the former SAD section 7 for APIs; its owner should
+update that cross-reference to section 4.3 after this revision is accepted.
 
 ### 5.3 Tools and Validation Evidence
 Python, pytest, pytest-cov/coverage.py, GitHub Actions, Markdown and Mermaid.
@@ -480,4 +486,5 @@ This is a fresh local baseline check; the older archived reports are not relabel
 The separate unmerged UI branch has additional AppTest cases and cannot be used
 as this baseline's count or performance evidence. This revision introduces no
 runtime/test changes. The companion VIVA_VIDEO_NOTES.md is preparation material,
-not a claim that recording or human understanding has been completed.
+not proof of personal human understanding or viva readiness. Merged videos are
+separately evidenced by PR #15 and do not establish institutional acceptance.
