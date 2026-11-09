@@ -8,7 +8,7 @@ import streamlit as st
 # Support `streamlit run app.py` from a clone without installing the src package.
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from waste_mgmt.bins import Bin, BinRegistry, VALID_TYPES
-from waste_mgmt.dashboard import attempt, bin_rows, alert_rows, route_rows
+from waste_mgmt.dashboard import attempt, bin_rows, alert_rows, route_rows, filter_alert_rows
 from waste_mgmt.routing import Truck, plan_routes, complete_route
 from waste_mgmt.reports import average_fill_level, status_summary, render_text_report
 
@@ -63,11 +63,12 @@ with bins_tab:
 
 with alerts_tab:
     st.subheader("Overflow alerts")
-    rows = alert_rows(registry)
+    severity = st.selectbox("Severity", ("All", "CRITICAL", "WARNING"), key="alert_severity")
+    rows = filter_alert_rows(alert_rows(registry), severity)
     if rows:
         st.dataframe(rows, hide_index=True, use_container_width=True)
     else:
-        st.info("No alerts.")
+        st.info("No alerts." if severity == "All" else "No alerts match this severity.")
 
 with routes_tab:
     st.subheader("Collection routes")

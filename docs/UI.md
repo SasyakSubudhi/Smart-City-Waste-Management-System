@@ -18,11 +18,19 @@ current baseline; app.py calls the package interfaces directly.
 | Tab | Actions and requirements |
 |---|---|
 | Bins | Register/list/remove bins (FR-1), send validated sensor readings (FR-2), display derived status (FR-3) |
-| Alerts | Display package-generated alerts, CRITICAL before WARNING; show `No alerts.` when empty (FR-4) |
+| Alerts | Display package-generated alerts, CRITICAL before WARNING; filter All / CRITICAL / WARNING; show `No alerts.` when All is empty (FR-4) |
 | Collection routes | Choose fleet size and bin-count capacity; plan fullest-first routes (FR-5), show unassigned IDs (FR-6), confirm completed collections (FR-7) |
 | City report | Total bins, average fill, nearly-full/full counts and package text report (FR-8) |
 
 ## State and errors
+
+The Alerts severity selector defaults to All. CRITICAL and WARNING show only
+matching rows, preserving the package's priority and same-severity order.
+Filtering does not alter bins, alerts or the collection plan. With no matching
+rows it shows `No alerts match this severity.`. The selected severity survives
+ordinary reruns, including collection confirmation; the rows regenerate from the
+updated registry. Choose All to restore the complete list. The pure adapter
+copies row dictionaries and rejects unsupported severity options with ValueError.
 
 Registry and plan live in `st.session_state`, isolated per browser session.
 There is no persistence: a new session starts empty. Forms submit explicitly.
