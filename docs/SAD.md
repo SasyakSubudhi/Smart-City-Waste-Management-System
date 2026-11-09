@@ -212,7 +212,7 @@ existing verification, not a promise of certification or all-environment coverag
 | NFR-4 | GitHub branches, reviews, CI | Live PR and Actions evidence |
 
 
-Proposed SRS v2 crosswalk (PR #13 head `24db2266afdf31eb0d9bfff8f1feccfa27bc7ae7`):
+Proposed SRS v2 crosswalk ([PR #13](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/13)):
 these IDs are draft until accepted; reconcile them after that PR resolves.
 
 | Proposed ID | Component/contract | Existing evidence / qualification |
@@ -399,8 +399,8 @@ demo and its acceptance test are also pending integration.
 | CI | Automated checks of repository changes, not runtime monitoring |
 
 ### 5.2 References and Template Crosswalk
-The supplied `SAD_Template (1).docx` was extracted from the Resources.bin embedded
-package in `Shreya_Handoff.docx`. Its ATM examples are not system requirements.
+The supplied `SAD_Template (1).docx` defines this document's structure.
+Its ATM examples are not system requirements.
 This revision follows its section names/numbers directly: title/version/authors,
 revision history and approvals; 1.1-1.4 introduction; 2.1-2.2 overview;
 3.1-3.9 architecture; 4.1-4.6 design; 5.1-5.3 appendices. The component/dependency
