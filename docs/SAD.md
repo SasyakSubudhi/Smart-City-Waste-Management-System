@@ -220,7 +220,7 @@ existing verification, not a promise of certification or all-environment coverag
 | FR-7 | complete_route | TC-RT-08,11,12; TC-AL-06 |
 | FR-8 | reports (merged) | TC-RP-01..09; SYS-01, SYS-04 |
 | NFR-1 | Domain checks and explicit exceptions | Invalid input/state preservation tests |
-| NFR-2 | Full suite including AppTest | Existing <10s target is unmet: reviewed UI run 33.99s; requirement/scope decision pending with Sasyak |
+| NFR-2 | Full suite including AppTest | Existing <10s target is unmet: full UI-inclusive suite: 109 passed in 33.99s on Windows/Python 3.13.7; requirement/scope decision pending |
 | NFR-3 | pytest-cov branch instrumentation | Separate statement and branch totals, each >=80% |
 | NFR-4 | GitHub branches, reviews, CI | Live PR and Actions evidence |
 
@@ -447,8 +447,9 @@ sessions and is lost when a session ends; there is no persistent user account.
    cross-document references with their owners; do not claim unverified acceptance.
 3. Coordinate SRS/STP/report scope with their owners: domain standard-library
    code differs from Streamlit dependencies and local server communication.
-   Shriya measured 109 UI-suite cases in 33.99s, exceeding NFR-2's ten-second
-   full-suite target. Keep that requirement unmet until a legitimate agreed update
+   Shriya measured the full UI-inclusive suite: 109 passed in 33.99s on
+   Windows/Python 3.13.7. This exceeds NFR-2's ten-second full-suite target.
+   UI-only time was not measured. Keep that requirement unmet until an agreed update
    or verified performance improvement; do not invent a new acceptance limit.
 4. Coordinate final evidence with Shruti; do not overwrite archived measurements.
 5. Confirm actual course deadline/extension: supplied testing window was 2-6
@@ -493,11 +494,15 @@ update that cross-reference to section 4.3 after this revision is accepted.
 Python, pytest, pytest-cov/coverage.py, GitHub Actions, Markdown and Mermaid.
 The four published reports and HTML coverage are present, but their recorded
 commit/environment differ from this baseline; presence is not new execution.
-Day 3's 68-test record remains historical. Before UI integration, the domain suite
-at main 9403092 had 86 cases; a local 9 November run passed in 0.73s with 140/140
-statements and 54/54 branch outcomes. After UI integration, the reviewed head
-b34342f passed 109 cases: the author's run took 23.49s and Shriya's independent
-run took 33.99s, with 156/156 statements and 56/56 branch outcomes (100% each).
+Day 3's 68-test record remains historical. Preserve the original SAD observation:
+on 9 November 2026, source 1344aaf94155af94c4832ed0a3bfc371f8ff1f63 passed 86
+tests in 0.71s on Windows/Python 3.13.7, with 140/140 statements and 54/54 branch
+outcomes. This is the original measurement recorded in PR #17, not a new run.
+After UI integration, the reviewed head b34342f had a full UI-inclusive suite:
+109 passed in 33.99s on Windows/Python 3.13.7 in Shriya's independent run;
+the author's separate run took 23.49s. Both measured the full expanded repository
+suite (core plus dashboard/AppTest), not a UI-only selection, with 156/156
+statements and 56/56 branch outcomes (100% each). UI-only time was not measured.
 app.py is exercised by AppTest but excluded from the src/waste_mgmt coverage
 source. These branch-specific observations must not be combined as a new
 final-main run; the latest follow-up PR records its own exact test result.

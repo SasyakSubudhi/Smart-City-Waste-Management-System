@@ -98,8 +98,10 @@ window has elapsed. Log real recording dates and locations after recording.
 Demo #14 integration; review/integration of alert edge tests and severity filtering;
 current report consistency coordinated with Shruti; actual board owners/points;
 instructor deadline/extension, silent-format acceptance and final demo/viva readiness.
-Sasyak must coordinate NFR-2: Shriya's reviewed UI suite passed 109 tests in 33.99s,
-which exceeds the existing ten-second full-suite requirement. Passing coverage/CI
+Sasyak must coordinate NFR-2: Shriya measured the full UI-inclusive suite:
+109 passed in 33.99s on Windows/Python 3.13.7 (core plus dashboard/AppTest).
+UI-only time was not measured. This exceeds the ten-second full-suite requirement.
+Passing coverage/CI
 does not make that timing requirement pass. Domain modules use the standard
 library; the Streamlit app has external dependencies and a local browser/server
 boundary. The SRS owner must qualify that scope. These checks remain pending or
