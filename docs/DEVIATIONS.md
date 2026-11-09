@@ -1,27 +1,27 @@
 # Deviations from the Submitted Documents
 
-This note lists every place where the final system differs from the originally submitted SRS (v1.0), SAD and Test Plan, or from the course plan, with the reason. It is written for the final demo.
+This note lists every place where the project differs from the originally submitted SRS (v1.0), SAD and Test Plan, or from the course plan, with the reason. Items marked **pending** are not done yet and are not claimed as complete.
 
 ## 1. Product and requirements
-| # | Original | Final | Reason |
+| # | Original | Current state | Reason / status |
 |---|---|---|---|
-| 1 | The team's problem statement asks for routes based on location, vehicle capacity, priority **and distance**. | Routes are **priority and capacity based only**: fullest bins first, ties by bin ID, at most `capacity_bins` bins per truck. No distances or coordinates are used. | The SRS defines locations as text labels only, with no coordinates or travel-distance model. A distance model (for example shortest path over a road graph) is future work. See `docs/ROUTING.md`. |
-| 2 | SRS v1.0 FR-2 only required readings to be inside 0-100. | FR-2 now requires **whole numbers** from 0 to 100; NaN, infinity, booleans, decimals, text and `None` are rejected (tests `tc_bin_11`, `tc_bin_12`). | Found in review of PR #1: NaN and `True` pass a plain range check. Fixed before merge. |
-| 3 | SRS v1.0 had FR-1 to FR-8 and NFR-1 to NFR-4, with no security section or diagrams. | SRS v2.0 adds FR-9 to FR-16, NFR-5, NFR-6, security objectives SO-1 to SO-3, security requirements SR-1 to SR-5, two use-case diagrams and a traceability matrix. | To follow the course SRS template and checklist. The new functional requirements describe behaviour that was already implemented and tested. |
-| 4 | Product described as an application with users. | There is **no graphical interface**; the product is a Python package with a command-line demo (`demo.py`). | The task allows implementation on GitHub only; the SRS scope excludes hardware, network and authentication. |
+| 1 | The team's problem statement asks for routes based on location, vehicle capacity, priority **and distance**. | Routes are **priority and capacity based only**: fullest bins first, ties by bin ID, at most `capacity_bins` bins per truck. No distances or coordinates are used. | The SRS defines locations as text labels only, with no coordinates or travel-distance model. Distance-based routing is **not implemented** and is future work. See `docs/ROUTING.md`. |
+| 2 | SRS v1.0 FR-2 only required readings to be inside 0-100. | FR-2 requires **whole numbers** from 0 to 100; NaN, infinity, booleans, decimals, text and `None` are rejected (tests `tc_bin_11`, `tc_bin_12`). | Found in review of PR #1: NaN and `True` pass a plain range check. Fixed before merge. |
+| 3 | SRS v1.0 had FR-1 to FR-8 and NFR-1 to NFR-4, with no security section or diagrams. | SRS v2.0 (PR #13, **pending approval**) adds FR-9 to FR-16, NFR-5, NFR-6, security objectives SO-1 to SO-3, security requirements SR-1 to SR-5, two use-case diagrams and a traceability matrix. | To follow the SRS template. The new functional requirements describe behaviour that was already implemented and tested. NFR-5 (report-line ordering) and NFR-6 (Python 3.10/3.11) are only partly verified; see the SRS traceability table. |
+| 4 | The original project request asks for a system **with a UI**. | **Open deviation.** The merged package has no graphical interface. A command-line demo (`demo.py`, PR #14) is pending, and a Streamlit web UI is planned (owner: Shreya Yashodhara Singh) but not merged. | Using GitHub for collaboration does not waive the UI requirement. If the UI is not delivered, the instructor's acceptance of this deviation is required; none has been obtained. |
 
 ## 2. Design and interfaces
-| # | Original plan | Final | Reason |
+| # | Original plan | Current state | Reason |
 |---|---|---|---|
 | 5 | Early kit design planned routes as dictionaries (`plan["routes"]`) and a `complete_collection` function. | Routing returns a `RoutingPlan` of `Route` objects (`routes`, `unassigned_bin_ids`) and uses `complete_route(route, registry)`. Alerts and reports take `registry.all()`; routing takes the registry. | The merged routing module uses immutable plan objects and atomic completion. Later modules and system tests were adapted to it. `docs/SAD.md` describes the final interfaces. |
-| 6 | Test Plan listed alert, report and system test IDs as planned. | All planned groups now exist: `TC-AL-01..06`, `TC-RP-01..09`, `SYS-01..04`; total 87 automated tests. | Implemented during Sprints 2 and 3. |
+| 6 | Test Plan listed alert, report and system test IDs as planned. | Implemented on `main`: `TC-AL-01..06`, `TC-RP-01..09`, `SYS-01..04`; 86 automated tests pass on `main` (82 unit and 4 system). The demo test and any UI tests are **pending** with PR #14 and the UI PR. | Implemented on 8 and 9 November 2026 (git history). |
 
 ## 3. Process and schedule
 | # | Course plan | Actual | Reason |
 |---|---|---|---|
-| 7 | Backlog 12 Oct, Sprint 1 on 19-23 Oct, Sprint 2 on 26-30 Oct, testing 2-6 Nov. | Development and testing were done in four daily iterations on 7-10 Nov 2026: Day 1 bins and SRS, Day 2 routing and STP, Day 3 alerts and SAD, Day 4 reports, system tests and test reports. The GitHub Project backlog was created from the SRS on 9 Nov. | The team started late. The dates and PR history in GitHub show the real timeline. |
-| 8 | Sprint outcome videos recorded during each sprint. | The 1-minute and 2-minute demo videos are recorded at the end and added to `docs/videos/`. | Same reason as 7. |
-| 9 | Test reports generated after all testing. | Reports are regenerated from the final `main` commit by `generate_reports.py` and record the commit, date and environment. Earlier reports were generated on Python 3.14 (macOS); CI uses Python 3.12 on Windows. | Statement counts can differ slightly between Python versions; both runs pass with 100% coverage. |
+| 7 | Backlog 12 Oct, Sprint 1 on 19-23 Oct, Sprint 2 on 26-30 Oct, testing 2-6 Nov. | The 2-6 Nov testing window has elapsed. The git history shows work on 7, 8 and 9 Nov 2026. The GitHub Project backlog and the sprint plans are **pending** and will be recorded with their real creation dates. | The team started late. Dates are taken from the commit and PR history; nothing is back-dated. Ask the instructor about the current deadline. |
+| 8 | Sprint outcome videos (1 minute and 2 minutes) showing the working product. | **Pending.** No video has been recorded yet; `docs/videos/` does not exist. | To be recorded by the team, with each member explaining their own part. |
+| 9 | Test reports generated after all testing. | The four reports on `main` were generated from the code at the commit named in each report. They will be regenerated after the pending PRs merge. The reports record the Python version used. | Counts and coverage are only valid for the commit and Python version recorded in each report. |
 
 ## 4. Use of AI tools
-As permitted by the course FAQ, GPT-based tools helped write code, tests and documents. This is stated in the pull requests, commit messages and review comments. Every team member is expected to read and be able to explain the code and documents they own.
+As permitted by the course FAQ, AI tools helped write code, tests and documents. Every team member is expected to read and be able to explain the code and documents they own.
