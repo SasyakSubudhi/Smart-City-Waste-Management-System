@@ -310,6 +310,59 @@ sequenceDiagram
 After successful completion, the caller may pass registry.all() to status_summary
 and render_text_report; SYS-01 verifies regenerated status and mean fill.
 
+#### Supervisor: Alerts tab to collection and refreshed alerts (PR #16)
+This view describes the proposed app.py in PR #16, not merged-main behavior.
+Streamlit renders all four tab bodies on each script run. Opening an already
+rendered tab alone does not call Python; an initial render or rerun produces the
+rows. Confirmation is in the Collection routes tab, not the Alerts tab.
+
+```mermaid
+sequenceDiagram
+    actor Supervisor
+    participant UI as app.py / Streamlit
+    participant Dashboard as dashboard.py
+    participant Registry as BinRegistry
+    participant Alerts as alerts.py
+    participant Routing as routing.py
+    Supervisor->>UI: Open Alerts tab
+    Note over UI: Initial script render or server rerun
+    UI->>Dashboard: alert_rows(registry)
+    Dashboard->>Registry: all()
+    Registry-->>Dashboard: list of live Bin objects
+    Dashboard->>Alerts: generate_alerts(registry.all())
+    Alerts-->>Dashboard: fresh immutable alert snapshots, CRITICAL first
+    Dashboard->>Alerts: format_alert(alert) for each snapshot
+    Dashboard-->>UI: table rows
+    UI-->>Supervisor: Alerts table or No alerts.
+    Supervisor->>UI: Open Collection routes; plan routes if needed
+    UI->>Routing: plan_routes(registry, trucks)
+    Routing-->>UI: RoutingPlan saved in session_state.plan
+    Supervisor->>UI: Confirm all collections after trips finish
+    loop Every route in saved plan
+        UI->>Dashboard: attempt(complete_route, route, registry)
+        Dashboard->>Routing: complete_route(route, registry)
+        Routing-->>Dashboard: None on success
+        Dashboard-->>UI: ok, result
+    end
+    alt All routes completed successfully
+        UI->>UI: show_result clears session_state.plan
+        UI->>UI: save success notice; st.rerun()
+        UI->>Dashboard: alert_rows(registry) on fresh render
+        Dashboard->>Alerts: generate_alerts(registry.all())
+        Alerts-->>Dashboard: current alerts after emptying
+        Dashboard-->>UI: refreshed rows
+        UI-->>Supervisor: success and refreshed Alerts tab
+    else A route raises a documented error
+        UI-->>Supervisor: st.error(message); stop completion loop
+        Note over UI: No success-path plan clearing or rerun
+    end
+```
+
+Confirmation across multiple routes is not one atomic domain transaction: earlier
+routes may have completed before a later route fails. The diagram's fresh-alert
+path is the successful case. app.py's successful bin-edit invalidation prevents
+the ordinary UI from retaining a plan whose selected bins were removed or edited.
+
 ### 4.3 API Design
 Public interfaces are Python calls, not HTTP endpoints. At least bins, alerts,
 routing and reports are specified here.
@@ -399,12 +452,13 @@ demo and its acceptance test are also pending integration.
 | CI | Automated checks of repository changes, not runtime monitoring |
 
 ### 5.2 References and Template Crosswalk
-The supplied `SAD_Template (1).docx` defines this document's structure.
+The course SAD template defines this document's structure.
 Its ATM examples are not system requirements.
 This revision follows its section names/numbers directly: title/version/authors,
 revision history and approvals; 1.1-1.4 introduction; 2.1-2.2 overview;
 3.1-3.9 architecture; 4.1-4.6 design; 5.1-5.3 appendices. The component/dependency
-diagram is section 3.3, both sequence diagrams are unchanged in 4.2, API contracts
+diagram is section 3.3, the two original sequence diagrams are unchanged in 4.2
+and a third sequence describes the proposed UI flow. API contracts
 are in 4.3 and the threat assessment is in 3.9. No ATM-specific technologies,
 availability promises, PCI-DSS claims, signatures or dates have been copied.
 
