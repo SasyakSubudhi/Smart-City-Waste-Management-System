@@ -11,7 +11,8 @@
 | Version | Date | Author | Change summary | Approval |
 |---|---|---|---|---|
 | 1.0 | 7 Nov 2026 | Sasyak Subudhi | Initial SRS: FR-1 to FR-8, NFR-1 to NFR-4 (PR #2) | Merged after review |
-| 2.0 | 9 Nov 2026 | Sasyak Subudhi | Added FR-9 to FR-16, NFR-5 and NFR-6, security objectives and requirements, external interfaces, two use-case diagrams and a requirements traceability matrix; FR-2 tightened to whole numbers (see `docs/DEVIATIONS.md`) | Pending teammate review |
+| 2.0 | 9 Nov 2026 | Sasyak Subudhi | Added FR-9 to FR-16, NFR-5 and NFR-6, security objectives and requirements, external interfaces, two use-case diagrams and a requirements traceability matrix; FR-2 tightened to whole numbers (see `docs/DEVIATIONS.md`) | Merged after independent review (PR #13) |
+| 2.1 | 9 Nov 2026 | Sasyak Subudhi | Clarified NFR-2 (performance) and NFR-6 (portability) for the proposed Streamlit web UI in PR #16, which is not merged yet. No requirement is claimed as met for the UI | Pending teammate review |
 
 ## Approvals
 | Role | Name | Signature / Email | Date |
@@ -78,7 +79,7 @@ Administrators and supervisors are non-programmers in the real world; in this pr
 Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run on Python 3.13; 3.10 and 3.11 have not been tested.
 
 ### 2.5 Constraints
-No external runtime dependencies (standard library only); no hardware, database or network service; capacity is counted in bins per truck, not litres.
+The core package `waste_mgmt` (bins, alerts, routing, reports) uses only the Python standard library at runtime. The proposed web UI (PR #16, not merged) adds one runtime dependency, Streamlit (`streamlit>=1.40` in `requirements.txt`); the tests need `pytest` and `pytest-cov`. There is no hardware, database or network service; capacity is counted in bins per truck, not litres.
 
 ## 3. External interfaces
 
@@ -123,11 +124,11 @@ Each requirement has a test reference in section 8.
 | ID | Category | Requirement | Measurement |
 |---|---|---|---|
 | NFR-1 | Reliability | Invalid input shall raise a clear error rather than silently corrupt data. | Invalid-input tests pass and leave existing state unchanged |
-| NFR-2 | Performance | The full automated test suite shall run in under 10 seconds. | Elapsed time in the Unit Test Report |
+| NFR-2 | Performance | The automated test suite for the core package (bins, alerts, routing, reports and system scenarios) shall run in under 10 seconds. The web UI tests (PR #16) are measured and reported separately; no time limit is set for them in this version. | Elapsed time in the Unit Test Report. Core suite: 2.95 s to 6.49 s observed on 86 tests. The UI suite was observed at 33.99 s in an independent run of PR #16, so a whole-repository run does not meet 10 s once the UI is merged |
 | NFR-3 | Quality | Statement and branch coverage shall each be at least 80%. | Code and Branch Coverage Reports |
 | NFR-4 | Process | Code shall be maintained in Git with changes merged only via reviewed pull requests passing CI. | GitHub pull request history and branch ruleset |
 | NFR-5 | Determinism | The same inputs shall always give the same ordering of alerts, routes and report lines. | Tie-break and stability tests for alerts and routing; report-line ordering is not separately tested |
-| NFR-6 | Portability | The system shall run on Python 3.10 or later using only the standard library. | CI run on Python 3.12 only; 3.10 and 3.11 are untested |
+| NFR-6 | Portability | The core package shall run on Python 3.10 or later using only the standard library. The optional web UI additionally requires Streamlit, so the standard-library-only statement does not apply to it. | CI run on Python 3.12 only (also run on 3.13); 3.10 and 3.11 are untested, and the UI has not been tested on any version other than those runs |
 
 ### 5.2 Security
 
@@ -151,7 +152,7 @@ Each requirement has a test reference in section 8.
 There is no user authentication, authorisation, encryption or network exposure, because the system is a standalone package. These would need to be added if a web interface or service is introduced.
 
 ## 6. Quality attributes and acceptance tests
-- **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement.
+- **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement. NFR-2 and NFR-6 are partial (see section 5.1 and section 8); the instructor's view on the UI and on test-suite time is not yet known.
 - **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), and system scenarios SYS-01 to SYS-04 (`tests/test_system.py`). The demo script test is pending with PR #14.
 - **Evidence:** the four reports in `docs/` (Unit Test, System Validation, Code Coverage, Branch Coverage).
 
@@ -186,11 +187,11 @@ Test IDs come from the test function names (for example `TC-BIN-03` is `test_tc_
 | FR-15 | Safe route completion | Functional | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
 | FR-16 | Plain-text city report | Functional | Medium | reports | TC-RP-05, TC-RP-06 | P |
 | NFR-1 | Clear errors, no corruption | Non-functional | High | all | TC-BIN-02, TC-BIN-11, TC-RT-07 to 12 | P |
-| NFR-2 | Suite under 10 s | Non-functional | Medium | all | Unit Test Report timings | P |
+| NFR-2 | Core suite under 10 s (UI tests reported separately) | Non-functional | Medium | all | Unit Test Report timings | Partial: core suite met; UI suite observed at 33.99 s, not covered by the limit |
 | NFR-3 | Coverage at least 80% | Non-functional | High | all | Code and Branch Coverage Reports | P |
 | NFR-4 | Reviewed pull requests with green CI | Non-functional | High | process | GitHub PR history, branch ruleset | P |
 | NFR-5 | Deterministic ordering | Non-functional | Medium | alerts, routing, reports | TC-AL-03, TC-RT-02 (alerts and routing only) | Partial: report-line order not tested |
-| NFR-6 | Python 3.10+, standard library only | Non-functional | Low | all | CI run on Python 3.12 | Partial: 3.10 and 3.11 untested |
+| NFR-6 | Python 3.10+; core standard library only (UI needs Streamlit) | Non-functional | Low | all | CI run on Python 3.12 | Partial: 3.10 and 3.11 untested; UI dependency noted |
 | SR-1 | Validate reading type and range | Security | High | bins | TC-BIN-03, TC-BIN-11, TC-BIN-12 | P |
 | SR-2 | Validate bin creation | Security | High | bins | TC-BIN-02 | P |
 | SR-3 | Verify before change; no double completion | Security | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
