@@ -1,4 +1,4 @@
-"""FR-4 overflow alerts. AI-assisted implementation for Shreya's review."""
+"""FR-4 overflow alerts."""
 
 from dataclasses import dataclass
 from .bins import Bin
