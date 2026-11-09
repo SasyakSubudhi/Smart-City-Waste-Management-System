@@ -111,15 +111,15 @@ Observed local environment: Windows, Python 3.13.7. CI configuration: Windows ru
 
 Course targets: backlog 12 October; Sprint 1 19–23 October; Sprint 2 26–30 October; testing 2–6 November 2026. Those targets are historical and are not replaced by invented completion dates. Repository work is evidenced on 7–9 November; confirm the current submission deadline with the instructor.
 
-As checked on 9 November: the four core modules and system cases are merged; SRS v2 corrections #13, demo #14 and UI #16 are open. Two actual silent recordings are available for review in PR #15, recorded on 9 November, and are not yet on main. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
+As checked on 9 November: the four core modules and system cases are merged; SRS v2 corrections #13, demo #14 and UI #16 are open. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
 
-Remaining sequence: review accepted requirement changes, integrate approved source/UI/demo work, rerun regression, have the evidence owner regenerate final reports, independently review the recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
+Remaining sequence: review accepted requirement changes, integrate approved source/UI/demo work, rerun regression, have the evidence owner regenerate final reports, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
 
 ## 8 Test Deliverables
 
 Version-controlled tests, updated Test Case Document, Unit Test Report, System Validation Report, Code Coverage Report and Branch Coverage Report in docs/. Generate reports from real runs, recording commit, environment, date, expected/observed results and failures. Keep machine-readable JUnit and coverage evidence as attachments/artifacts. The reports are produced by generate_reports.py and generate_test_case_doc.py from real pytest runs.
 
-Keep defect reports in PR reviews/issues with reproduction steps, affected revision, expected versus observed behavior, owner and retest outcome. The course test-case document and four testing reports remain Shruti's evidence ownership; this revision does not regenerate them or certify their tooling. Recordings and optional sidecar captions are proposed in PR #15. Final report regeneration must follow the final accepted source, not this plan's date.
+Keep defect reports in PR reviews/issues with reproduction steps, affected revision, expected versus observed behavior, owner and retest outcome. The course test-case document and four testing reports remain Shruti's evidence ownership; this revision does not regenerate them or certify their tooling. Recordings and optional sidecar captions are merged in PR #15; instructor acceptance of their silent format and recording date remains unconfirmed. Final report regeneration must follow the final accepted source, not this plan's date.
 
 ## 9 Roles and Responsibilities
 
