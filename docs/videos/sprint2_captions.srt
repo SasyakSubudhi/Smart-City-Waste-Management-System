@@ -1,34 +1,34 @@
 1
-00:00:00,000 --> 00:00:12,000
-Sprint 2 outcome
-Sasyak — validated bin data drives collection.
+00:00:00,000 --> 00:00:08,000
+Sprint 2 outcome — live source 1344aaf
+Sasyak Subudhi: validated bin readings.
 
 2
-00:00:12,000 --> 00:00:29,000
-Shreya — status-based overflow alerts
-CRITICAL alerts appear before WARNING alerts.
+00:00:08,000 --> 00:00:20,000
+Shreya Yashodhara Singh: overflow alerts.
+CRITICAL appears before WARNING.
 
 3
-00:00:29,000 --> 00:00:51,000
-Shriya — capacity-aware route planning
-Two trucks collect the fullest bins; B2 is unassigned.
+00:00:20,000 --> 00:00:35,000
+Shriya Vasundhara Singh: route planning.
+Two capacity-limited trucks; B2 remains unassigned.
 
 4
-00:00:51,000 --> 00:01:08,000
-Confirm collection for the two selected routes.
-The unassigned bin remains due for collection.
+00:00:35,000 --> 00:00:45,000
+Confirm the selected collections.
+Unassigned bin readings remain unchanged.
 
 5
-00:01:08,000 --> 00:01:26,000
-Shruti — refreshed reports and status counts
-Read the actual report after collection.
+00:00:45,000 --> 00:00:58,000
+Shruti Choudhary: city report.
+Fresh alerts reflect completed collections.
 
 6
-00:01:26,000 --> 00:01:48,000
-Run the automated tests live.
-Read the actual statement and branch coverage.
+00:00:58,000 --> 00:01:48,000
+Actual test process and its live results.
+86 tests passed; 100% statement and branch coverage.
 
 7
 00:01:48,000 --> 00:02:00,000
-Show the matching successful Actions run.
-The commit should match the recorded source revision.
+Actual GitHub Actions success.
+CI matches recorded main revision 1344aaf.
