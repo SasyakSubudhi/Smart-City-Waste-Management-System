@@ -1,0 +1,24 @@
+1
+00:00:00,000 --> 00:00:06,000
+Sprint 1 outcome
+Smart City Waste Management System
+
+2
+00:00:06,000 --> 00:00:23,000
+Sasyak Subudhi — bins and SRS
+Register bins and display their actual status.
+
+3
+00:00:23,000 --> 00:00:39,000
+Invalid readings raise ValueError.
+The previous valid reading remains unchanged.
+
+4
+00:00:39,000 --> 00:00:51,000
+Shriya Vasundhara Singh — routing and STP
+Requirements guide collection behavior and tests.
+
+5
+00:00:51,000 --> 00:01:00,000
+Shreya Yashodhara Singh — alerts and SAD
+Shruti Choudhary — reports and system validation
