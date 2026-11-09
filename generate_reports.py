@@ -260,6 +260,10 @@ def run_coverage():
 def write_coverage_reports(coverage, proc, errors):
     valid = coverage is not None
     stmt_pct = 0.0
+    stmt_total = 0
+    stmt_covered = 0
+    branches = 0
+    covered = 0
     br_pct = 0.0
     stmt_ok = False
     br_ok = False
@@ -277,6 +281,8 @@ def write_coverage_reports(coverage, proc, errors):
         try:
             totals = coverage["totals"]
             stmt_pct = float(totals["percent_statements_covered"])
+            stmt_total = totals.get("num_statements", 0)
+            stmt_covered = totals.get("covered_lines", 0)
             branches = totals["num_branches"]
             covered = totals["covered_branches"]
             br_pct = 100.0 if branches == 0 else 100 * covered / branches
@@ -315,7 +321,8 @@ def write_coverage_reports(coverage, proc, errors):
         header("Code Coverage Report (Statement Coverage)")
         + f"Tool: coverage.py via pytest-cov\n\n"
         + f"**Target: {TARGET:.0f}% - {verdict(stmt_ok and overall_ok)}**\n\n"
-        + f"**Overall: {stmt_pct:.1f}%**\n\n"
+        + f"**Overall: {stmt_covered}/{stmt_total} statements covered "
+        + f"({stmt_pct:.1f}%)**\n\n"
         + "\n".join(rows)
         + "\n"
     )
@@ -324,7 +331,8 @@ def write_coverage_reports(coverage, proc, errors):
         header("Branch Coverage Report")
         + f"Tool: coverage.py (`branch = True`) via pytest-cov\n\n"
         + f"**Target: {TARGET:.0f}% - {verdict(br_ok and overall_ok)}**\n\n"
-        + f"**Overall: {br_pct:.1f}%**\n\n"
+        + f"**Overall: {covered}/{branches} branch outcomes covered "
+        + f"({br_pct:.1f}%)**\n\n"
         + "\n".join(brows)
         + "\n"
     )

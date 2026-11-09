@@ -4,7 +4,7 @@ Project: Smart City Waste Management System
 
 Date: 2026-11-09
 
-Commit: a5f6597
+Commit: 6aad257
 
 Environment: Python 3.14.0 on Darwin 25.6.0
 
@@ -31,7 +31,7 @@ Each scenario's docstring names the SRS requirements it validates. These are aut
 
 ## Execution Time
 
-- Unit tests: 0.00 seconds
-- System tests: 0.00 seconds
-- Coverage run: 0.00 seconds
-- Total validation pipeline: 0.00 seconds
+- Unit tests: 2.14 seconds
+- System tests: 0.19 seconds
+- Coverage run: 2.24 seconds
+- Total validation pipeline: 4.72 seconds
