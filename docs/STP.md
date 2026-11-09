@@ -123,7 +123,7 @@ Python 3.10+ as specified in SRS; CI Python 3.12 on Windows; pytest and pytest-c
 
 ## 11 Schedule and risks
 
-The original testing window (2–6 November) has elapsed. The git history shows work on 7, 8 and 9 November 2026 (see docs/DEVIATIONS.md). Merged: bins, routing, alerts, reports, SAD, STP, system tests and the four test reports. Pending: this SRS/STP update (PR #13), the demo script (PR #14), the web UI, the project backlog evidence and the two sprint videos. Remaining risks: the original request asks for a UI and none is merged yet, so this is an open deviation that needs the instructor's acceptance if the UI is not delivered; real sensor integration and road-distance routing are not implemented and are recorded in docs/DEVIATIONS.md. Python 3.10 and 3.11 have not been tested.
+The original testing window (2–6 November) has elapsed. The git history shows work on 7, 8 and 9 November 2026 (see docs/DEVIATIONS.md). Merged: bins, routing, alerts, reports, SAD, STP, system tests and the four test reports. The two silent sprint screen recordings were recorded on 9 November 2026 and merged in PR #15; that recording is complete, and instructor acceptance of the silent format has not been confirmed. Pending: this SRS/STP update (PR #13), the demo script (PR #14), the web UI (PR #16) and the project backlog evidence. Remaining risks: the original request asks for a UI and none is merged yet, so this is an open deviation that needs the instructor's acceptance if the UI is not delivered; real sensor integration and road-distance routing are not implemented and are recorded in docs/DEVIATIONS.md. Python 3.10 and 3.11 have not been tested.
 
 ## 12 Review and approvals
 
