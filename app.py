@@ -26,6 +26,7 @@ def show_result(ok, result, message):
 st.set_page_config(page_title="City waste dashboard", page_icon="♻", layout="wide")
 st.title("City waste dashboard")
 st.caption("Monitor bins, review alerts and confirm completed collections.")
+st.caption("Data is held only in this browser session and is not saved to disk.")
 if "registry" not in st.session_state:
     st.session_state.registry = BinRegistry()
 if "plan" not in st.session_state:
@@ -59,7 +60,10 @@ with bins_tab:
         if st.form_submit_button("Remove bin"):
             ok, result = attempt(registry.remove, remove_id)
             show_result(ok, result, "Bin removed.")
-    st.dataframe(bin_rows(registry), hide_index=True, use_container_width=True)
+    rows = bin_rows(registry)
+    st.dataframe(rows, hide_index=True, use_container_width=True)
+    if not rows:
+        st.info("No bins registered. Use Register a bin above to get started.")
 
 with alerts_tab:
     st.subheader("Overflow alerts")
@@ -86,11 +90,18 @@ with routes_tab:
             else:
                 st.error(result)
     plan = st.session_state.plan
-    if plan is not None:
+    if plan is None:
+        st.info("No saved plan. Choose your fleet and select Plan routes.")
+    else:
         st.dataframe(route_rows(plan), hide_index=True, use_container_width=True)
         st.write("Unassigned bins:", ", ".join(plan.unassigned_bin_ids) or "None")
         if not plan.routes:
             st.info("No routes planned.")
+            if plan.unassigned_bin_ids:
+                st.warning("Bins are waiting for collection. Add at least one truck "
+                           "and select Plan routes again.")
+            else:
+                st.caption("No bins are due for collection at the 70% planning threshold.")
         if st.button("Confirm all collections", disabled=not plan.routes):
             for route in plan.routes:
                 ok, result = attempt(complete_route, route, registry)
@@ -98,7 +109,12 @@ with routes_tab:
                     st.error(result)
                     break
             else:
-                show_result(True, None, "All collections confirmed.")
+                message = "All collections confirmed."
+                if plan.unassigned_bin_ids:
+                    message = ("All planned collections confirmed. Unassigned bins still need "
+                               "collection: " + ", ".join(plan.unassigned_bin_ids) +
+                               ". Plan routes again for the remaining bins.")
+                show_result(True, None, message)
 
 with report_tab:
     st.subheader("City report")

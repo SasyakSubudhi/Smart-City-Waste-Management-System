@@ -36,7 +36,7 @@ def test_tc_ui_08_start_empty(app):
     assert app.session_state.plan is None
     assert app.metric[0].value == "0"
     assert app.text[0].value == "No bins registered."
-    assert app.info[0].value == "No alerts."
+    assert any(i.value == "No alerts." for i in app.info)
 
 
 def test_tc_ui_09_register_and_persist(app):
@@ -171,3 +171,117 @@ def test_tc_ui_25_filter_no_match_and_collection_refresh(app):
     assert app.selectbox(key="alert_severity").value == "WARNING"
     assert any(i.value == "No alerts match this severity." for i in app.info)
     assert app.session_state.registry.get("B1").fill_level == 0
+
+
+def test_tc_ui_26_confirmation_identifies_remaining_backlog(app):
+    register(app)
+    reading(app, 95)
+    register(app, "B2")
+    reading(app, 80, "B2")
+    app.number_input(key="truck_capacity").set_value(1)
+    click(app, "Plan routes")
+    click(app, "Confirm all collections")
+    assert app.success[0].value == (
+        "All planned collections confirmed. Unassigned bins still need collection: B2. "
+        "Plan routes again for the remaining bins.")
+    assert app.session_state.plan is None
+    assert app.session_state.registry.get("B1").fill_level == 0
+    assert app.session_state.registry.get("B2").fill_level == 80
+    assert app.dataframe[1].value["Bin ID"].tolist() == ["B2"]
+    assert [m.value for m in app.metric] == ["2", "40.0%", "1", "0"]
+    click(app, "Plan routes")
+    assert app.session_state.plan.routes[0].bin_ids == ("B2",)
+    click(app, "Confirm all collections")
+    assert app.success[0].value == "All collections confirmed."
+    assert app.session_state.registry.get("B2").fill_level == 0
+
+
+def test_tc_ui_27_empty_session_explains_setup_and_data_lifetime(app):
+    assert any(i.value == "No bins registered. Use Register a bin above to get started."
+               for i in app.info)
+    assert any(i.value == "No saved plan. Choose your fleet and select Plan routes."
+               for i in app.info)
+    assert any("not saved to disk" in c.value for c in app.caption)
+    assert not any(b.label == "Confirm all collections" for b in app.button)
+
+
+def test_tc_ui_28_no_trucks_distinguished_from_nothing_due(app):
+    register(app)
+    click(app, "Plan routes")
+    assert any("No bins are due" in c.value for c in app.caption)
+    assert not app.warning
+    reading(app, 90)
+    app.number_input(key="truck_count").set_value(0)
+    click(app, "Plan routes")
+    assert app.session_state.plan.unassigned_bin_ids == ("B1",)
+    assert app.warning[0].value == (
+        "Bins are waiting for collection. Add at least one truck and select Plan routes again.")
+    assert not any("No bins are due" in c.value for c in app.caption)
+    assert next(b for b in app.button if b.label == "Confirm all collections").disabled
+
+
+@pytest.mark.parametrize("operation", ["register", "remove"])
+def test_tc_ui_29_registry_changes_clear_saved_plan(app, operation):
+    register(app)
+    reading(app, 90)
+    click(app, "Plan routes")
+    assert app.session_state.plan.routes[0].bin_ids == ("B1",)
+    if operation == "register":
+        register(app, "B2")
+        assert len(app.session_state.registry.all()) == 2
+    else:
+        app.text_input(key="remove_id").set_value("B1")
+        click(app, "Remove bin")
+        assert app.session_state.registry.all() == []
+    assert app.session_state.plan is None
+    assert not any(b.label == "Confirm all collections" for b in app.button)
+
+
+@pytest.mark.parametrize("operation,message", [
+    ("duplicate", "bin B1 already registered"),
+    ("reading", "fill level must be between 0 and 100"),
+    ("remove", "bin missing not found"),
+])
+def test_tc_ui_30_failed_edits_preserve_collectable_plan(app, operation, message):
+    register(app)
+    reading(app, 90)
+    click(app, "Plan routes")
+    saved_plan = app.session_state.plan
+    if operation == "duplicate":
+        register(app)
+    elif operation == "reading":
+        reading(app, 101)
+    else:
+        app.text_input(key="remove_id").set_value("missing")
+        click(app, "Remove bin")
+    assert app.error[0].value == message
+    assert app.session_state.plan is saved_plan
+    assert not saved_plan.routes[0].completed
+    assert app.session_state.registry.get("B1").fill_level == 90
+    click(app, "Confirm all collections")
+    assert app.session_state.registry.get("B1").fill_level == 0
+    assert app.session_state.plan is None
+
+
+def test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation(app):
+    register(app)
+    reading(app, 80)
+    register(app, "B2")
+    reading(app, 95, "B2")
+    app.number_input(key="truck_count").set_value(2)
+    app.number_input(key="truck_capacity").set_value(1)
+    click(app, "Plan routes")
+    saved_plan = app.session_state.plan
+    assert [r.bin_ids for r in saved_plan.routes] == [("B2",), ("B1",)]
+    assert [r.truck.truck_id for r in saved_plan.routes] == ["T1", "T2"]
+    app.selectbox(key="alert_severity").select("WARNING").run()
+    assert not app.exception
+    assert app.session_state.plan is saved_plan
+    assert app.dataframe[1].value["Bin ID"].tolist() == ["B1"]
+    click(app, "Confirm all collections")
+    assert all(r.completed for r in saved_plan.routes)
+    assert [b.fill_level for b in app.session_state.registry.all()] == [0, 0]
+    assert app.session_state.plan is None
+    assert app.selectbox(key="alert_severity").value == "WARNING"
+    assert [m.value for m in app.metric] == ["2", "0.0%", "0", "0"]
+    assert any(i.value == "No alerts match this severity." for i in app.info)
