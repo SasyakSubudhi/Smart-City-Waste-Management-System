@@ -85,7 +85,7 @@ Avoid recording credentials, private browser tabs or personal data. Obtain the
 actual deadline/extension from the instructor; the supplied 2-6 November testing
 window has elapsed. Log real recording dates and locations after recording.
 
-## Completed repository milestones (checked 9 November 2026)
+## Completed repository milestones (checked 10 November 2026)
 - SRS v2 is merged through PR #13; the SAD's requirement allocation is reconciled.
 - PR #15 created/uploaded the real 60-second and 120-second silent recordings and
   is merged. These are separate from the supplied tutorial video. Their actual
@@ -93,10 +93,14 @@ window has elapsed. Log real recording dates and locations after recording.
 - UI #16 and SAD follow-up #17 are merged after independent approvals on their
   exact passing heads. No personal understanding or instructor acceptance is
   inferred from these merges.
+- Command-line demo #14, alert edge tests #19, severity filtering #22 and SAD/viva
+  corrections #23 are merged. Their merge records establish integration, not
+  instructor acceptance or a fresh test measurement.
 
 ## Remaining acceptance checks
-Demo #14 integration; review/integration of alert edge tests and severity filtering;
-current report consistency coordinated with Shruti; actual board owners/points;
+Independent review/integration of the proposed dashboard-session follow-up;
+current report consistency coordinated with Shruti (final Windows reports #27
+are open at this check); actual board owners/points;
 instructor deadline/extension, silent-format acceptance and final demo/viva readiness.
 Sasyak must coordinate NFR-2: Shriya measured the full UI-inclusive suite:
 109 passed in 33.99s on Windows/Python 3.13.7 (core plus dashboard/AppTest).
@@ -104,7 +108,9 @@ UI-only time was not measured. This exceeds the ten-second full-suite requiremen
 Passing coverage/CI
 does not make that timing requirement pass. Domain modules use the standard
 library; the Streamlit app has external dependencies and a local browser/server
-boundary. The SRS owner must qualify that scope. These checks remain pending or
+boundary. Merged SRS v2.1 (#21) already distinguishes this scope and describes the
+proposed core/UI timing split. That proposal still requires acceptance; it does
+not turn the original full-suite target into a pass. These checks remain pending or
 unverified until the relevant evidence/decision exists.
 
 ## Why this guide remains in docs/

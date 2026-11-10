@@ -77,3 +77,9 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-UI-20 | app | Sessions are isolated | FR-1..8 | UI | `test_app.py::test_tc_ui_20_sessions_are_isolated` |
 | TC-UI-24 | app | Severity filter and reset | FR-1..8 | UI | `test_app.py::test_tc_ui_24_severity_filter_and_reset` |
 | TC-UI-25 | app | Filter no match and collection refresh | FR-1..8 | UI | `test_app.py::test_tc_ui_25_filter_no_match_and_collection_refresh` |
+| TC-UI-26 | app | Confirmation identifies remaining backlog | FR-1..8 | UI | `test_app.py::test_tc_ui_26_confirmation_identifies_remaining_backlog` |
+| TC-UI-27 | app | Empty session explains setup and data lifetime | FR-1..8 | UI | `test_app.py::test_tc_ui_27_empty_session_explains_setup_and_data_lifetime` |
+| TC-UI-28 | app | No trucks distinguished from nothing due | FR-1..8 | UI | `test_app.py::test_tc_ui_28_no_trucks_distinguished_from_nothing_due` |
+| TC-UI-29 | app | Registry changes clear saved plan | FR-1..8 | UI | `test_app.py::test_tc_ui_29_registry_changes_clear_saved_plan` |
+| TC-UI-30 | app | Failed edits preserve collectable plan | FR-1..8 | UI | `test_app.py::test_tc_ui_30_failed_edits_preserve_collectable_plan` |
+| TC-UI-31 | app | Filter preserves two truck plan and confirmation | FR-1..8 | UI | `test_app.py::test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation` |
