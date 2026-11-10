@@ -98,7 +98,12 @@ with routes_tab:
                     st.error(result)
                     break
             else:
-                show_result(True, None, "All collections confirmed.")
+                message = "All collections confirmed."
+                if plan.unassigned_bin_ids:
+                    message = ("All planned collections confirmed. Unassigned bins still need "
+                               "collection: " + ", ".join(plan.unassigned_bin_ids) +
+                               ". Plan routes again for the remaining bins.")
+                show_result(True, None, message)
 
 with report_tab:
     st.subheader("City report")

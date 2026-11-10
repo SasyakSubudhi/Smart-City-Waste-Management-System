@@ -171,3 +171,26 @@ def test_tc_ui_25_filter_no_match_and_collection_refresh(app):
     assert app.selectbox(key="alert_severity").value == "WARNING"
     assert any(i.value == "No alerts match this severity." for i in app.info)
     assert app.session_state.registry.get("B1").fill_level == 0
+
+
+def test_tc_ui_26_confirmation_identifies_remaining_backlog(app):
+    register(app)
+    reading(app, 95)
+    register(app, "B2")
+    reading(app, 80, "B2")
+    app.number_input(key="truck_capacity").set_value(1)
+    click(app, "Plan routes")
+    click(app, "Confirm all collections")
+    assert app.success[0].value == (
+        "All planned collections confirmed. Unassigned bins still need collection: B2. "
+        "Plan routes again for the remaining bins.")
+    assert app.session_state.plan is None
+    assert app.session_state.registry.get("B1").fill_level == 0
+    assert app.session_state.registry.get("B2").fill_level == 80
+    assert app.dataframe[1].value["Bin ID"].tolist() == ["B2"]
+    assert [m.value for m in app.metric] == ["2", "40.0%", "1", "0"]
+    click(app, "Plan routes")
+    assert app.session_state.plan.routes[0].bin_ids == ("B2",)
+    click(app, "Confirm all collections")
+    assert app.success[0].value == "All collections confirmed."
+    assert app.session_state.registry.get("B2").fill_level == 0

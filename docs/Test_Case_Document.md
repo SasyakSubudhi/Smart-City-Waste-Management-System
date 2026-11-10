@@ -77,3 +77,4 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-UI-20 | app | Sessions are isolated | FR-1..8 | UI | `test_app.py::test_tc_ui_20_sessions_are_isolated` |
 | TC-UI-24 | app | Severity filter and reset | FR-1..8 | UI | `test_app.py::test_tc_ui_24_severity_filter_and_reset` |
 | TC-UI-25 | app | Filter no match and collection refresh | FR-1..8 | UI | `test_app.py::test_tc_ui_25_filter_no_match_and_collection_refresh` |
+| TC-UI-26 | app | Confirmation identifies remaining backlog | FR-1..8 | UI | `test_app.py::test_tc_ui_26_confirmation_identifies_remaining_backlog` |
