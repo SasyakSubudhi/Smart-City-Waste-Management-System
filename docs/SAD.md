@@ -1,14 +1,15 @@
 # Software Architecture and Design Specification
 
 **Project:** Smart City Waste Management System
-**Document:** SAD-SCWM-1.5
+**Document:** SAD-SCWM-1.6
 **Author:** Shreya Yashodhara Singh (`yasho-26singh`)
 **Date:** 10 November 2026
-**Status:** Follow-up revision for independent review; no institutional acceptance claimed
-**Integrated source/requirements baseline:** main `b77e22380f2e7252860681a9eded919bd2d204b2`
+**Status:** Maintained architecture/evidence record; repository approvals are recorded below; no institutional acceptance claimed
+**Integrated source/requirements baseline:** main `d9719bf5c1048cc9c25cfa3b385b930915eaa1aa`
 
 Dashboard session guidance (#28) and routing validation (#29) are merged.
-This documentation-only reconciliation awaits its own independent review and merge.
+SAD v1.5 (#30) and SRS v2.2 (#31) are also merged. Subsequent editorial revisions
+follow the same independent-review process; preparation alone implies no approval.
 
 ## Revision History
 
@@ -20,14 +21,17 @@ This documentation-only reconciliation awaits its own independent review and mer
 | 1.3 | 9 November 2026 | Shreya | Reflect approved UI/SAD merges and distinguish domain dependencies from the browser presentation layer |
 | 1.4 | 10 November 2026 | Shreya | Reconcile merged demo/filter/edge-test status; document proposed backlog notices and empty-state guidance |
 | 1.5 | 10 November 2026 | Shreya | Reconcile merged #28/#29, manual-route and fleet error contracts, and domain-only compatibility evidence |
+| 1.6 | 10 November 2026 | Shreya | Record actual #30/#31 integration and separate completed documentation from pending final report/course acceptance work |
 
 ## Approvals
 
 | Role | Name | Signature/Date |
 |---|---|---|
 | Author | Shreya Yashodhara Singh | Prepared 10 November 2026 |
-| Independent teammate reviewer | Pending | Refer to live follow-up PR review |
-| Repository maintainer | Pending | Refer to live merge record |
+| SAD v1.5 independent reviewer | Sasyak Subudhi | [Approved #30 head 43af049 on 10 November 2026](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/30#pullrequestreview-5839776371) |
+| SAD v1.5 independent reviewer | Shriya Vasundhara Singh | [Approved the same #30 head on 10 November 2026](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/30#pullrequestreview-5840200521) |
+| SAD v1.5 repository integration | PR #30 | Normal merge 93c82bf19862088730f7d7ae05d4b2f9cdf2184c, 10 November 2026 |
+| Subsequent editorial revisions | Independent teammate review required | Refer to the relevant live PR; the v1.5 approvals do not approve later edits |
 | Course evaluator | Not recorded | No approval inferred |
 
 ## 1. Introduction
@@ -88,9 +92,9 @@ That is not a test of every supported version or operating system.
 No hardware, road network, database, persistence or multi-user dispatch is present.
 The four domain modules use only the standard library. The merged Streamlit
 presentation layer requires Streamlit and its transitive dependencies from
-requirements.txt and introduces a local browser/server boundary. Merged SRS v2.1
-already distinguishes these dependencies; its owner can reconcile the newly
-verified domain versions without inferring UI compatibility on 3.10/3.11.
+requirements.txt and introduces a local browser/server boundary. Merged SRS v2.2
+(#31), following v2.1, distinguishes these dependencies and records the verified
+domain versions without inferring UI compatibility on 3.10/3.11.
 
 ### 3.2 Stakeholders & Concerns
 | Stakeholder | Concern | Design response / limit |
@@ -478,10 +482,14 @@ not persistent collection history. Session data is not shared between browser
 sessions and is lost when a session ends; there is no persistent user account.
 
 ### 4.6 Open Issues & Next Steps
-1. Independent reviewer reviews this proposed follow-up; maintainer merges after
-   checks. Earlier SAD revisions (#17, #23 and #28) are already merged. No self-approval.
-2. SRS v2 allocation is reconciled here after PR #13 merged. Coordinate remaining
-   cross-document references with their owners; do not claim unverified acceptance.
+1. Completed repository integration: SAD v1.5 (#30) merged as 93c82bf after
+   Sasyak's and Shriya's approvals of head 43af049. Its architecture/error-contract
+   reconciliation is no longer pending. Later editorial changes need their own
+   review; earlier approvals are not reused.
+2. SRS v2.2 (#31) merged as d9719bf after Shriya approved head b26c453. Its
+   domain-only Python 3.10.11/3.11.9 wording is complete. UI compatibility on
+   those versions and other platforms remains unverified; no course acceptance
+   follows from the SRS merge.
 3. Coordinate SRS/STP/report scope with their owners: domain standard-library
    code differs from Streamlit dependencies and local server communication.
    Shriya measured the full UI-inclusive suite: 109 passed in 33.99s on
@@ -491,7 +499,9 @@ sessions and is lost when a session ends; there is no persistent user account.
 4. Coordinate final evidence with Shruti after #29: regenerate the Test Case
    Document and final reports for accepted source. #27's reports describe an older
    revision; their presence is not execution evidence for the new routing source.
-   Coordinate SRS portability wording with Sasyak; do not edit others' deliverables.
+   As checked at the stated main baseline, the four reports still cite 915aac0
+   and the Test Case Document lacks TC-RT-13..19. Regeneration is pending with
+   Shruti; no report/test-case files are rewritten by this SAD status update.
 5. Confirm actual course deadline/extension: supplied testing window was 2-6
    November and has elapsed. Do not backdate work or claim instructor acceptance.
 6. PR #15 has merged the 60-second and 120-second silent outcome recordings.
@@ -556,7 +566,7 @@ and Python 3.11.9 in 0.68s, covering 154/154 domain statements and 60/60 branch
 outcomes ([run 42788661075](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/actions/runs/42788661075)).
 Those selected cases exclude app/dashboard, demo and report-generator tests.
 They establish no UI compatibility on 3.10/3.11 or ten-second full-suite acceptance.
-The PR merged normally as the stated baseline, preserving its eight substantive
+The PR merged normally as b77e223, preserving its eight substantive
 commits. These exact-head observations are not a fresh execution on the merge
 commit or on this documentation-only revision; the follow-up PR records its own
 validation. Older measurements above remain historical.
