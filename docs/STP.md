@@ -1,12 +1,12 @@
 # Software Test Plan
 
 Project: Smart City Waste Management System  
-Identifier: STP-SCWM-1.2\
+Identifier: STP-SCWM-1.3\
 Coordinator: Shriya Vasundhara Singh (`vasun26shriya`)  
 Original preparation: 8 November 2026; template alignment: 9 November 2026; status alignment v1.2: 9 November 2026\
-Status: v1.1 merged through PR #18; this v1.2 status/performance alignment awaits independent review and merge.
+Status: v1.1 and v1.2 merged through PRs #18 and #25; this v1.3 routing-regression follow-up awaits independent review and merge.
 
-Maintained test plan; the approvals for merged v1.1 remain recorded in section 15. This v1.2 follow-up does not borrow them. IEEE-style test-plan structure; no claim of formal standards certification.
+Maintained test plan; approvals for merged revisions remain recorded in section 15. This v1.3 follow-up does not borrow them. IEEE-style test-plan structure; no claim of formal standards certification.
 
 ## 1 Introduction
 
@@ -73,11 +73,30 @@ Entry criteria: identified source revision, installed test dependencies, isolate
 
 Objectives: reject malformed input and prevent unintended bin-state changes. Validate routing threshold type/range, truck identity/capacity, duplicate trucks and forged duplicate/over-capacity routes. Test missing bins before completion and ensure no partial emptying; test repeated completion after a fresh reading. Restrict repository main changes through required PR review and CI. Never commit credentials or fabricate approvals. The domain package has no authentication/network service. The merged Streamlit UI introduces a browser/local-server boundary, with no authentication, TLS or production-deployment validation claimed. Any broader exposure requires its own security requirements and evidence.
 
+Routing follow-up: TC-RT-13/14 exercise malformed manual route containers and
+invalid Route/Truck objects, including the previously unsafe string `"AB"` that
+could be interpreted as IDs `A` and `B`. Completion must reject them before any
+reading changes. TC-RT-15 verifies a non-iterable fleet gives ValueError;
+TC-RT-16 preserves valid one-use and empty-generator behavior. These checks
+strengthen NFR-1 and the FR-13/FR-15/SR-3 input-integrity boundary without adding
+authentication, physical dispatch or changes to another member's domain module.
+
 Resolved dependency limitation: PR #1 is merged and fixes fill-level validation. The bin module now rejects NaN, infinity, booleans, decimals, strings and None with ValueError; out-of-range integers remain rejected. TC-BIN-11 (tc_bin_11) covers invalid readings and preservation of the existing fill level, and TC-BIN-12 (tc_bin_12) covers NaN passed to the constructor through the same validation check. This gap is fixed by the bin validation tests, not by routing tests.
 
 ### 5.2 Unit tests
 
 Use pytest with isolated in-memory registries. Assert returned values, exact assignment order, raised errors and state before/after operations. Parameterize boundaries. No network or real sensor required. Test IDs are embedded in function names for traceability.
+
+TC-RT-17 checks three fleet configurations across every permutation of four due
+bins. Assert the complete ordered partition (assigned IDs plus backlog), unique
+coverage of due bins, capacity limits, omission of idle trucks and unchanged
+registry order/readings. TC-RT-18 completes the second truck before the first,
+then checks independent completion flags and preserved backlog. TC-RT-19 removes
+the first, middle or last route bin; each failure must preserve all remaining
+readings, and a retry after restoring the original bin must complete cleanly.
+These are routing regressions, not a claim of a fleet-wide transaction or a
+replacement for Shruti's system scenarios. Manual routes now require the declared
+tuple-based bin_ids contract; planner, UI and demo already use tuples.
 
 ### 5.3 Integration and system scenarios
 
@@ -164,28 +183,28 @@ Also suspend final sign-off when the tested revision cannot be identified or a r
 | FR-1 | TC-BIN-06 through TC-BIN-10, SYS-01, SYS-04 |
 | FR-2 | TC-BIN-03, TC-BIN-11, TC-BIN-12, SYS-02 |
 | FR-3 | TC-BIN-04 |
-| FR-5 | TC-RT-01 through TC-RT-04, TC-RT-06, TC-RT-07, TC-RT-09, TC-RT-10 |
-| FR-6 | TC-RT-05, SYS-03 |
-| FR-7 | TC-RT-08, TC-RT-11, TC-RT-12, SYS-01 |
+| FR-5 | TC-RT-01 through TC-RT-04, TC-RT-06, TC-RT-07, TC-RT-09, TC-RT-10, TC-RT-16, TC-RT-17 |
+| FR-6 | TC-RT-05, TC-RT-17, TC-RT-18, SYS-03 |
+| FR-7 | TC-RT-08, TC-RT-11, TC-RT-12, TC-RT-18, TC-RT-19, SYS-01 |
 | FR-4 | TC-AL-01 through TC-AL-09, SYS-01, SYS-02; TC-UI-05 and TC-UI-21 through TC-UI-25 cover presentation/filter behavior |
 | FR-8 | TC-RP-01 through TC-RP-09, SYS-01, SYS-04 |
 | FR-9 | TC-BIN-02 |
 | FR-10 | TC-BIN-05, SYS-01 |
 | FR-11 | TC-BIN-10 |
 | FR-12 | TC-AL-04 |
-| FR-13 | TC-RT-09, TC-RT-10 |
+| FR-13 | TC-RT-09, TC-RT-10, TC-RT-14, TC-RT-15, TC-RT-16 |
 | FR-14 | TC-RT-07 |
-| FR-15 | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 |
+| FR-15 | TC-RT-08, TC-RT-11, TC-RT-12, TC-RT-13, TC-RT-14, TC-RT-19, SYS-04 |
 | FR-16 | TC-RP-05, TC-RP-06 |
-| NFR-1 | TC-BIN-02, TC-BIN-03, TC-BIN-11, TC-BIN-12, TC-RT-07 through TC-RT-12; invalid state preserved |
+| NFR-1 | TC-BIN-02, TC-BIN-03, TC-BIN-11, TC-BIN-12, TC-RT-07 through TC-RT-15, TC-RT-19; invalid state preserved |
 | NFR-2 | Full-suite elapsed time and exact revision/platform; partial/unmet against the original 10-second target. Core/UI split remains proposed, with no UI-only timing inferred |
 | NFR-3 | coverage.json statement and branch counters checked separately |
 | NFR-4 | Independent PR review, required successful checks and repository rules; process evidence, not a pytest case |
-| NFR-5 | TC-AL-03, TC-RT-02 (alerts and routing; report-line ordering is not separately tested) |
+| NFR-5 | TC-AL-03, TC-RT-02, TC-RT-17 (alerts and routing; report-line ordering is not separately tested) |
 | NFR-6 | CI Python 3.12 and observed local Python 3.13.7; Python 3.10 and 3.11 are untested |
 | SR-1 | TC-BIN-03, TC-BIN-11, TC-BIN-12 |
 | SR-2 | TC-BIN-02 |
-| SR-3 | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 |
+| SR-3 | TC-RT-08, TC-RT-11, TC-RT-12, TC-RT-13, TC-RT-14, TC-RT-18, TC-RT-19, SYS-04 |
 | SR-4 | TC-AL-03, TC-RP-09 |
 | SR-5 | GitHub ruleset and pull request history |
 
@@ -210,8 +229,9 @@ Provide execution summaries per reviewed source and a final summary after integr
 | Test-plan coordinator / Day 2 author | Shriya Vasundhara Singh | Prepared v1.1 and this v1.2 follow-up on 9 November 2026; not self-approval |
 | Merged STP v1.1 independent review | Sasyak Subudhi | [Approved #18 head 301e073](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/18#pullrequestreview-5825328284); merged as cf88a21f0e2f5a5d60cb66cce8665aca56170a5f |
 | Merged editorial follow-up | Shreya Yashodhara Singh | [Approved #8 head 1aeac72](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/8#pullrequestreview-5825669243); merged as 5b46c9c4a09d254db1f8106355944a05680c2337 |
-| Independent review of this v1.2 follow-up | Requested on the new PR | Pending for this revision only; no self-approval or borrowed approval |
+| Merged v1.2 status alignment | Sasyak Subudhi | [Approved #25 head 41fbe66](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/25#pullrequestreview-5829776673); merged as 88259bba045cac83481e203601dd939c44e95def |
+| Independent review of this v1.3 follow-up | Requested on the new PR | Pending for this revision only; no self-approval or borrowed approval |
 | Repository owner / release coordinator | Sasyak Subudhi | Final integration/release sign-off not claimed |
 | Instructor / course acceptance | Course evaluator | Not recorded; confirm UI/deadline/recording exceptions where needed |
 
-Routing/STP baseline PRs #3/#4, template alignment #18 and editorial #8 are merged with their actual records. This v1.2 follow-up is a separate proposal: required CI and independent review must pass before it merges. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
+Routing/STP baseline PRs #3/#4, template alignment #18, editorial #8 and status alignment #25 are merged with their actual records. This v1.3 follow-up is a separate proposal: required CI and independent review must pass before it merges. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
