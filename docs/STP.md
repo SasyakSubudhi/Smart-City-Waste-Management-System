@@ -3,7 +3,7 @@
 Project: Smart City Waste Management System  
 Identifier: STP-SCWM-1.3\
 Coordinator: Shriya Vasundhara Singh (`vasun26shriya`)  
-Original preparation: 8 November 2026; template alignment: 9 November 2026; status alignment v1.2: 9 November 2026\
+Original preparation: 8 November 2026; template alignment: 9 November 2026; status alignment v1.2: 9 November 2026; routing/compatibility update v1.3: 10 November 2026\
 Status: v1.1 and v1.2 merged through PRs #18 and #25; this v1.3 routing-regression follow-up awaits independent review and merge.
 
 Maintained test plan; approvals for merged revisions remain recorded in section 15. This v1.3 follow-up does not borrow them. IEEE-style test-plan structure; no claim of formal standards certification.
@@ -50,7 +50,7 @@ Additional requirements from the merged SRS are covered as follows:
 | FR-15 / SR-3 | Reject invalid/stale routes without partial mutation; reject a repeated completion after a fresh reading |
 | FR-16 | City-report text and defined empty-registry output match assertions |
 | NFR-5 | Routing ties and alert order have test evidence; report-line determinism remains unverified separately |
-| NFR-6 | Python 3.12 Windows CI and observed Python 3.13.7 local run; 3.10/3.11 remain untested targets |
+| NFR-6 | Windows domain CI observed on Python 3.10.11/3.11.9; regular CI 3.12 and local 3.13.7. Streamlit UI remains untested on 3.10/3.11; no all-platform claim |
 | SR-1 | Reject malformed fill readings before storing them |
 | SR-4 | Alert/report generation preserves readings |
 | SR-5 | Inspect protected-main/review/check evidence; no claim that functional tests prove absence of secrets |
@@ -122,15 +122,37 @@ The existing GitHub Actions Windows runner uses Python 3.12. Record actual CI re
 
 ## 6 Test Environment
 
-Domain target: Python 3.10+ as specified in SRS; observed CI Python 3.12 on Windows and local Python 3.13.7. Python 3.10 and 3.11 remain untested targets, not passing environments. Install pytest, pytest-cov and Streamlit from requirements. Use synthetic IDs/locations and small repeatable bin fleets. Reset registries between tests. Routing capacity is measured in bin counts, not litres. The four domain modules use the standard library; the UI requires Streamlit and its transitive dependencies.
+Domain target: Python 3.10+ as specified in SRS; observed CI Python 3.12 on Windows and local Python 3.13.7. The new domain-only Windows jobs pass on Python 3.10.11 and 3.11.9; this does not establish Streamlit/AppTest compatibility on those versions or portability to untested operating systems. Install pytest, pytest-cov and Streamlit from requirements. Use synthetic IDs/locations and small repeatable bin fleets. Reset registries between tests. Routing capacity is measured in bin counts, not litres. The four domain modules use the standard library; the UI requires Streamlit and its transitive dependencies.
 
 Observed local environment: Windows, Python 3.13.7. CI configuration: Windows runner, Python 3.12. Declare each observed version rather than treating one run as proof of every supported version. Synthetic bins have fixed IDs, text locations, fill boundaries and small truck fleets; there is no live sensor, personal or production data. Do not share mutable registries between independent cases.
+
+### 6.1 Domain compatibility evidence (10 November 2026)
+
+The `Domain compatibility` workflow checks the four domain modules without
+installing Streamlit. It runs bins, alerts, routing, reports, system and smoke
+cases; it excludes app/dashboard, demo and report-generator tests. These are
+**113 selected domain cases**, not the 153-case expanded suite. Both statement
+and branch thresholds are checked separately and XML/JSON artifacts retained.
+
+| Environment | Observed domain result | Statement / branch outcomes | Evidence |
+|---|---|---|---|
+| Windows / CPython 3.10.11 | 113 passed in 0.58s | 154/154; 60/60 (100% each) | [Job 129729817133](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/actions/runs/42786760419/job/129729817133) |
+| Windows / CPython 3.11.9 | 113 passed in 0.66s | 154/154; 60/60 (100% each) | [Job 129729817649](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/actions/runs/42786760419/job/129729817649) |
+
+Recorded PR #29 head: `f66b3fe9e5b657ae4aa8ddedb936acc50b5eaf2e`.
+These results are read from the completed workflow logs; they are not local runs
+or claims about this evidence-documentation commit testing itself. Domain
+support on those Windows versions now has evidence. The UI, other OS targets and
+unobserved interpreter releases remain outside this matrix. The SRS owner can
+reconcile its older untested-version wording after independent acceptance.
+Domain-only elapsed times do not satisfy or redefine the original full-suite
+NFR-2 target; the proposed core/UI split still awaits acceptance.
 
 ## 7 Test Schedule
 
 Course targets: backlog 12 October; Sprint 1 19–23 October; Sprint 2 26–30 October; testing 2–6 November 2026. Those targets are historical and are not replaced by invented completion dates. Repository work is evidenced on 7–9 November; confirm the current submission deadline with the instructor.
 
-As checked on 9 November at source main 3eecc7d2de529eba58b52666873081865d8e9069: core modules/system tests, SRS v2.0 #13, demo #14, UI #16, SAD #17, STP v1.1 #18, alert edge tests #19, contribution record #20, SRS v2.1 #21, severity filter #22, SAD/guide update #23 and editorial #8 are merged. This v1.2 status-alignment follow-up still needs its own review/merge. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
+As checked on 9 November at source main 3eecc7d2de529eba58b52666873081865d8e9069: core modules/system tests, SRS v2.0 #13, demo #14, UI #16, SAD #17, STP v1.1 #18, alert edge tests #19, contribution record #20, SRS v2.1 #21, severity filter #22, SAD/guide update #23 and editorial #8 are merged. That v1.2 status alignment subsequently merged in #25. The present v1.3 routing/compatibility follow-up needs its own independent review/merge. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
 
 Remaining sequence: review this STP alignment, rerun regression after further accepted source changes, have the evidence owner regenerate final reports, resolve the partial NFR-2/NFR-6 evidence or acceptance decisions, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
 
@@ -168,7 +190,7 @@ Ownership boundary: Sasyak owns SRS/setup/bins and his correction PRs; Shriya ow
 
 ## 11 Assumptions & Dependencies
 
-This revision uses the requirement IDs and qualifications of merged SRS v2.1 on main (PR #21), following v2.0 in #13. STP v1.1 is already merged in #18; this follow-up preserves the prior evidence while synchronizing UI/demo and performance status. The proposed core/UI timing split is not instructor-approved. Python 3.10/3.11 remain untested and NFR-6 partial; testing on 3.12/3.13 does not establish those targets. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
+This revision uses the requirement IDs and qualifications of merged SRS v2.1 on main (PR #21), following v2.0 in #13. STP v1.1 is already merged in #18; this follow-up preserves the prior evidence while synchronizing UI/demo and performance status. The proposed core/UI timing split is not instructor-approved. Section 6.1 now supplies domain-only Windows evidence for Python 3.10.11/3.11.9; NFR-6 remains qualified because it does not establish UI compatibility on those versions or untested platforms. No broad acceptance is inferred. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
 
 ## 12 Suspension & Resumption Criteria
 
@@ -201,7 +223,7 @@ Also suspend final sign-off when the tested revision cannot be identified or a r
 | NFR-3 | coverage.json statement and branch counters checked separately |
 | NFR-4 | Independent PR review, required successful checks and repository rules; process evidence, not a pytest case |
 | NFR-5 | TC-AL-03, TC-RT-02, TC-RT-17 (alerts and routing; report-line ordering is not separately tested) |
-| NFR-6 | CI Python 3.12 and observed local Python 3.13.7; Python 3.10 and 3.11 are untested |
+| NFR-6 | Section 6.1 domain-only Windows jobs: 3.10.11/3.11.9, each 113 passed. Existing CI 3.12/local 3.13.7 remain separate. UI on 3.10/3.11 and other platforms unverified |
 | SR-1 | TC-BIN-03, TC-BIN-11, TC-BIN-12 |
 | SR-2 | TC-BIN-02 |
 | SR-3 | TC-RT-08, TC-RT-11, TC-RT-12, TC-RT-13, TC-RT-14, TC-RT-18, TC-RT-19, SYS-04 |
@@ -216,7 +238,9 @@ This is requirement-to-evidence planning. It does not replace case-level expecte
 
 Report collected/executed/passed/failed/skipped/errored parametrized instances separately from unique scenario IDs. The historical pre-UI recording baseline has 86 executed passing instances (82 unit/smoke and 4 system). Source: main 1344aaf94155af94c4832ed0a3bfc371f8ff1f63. The 9 November recording run reports 4.26 seconds on Python 3.13.7, 140/140 statements and 54/54 branch outcomes covered. See PR #15 for the actual recording and its referenced source CI run; later changes require new evidence.
 
-Current integrated observation (9 November 2026): source main `3eecc7d2de529eba58b52666873081865d8e9069`, including merged UI, alert edge/filter cases and demo, passed **122 tests in 61.59 seconds** on Windows/Python 3.13.7 using `python -m pytest --cov --cov-branch --cov-fail-under=80 --cov-report=term-missing --cov-report=json:../stp-status-coverage.json`, exit 0. JSON and terminal counters show 160/160 statements and 58/58 branch outcomes (100% each) for configured `src/waste_mgmt`. Root `app.py` and `demo.py` are exercised by tests but outside this coverage denominator. This full-suite time exceeds the original ten-second NFR-2 target; no UI-only duration, accepted core/UI split, Python 3.10/3.11 result or instructor approval is inferred. This observation supplements the historical recording result; it does not regenerate Shruti's final report files or claim a new report tested its own commit.
+Historical integrated observation (9 November 2026): source main `3eecc7d2de529eba58b52666873081865d8e9069`, including merged UI, alert edge/filter cases and demo, passed **122 tests in 61.59 seconds** on Windows/Python 3.13.7 using `python -m pytest --cov --cov-branch --cov-fail-under=80 --cov-report=term-missing --cov-report=json:../stp-status-coverage.json`, exit 0. JSON and terminal counters show 160/160 statements and 58/58 branch outcomes (100% each) for configured `src/waste_mgmt`. Root `app.py` and `demo.py` are exercised by tests but outside this coverage denominator. This full-suite time exceeds the original ten-second NFR-2 target; no UI-only duration, accepted core/UI split, Python 3.10/3.11 result or instructor approval is inferred. This observation supplements the historical recording result; it does not regenerate Shruti's final report files or claim a new report tested its own commit.
+
+Routing follow-up observation (10 November 2026): the runtime/test source published in PR #29 head `f66b3fe9e5b657ae4aa8ddedb936acc50b5eaf2e` passed the full local suite, **153 passed in 84.35s**, Windows/Python 3.13.7, exit 0. Separate counters: 174/174 statements and 64/64 branch outcomes for `src/waste_mgmt` (100% each). The earlier attempt had 152 passes and one initial AppTest startup error at its existing 15-second timeout; the unchanged rerun passed. No UI code or timeout was changed. The selected domain matrix in 6.1 has a different count/scope and must not be combined with this full-suite result. The original whole-suite performance criterion remains unmet. Final integrated report/test-case regeneration stays with the evidence owner after accepted source changes merge.
 
 Formulas: pass rate = passed/executed with skipped/not-run separately disclosed; statement coverage = covered statements/total statements; branch coverage = covered branch outcomes/total branch outcomes. If a denominator is zero, report not applicable rather than inventing a percentage. Record elapsed suite time, open defects by severity and requirement evidence gaps. Defect density/aging are not established without a maintained issue baseline; no values are invented here.
 
@@ -226,7 +250,7 @@ Provide execution summaries per reviewed source and a final summary after integr
 
 | Role | Responsible member | Record |
 |---|---|---|
-| Test-plan coordinator / Day 2 author | Shriya Vasundhara Singh | Prepared v1.1 and this v1.2 follow-up on 9 November 2026; not self-approval |
+| Test-plan coordinator / Day 2 author | Shriya Vasundhara Singh | Prepared v1.1/v1.2 on 9 November 2026 and this v1.3 routing/compatibility follow-up on 10 November 2026; not self-approval |
 | Merged STP v1.1 independent review | Sasyak Subudhi | [Approved #18 head 301e073](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/18#pullrequestreview-5825328284); merged as cf88a21f0e2f5a5d60cb66cce8665aca56170a5f |
 | Merged editorial follow-up | Shreya Yashodhara Singh | [Approved #8 head 1aeac72](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/8#pullrequestreview-5825669243); merged as 5b46c9c4a09d254db1f8106355944a05680c2337 |
 | Merged v1.2 status alignment | Sasyak Subudhi | [Approved #25 head 41fbe66](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/25#pullrequestreview-5829776673); merged as 88259bba045cac83481e203601dd939c44e95def |
