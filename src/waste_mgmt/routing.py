@@ -63,12 +63,23 @@ def complete_route(route: Route, registry: BinRegistry) -> None:
 
     The caller confirms the actual truck trip has finished. This in-memory
     application does not dispatch vehicles or authenticate operators.
+    Manually built routes must use a Truck and a tuple of hashable bin IDs.
     """
+    if not isinstance(route, Route):
+        raise ValueError("route must be a Route object")
+    if not isinstance(route.truck, Truck):
+        raise ValueError("route truck must be a Truck object")
     if route.completed:
         raise ValueError("route is already completed")
+    if not isinstance(route.bin_ids, tuple):
+        raise ValueError("route bin_ids must be a tuple of bin IDs")
     if not route.bin_ids or len(route.bin_ids) > route.truck.capacity_bins:
         raise ValueError("route must contain bins within truck capacity")
-    if len(set(route.bin_ids)) != len(route.bin_ids):
+    try:
+        unique_ids = set(route.bin_ids)
+    except TypeError as error:
+        raise ValueError("route bin_ids must contain hashable bin IDs") from error
+    if len(unique_ids) != len(route.bin_ids):
         raise ValueError("route cannot contain duplicate bin IDs")
     bins = [registry.get(bin_id) for bin_id in route.bin_ids]
     for b in bins:

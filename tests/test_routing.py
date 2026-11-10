@@ -94,3 +94,23 @@ def test_tc_rt_12_invalid_route(ids):
     with pytest.raises(ValueError):
         complete_route(Route(Truck("T",2),ids),bins)
     assert bins.get("A").fill_level == 90
+
+
+@pytest.mark.parametrize("ids", ["AB", b"AB", ["A", "B"], {"A", "B"},
+                                 None, 7, ("A", ["B"])])
+def test_tc_rt_13_reject_malformed_bin_id_containers_without_emptying(ids):
+    bins = registry(("A", 90), ("B", 80))
+    route = Route(Truck("T", 2), ids)
+    with pytest.raises(ValueError, match="bin_ids"):
+        complete_route(route, bins)
+    assert [(b.bin_id, b.fill_level) for b in bins.all()] == [("A", 90), ("B", 80)]
+    assert route.completed is False
+
+
+@pytest.mark.parametrize("route", [None, object(), Route(None, ("A",)),
+                                   Route("T", ("A",))])
+def test_tc_rt_14_reject_invalid_route_or_truck_objects(route):
+    bins = registry(("A", 90))
+    with pytest.raises(ValueError, match="Route|Truck"):
+        complete_route(route, bins)
+    assert bins.get("A").fill_level == 90
