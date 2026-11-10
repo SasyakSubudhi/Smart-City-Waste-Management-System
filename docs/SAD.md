@@ -1,11 +1,14 @@
 # Software Architecture and Design Specification
 
 **Project:** Smart City Waste Management System
-**Document:** SAD-SCWM-1.3
+**Document:** SAD-SCWM-1.4
 **Author:** Shreya Yashodhara Singh (`yasho-26singh`)
-**Date:** 9 November 2026
+**Date:** 10 November 2026
 **Status:** Follow-up revision for independent review; no institutional acceptance claimed
-**Integrated source/requirements baseline:** main `0c59be9d375e775a1f4c15b21388a0026845478c`
+**Integrated source/requirements baseline:** main `915aac0172d12e7ab3da77778a4a15872b27d8d1`
+
+Dashboard follow-up behavior in this revision is proposed on
+`fix/dashboard-session-safety` until its PR is independently reviewed and merged.
 
 ## Revision History
 
@@ -15,12 +18,13 @@
 | 1.1 | 9 November 2026 | Shreya | Align with integrated reports/STP; follow supplied SAD template; add risks, stakeholder concerns, security assessment and provisional SRS v2 crosswalk |
 | 1.2 | 9 November 2026 | Shreya | Add proposed UI sequence; reconcile accepted SRS v2 and merged recording evidence |
 | 1.3 | 9 November 2026 | Shreya | Reflect approved UI/SAD merges and distinguish domain dependencies from the browser presentation layer |
+| 1.4 | 10 November 2026 | Shreya | Reconcile merged demo/filter/edge-test status; document proposed backlog notices and empty-state guidance |
 
 ## Approvals
 
 | Role | Name | Signature/Date |
 |---|---|---|
-| Author | Shreya Yashodhara Singh | Prepared 9 November 2026 |
+| Author | Shreya Yashodhara Singh | Prepared 10 November 2026 |
 | Independent teammate reviewer | Pending | Refer to live follow-up PR review |
 | Repository maintainer | Pending | Refer to live merge record |
 | Course evaluator | Not recorded | No approval inferred |
@@ -35,12 +39,13 @@ IEEE-style description, not a claim of formal standards certification.
 ### 1.2 Scope
 The baseline contains all four domain modules, unit/system tests, STP, test
 document/report generators and published testing reports. Reports are implemented
-and STP is merged. This revision changes documentation only. It does not implement
-another teammate's feature or alter historical test results.
+and STP is merged. This document preserves historical test results and distinguishes
+the integrated baseline from the dashboard follow-up proposed on this branch.
 
 PR #16 has now merged the Streamlit UI after independent approval and passing
-checks; PR #17 has merged the architecture update. PR #14 still proposes an
-unmerged command-line demo. UI integration is complete, while final team/course
+checks; PR #17 has merged the architecture update. PR #14 has merged the
+command-line demo, PR #19 the alert edge tests and PR #22 the severity filter.
+UI integration is complete, while final team/course
 acceptance and accessibility acceptance remain separate and are not inferred.
 
 ### 1.3 Audience
@@ -438,11 +443,16 @@ PR #16 provides four merged Streamlit tabs (Bins, Alerts, Collection routes,
 City report), session state, domain-error display and stale-plan invalidation.
 The UI has browser/AppTest evidence and is integrated; no formal accessibility or
 instructor acceptance is claimed. PR #14's command-line demo and its acceptance
-test remain pending integration. Session data is not shared between browser
+test are merged. The Alerts tab's merged severity filter preserves the active
+plan and the package's ordering. The proposed dashboard follow-up names unassigned
+bins after confirmation, explains empty screens and warns that data is not saved
+to disk. It still clears the saved plan after success; the notice is transient,
+not persistent collection history. Session data is not shared between browser
 sessions and is lost when a session ends; there is no persistent user account.
 
 ### 4.6 Open Issues & Next Steps
-1. Reviewer approves this revision; maintainer merges after checks. No self-approval.
+1. Independent reviewer reviews this proposed follow-up; maintainer merges after
+   checks. Earlier SAD revisions (#17 and #23) are already merged. No self-approval.
 2. SRS v2 allocation is reconciled here after PR #13 merged. Coordinate remaining
    cross-document references with their owners; do not claim unverified acceptance.
 3. Coordinate SRS/STP/report scope with their owners: domain standard-library
@@ -487,8 +497,8 @@ availability promises, PCI-DSS claims, signatures or dates have been copied.
 Source of truth is the stated main baseline and linked project documents in
 section 2.2. PR #13 supplies accepted requirement IDs; individual verification
 limitations in section 3.8 remain separate from approval of the requirements.
-The SRS still references the former SAD section 7 for APIs; its owner should
-update that cross-reference to section 4.3 after this revision is accepted.
+The SRS API cross-reference should resolve to section 4.3; coordinate any
+remaining cross-document corrections with the SRS owner.
 
 ### 5.3 Tools and Validation Evidence
 Python, pytest, pytest-cov/coverage.py, GitHub Actions, Markdown and Mermaid.
@@ -506,6 +516,8 @@ statements and 56/56 branch outcomes (100% each). UI-only time was not measured.
 app.py is exercised by AppTest but excluded from the src/waste_mgmt coverage
 source. These branch-specific observations must not be combined as a new
 final-main run; the latest follow-up PR records its own exact test result.
-This revision introduces no runtime/test changes. The companion VIVA_VIDEO_NOTES.md is preparation material,
+This branch's runtime/AppTest follow-up has separate evidence in its PR; the
+historical observations above are not measurements of that follow-up.
+The companion VIVA_VIDEO_NOTES.md is preparation material,
 not proof of personal human understanding or viva readiness. Merged videos are
 separately evidenced by PR #15 and do not establish institutional acceptance.
