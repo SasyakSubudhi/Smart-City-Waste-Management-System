@@ -96,11 +96,18 @@ window has elapsed. Log real recording dates and locations after recording.
 - Command-line demo #14, alert edge tests #19, severity filtering #22 and SAD/viva
   corrections #23 are merged. Their merge records establish integration, not
   instructor acceptance or a fresh test measurement.
+- Dashboard session/backlog guidance #28 and routing validation #29 are merged.
+  Planner routes still contain tuple IDs. Manual routes require Route/Truck
+  objects and a tuple of hashable IDs; malformed shapes fail before mutation.
+  Non-iterable fleets raise ValueError, while one-use/empty generators work.
+  Domain-only Windows CI verifies Python 3.10.11/3.11.9; it does not test the UI
+  on those versions. See SAD sections 4.3, 4.4 and 5.3 for exact evidence.
 
 ## Remaining acceptance checks
-Independent review/integration of the proposed dashboard-session follow-up;
-current report consistency coordinated with Shruti (final Windows reports #27
-are open at this check); actual board owners/points;
+Independent review/integration of this SAD/error-contract reconciliation;
+fresh Test Case Document and final reports coordinated with Shruti after #29
+(#27's merged reports describe an earlier source); SRS portability wording with
+Sasyak; actual board owners/points;
 instructor deadline/extension, silent-format acceptance and final demo/viva readiness.
 Sasyak must coordinate NFR-2: Shriya measured the full UI-inclusive suite:
 109 passed in 33.99s on Windows/Python 3.13.7 (core plus dashboard/AppTest).

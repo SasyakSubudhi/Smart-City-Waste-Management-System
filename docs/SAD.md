@@ -1,14 +1,14 @@
 # Software Architecture and Design Specification
 
 **Project:** Smart City Waste Management System
-**Document:** SAD-SCWM-1.4
+**Document:** SAD-SCWM-1.5
 **Author:** Shreya Yashodhara Singh (`yasho-26singh`)
 **Date:** 10 November 2026
 **Status:** Follow-up revision for independent review; no institutional acceptance claimed
-**Integrated source/requirements baseline:** main `915aac0172d12e7ab3da77778a4a15872b27d8d1`
+**Integrated source/requirements baseline:** main `b77e22380f2e7252860681a9eded919bd2d204b2`
 
-Dashboard follow-up behavior in this revision is proposed on
-`fix/dashboard-session-safety` until its PR is independently reviewed and merged.
+Dashboard session guidance (#28) and routing validation (#29) are merged.
+This documentation-only reconciliation awaits its own independent review and merge.
 
 ## Revision History
 
@@ -19,6 +19,7 @@ Dashboard follow-up behavior in this revision is proposed on
 | 1.2 | 9 November 2026 | Shreya | Add proposed UI sequence; reconcile accepted SRS v2 and merged recording evidence |
 | 1.3 | 9 November 2026 | Shreya | Reflect approved UI/SAD merges and distinguish domain dependencies from the browser presentation layer |
 | 1.4 | 10 November 2026 | Shreya | Reconcile merged demo/filter/edge-test status; document proposed backlog notices and empty-state guidance |
+| 1.5 | 10 November 2026 | Shreya | Reconcile merged #28/#29, manual-route and fleet error contracts, and domain-only compatibility evidence |
 
 ## Approvals
 
@@ -40,11 +41,13 @@ IEEE-style description, not a claim of formal standards certification.
 The baseline contains all four domain modules, unit/system tests, STP, test
 document/report generators and published testing reports. Reports are implemented
 and STP is merged. This document preserves historical test results and distinguishes
-the integrated baseline from the dashboard follow-up proposed on this branch.
+integrated behavior from pending document approval and course acceptance.
 
 PR #16 has now merged the Streamlit UI after independent approval and passing
 checks; PR #17 has merged the architecture update. PR #14 has merged the
 command-line demo, PR #19 the alert edge tests and PR #22 the severity filter.
+PR #28 supplies session/backlog guidance and PR #29 strengthens routing input
+validation without changing planner-created route shapes or the UI APIs.
 UI integration is complete, while final team/course
 acceptance and accessibility acceptance remain separate and are not inferred.
 
@@ -78,13 +81,16 @@ quality requirement; partial portability, ordering and process evidence stay qua
 Keep status policy in one domain model; expose deterministic alert and collection
 behavior; prevent validated operations from silently corrupting existing readings;
 support isolated tests and independent feature review. The package targets Python
-3.10+ with standard-library runtime dependencies. CI config uses Windows/Python
-3.12; local checks use Python 3.13.7. That is not a test of every supported version.
+3.10+ with standard-library runtime dependencies. Full-suite CI uses Windows/Python
+3.12; local checks use Python 3.13.7. Domain-only Windows CI also verifies Python
+3.10.11 and 3.11.9; those jobs exclude Streamlit/AppTest and the dashboard adapter.
+That is not a test of every supported version or operating system.
 No hardware, road network, database, persistence or multi-user dispatch is present.
 The four domain modules use only the standard library. The merged Streamlit
 presentation layer requires Streamlit and its transitive dependencies from
-requirements.txt and introduces a local browser/server boundary. The SRS owner
-must qualify the whole-application dependency and communications wording.
+requirements.txt and introduces a local browser/server boundary. Merged SRS v2.1
+already distinguishes these dependencies; its owner can reconcile the newly
+verified domain versions without inferring UI compatibility on 3.10/3.11.
 
 ### 3.2 Stakeholders & Concerns
 | Stakeholder | Concern | Design response / limit |
@@ -168,7 +174,7 @@ classDiagram
 | alerts | Frozen alert snapshots, severity priority and plain-text format | Shreya; merged |
 | routing | Validate fleet/threshold, allocate due bins, expose backlog, confirm completion | Shriya; merged |
 | reports | Mean fill, status counts, means by waste type, total in text report | Shruti; merged |
-| app.py / dashboard | Four tabs, session state, clean domain errors, table adapters, plan invalidation and confirmation | Shreya; merged through #16 |
+| app.py / dashboard | Four tabs, session state, clean domain errors, table adapters, severity filter, plan invalidation and backlog-aware confirmation | Shreya; merged through #16, #22 and #28 |
 | tests / report generators | Unit/system/UI validation and recorded evidence | Integrated team work; historical reports remain tied to their recorded commits |
 
 Data flow: caller updates a registry Bin, then passes registry.all() to alerts
@@ -206,7 +212,7 @@ counts, empty waste-type means and `No bins registered.`.
 | Data loss | No hidden disk writes | Process memory is volatile; persistence is a future requirement |
 | Outdated alerts/reports | Read-only regeneration from current registry | Caller must refresh snapshots after changes |
 | Large fleet/data | Simple priority sort and bounded assignment | No real-city load benchmark; unbounded inputs may exhaust resources |
-| Documentation drift | Baseline and provisional-ID crosswalk | SRS #13 and UI #16 are reconciled here; recheck after #14 without rewriting other owners' deliverables |
+| Documentation drift | Explicit source baseline and requirement crosswalk | Reconcile accepted #28/#29 here; SRS and final report updates stay with their owners |
 | Misstated evidence | Keep historical snapshots and exact run counts separate | Recording artifacts are merged; course acceptance, board fields and full version range remain unverified |
 
 ### 3.8 Traceability to Requirements
@@ -220,9 +226,9 @@ existing verification, not a promise of certification or all-environment coverag
 | FR-2 | Bin.update_fill_level | TC-BIN-03,11,12 |
 | FR-3 | Bin.status | TC-BIN-04 |
 | FR-4 | Alert generation/format | TC-AL-01..06 |
-| FR-5 | Truck, plan_routes | TC-RT-01..04,06,07,09,10 |
-| FR-6 | RoutingPlan.unassigned_bin_ids | TC-RT-05 |
-| FR-7 | complete_route | TC-RT-08,11,12; TC-AL-06 |
+| FR-5 | Truck, plan_routes | TC-RT-01..04,06,07,09,10,15..17 |
+| FR-6 | RoutingPlan.unassigned_bin_ids | TC-RT-05,17,18; TC-UI-26 |
+| FR-7 | complete_route | TC-RT-08,11..14,18,19; TC-AL-06; TC-UI-16,26,31 |
 | FR-8 | reports (merged) | TC-RP-01..09; SYS-01, SYS-04 |
 | NFR-1 | Domain checks and explicit exceptions | Invalid input/state preservation tests |
 | NFR-2 | Full suite including AppTest | Existing <10s target is unmet: full UI-inclusive suite: 109 passed in 33.99s on Windows/Python 3.13.7; requirement/scope decision pending |
@@ -238,15 +244,15 @@ Accepted SRS v2 crosswalk ([PR #13](https://github.com/SasyakSubudhi/Smart-City-
 | FR-10 | Bin.empty | TC-BIN-05; SYS-01 |
 | FR-11 | BinRegistry.by_status | TC-BIN-10 |
 | FR-12 | format_alert | TC-AL-04 |
-| FR-13 | Truck/fleet validation | TC-RT-09,10 |
+| FR-13 | Truck/fleet validation | TC-RT-09,10,14..16 |
 | FR-14 | Threshold validation | TC-RT-07 |
-| FR-15 | Completion guards/atomic lookup | TC-RT-08,11,12; SYS-04 |
+| FR-15 | Completion guards/atomic lookup | TC-RT-08,11..14,19; SYS-04 |
 | FR-16 | Text report and empty-data message | TC-RP-05,06 |
-| NFR-5 | Stable alert/route/report order | TC-AL-03; TC-RT-02; report-line order visible in source but no focused test claimed |
-| NFR-6 | Python 3.10+ compatibility target | CI 3.12 and local 3.13 evidence; no 3.10/3.11 result claimed; merged UI adds external dependencies beyond the domain modules |
+| NFR-5 | Stable alert/route/report order | TC-AL-03; TC-RT-02,17; report-line order visible in source but no focused test claimed |
+| NFR-6 | Python 3.10+ compatibility target | Domain-only Windows CI: 113 cases each on 3.10.11/3.11.9; full-suite CI 3.12 and local 3.13.7 are separate. UI on 3.10/3.11 and untested platforms remain unverified |
 | SR-1 | Reading validation | TC-BIN-03,11,12 |
 | SR-2 | Bin creation checks | TC-BIN-02; limited validation as described in section 4.3 |
-| SR-3 | Validate before emptying; reject repeat | TC-RT-08,11,12; SYS-04 |
+| SR-3 | Validate before emptying; reject repeat | TC-RT-08,11..14,18,19; SYS-04 |
 | SR-4 | Read-only alerts/reports | TC-AL-03; TC-RP-09 |
 | SR-5 | Controlled repository changes | PR/CI history; live ruleset/security audit not independently repeated in this revision |
 
@@ -260,7 +266,7 @@ local package. No user roles are enforced by code. STRIDE-style assessment:
 | Spoofing / elevation | None at application level | No login, role checks or authenticated sensor identity; trusted local callers only |
 | Tampering | Supported setters validate readings; completion validates IDs and route shape | Direct field assignment can bypass checks; registry stores live references |
 | Repudiation | Version-controlled source and PR/CI records | No runtime audit trail; PR history does not prove physical collection |
-| Information disclosure | No external communication in merged package | No encryption/access controls on memory or text output; use synthetic data |
+| Information disclosure | Four domain modules have no network service; Streamlit uses a local browser/server boundary | No encryption/access controls on memory or text output; use synthetic data |
 | Denial of service | Domain functions have no listener; the Streamlit app provides a local server | No rate limits, resource quotas or city-scale performance guarantee; use a trusted local machine |
 
 No authentication, encryption, secure storage, transactions or monitoring is
@@ -307,9 +313,10 @@ sequenceDiagram
     participant Registry as BinRegistry
     participant Bin
     Supervisor->>Routing: plan_routes(registry, trucks, threshold=70)
+    Routing->>Routing: validate threshold; consume and validate fleet
     Routing->>Registry: all()
     Registry-->>Routing: bins
-    Routing->>Routing: validate fleet; sort due; assign capacity
+    Routing->>Routing: sort due; assign capacity
     Routing-->>Supervisor: RoutingPlan(routes, unassigned_bin_ids)
     Note over Supervisor: confirm actual simulated collection completed
     Supervisor->>Routing: complete_route(route, registry)
@@ -395,8 +402,8 @@ routing and reports are specified here.
 | generate_alerts(bins: list[Bin]) -> list[Alert] | No OK alerts; WARNING nearly full; CRITICAL full; stable input order within severity; no mutation |
 | format_alert(alert) -> str | `[SEVERITY] message`; plain text, not HTML escaping |
 | Truck(truck_id, capacity_bins) | Nonblank string ID, positive integer capacity; invalid values ValueError |
-| plan_routes(registry, trucks, threshold=70) -> RoutingPlan | Registry input; inclusive integer 0..100 threshold; invalid fleet/duplicate truck IDs ValueError |
-| complete_route(route, registry) -> None | Empty route/overcapacity/duplicate IDs/repeat completion ValueError; missing bin KeyError before mutation |
+| plan_routes(registry, trucks, threshold=70) -> RoutingPlan | Registry input; inclusive integer 0..100 threshold; iterable of Truck, including one-use/empty generators; non-iterable fleet, invalid members or duplicate truck IDs raise ValueError |
+| complete_route(route, registry) -> None | Requires Route with Truck and a tuple of hashable IDs; invalid shape, empty route, overcapacity, duplicates or repeat completion raise ValueError; missing bin raises KeyError before mutation |
 
 Planning sorts by descending fill then bin ID, uses supplied truck order, omits
 empty routes, and returns unassigned IDs in priority order. Capacity counts bins,
@@ -405,6 +412,14 @@ exceptions at their presentation boundary; this package does not translate them
 to HTTP codes. Alerts require valid Bin instances; unsupported object types are
 not a validated external input protocol. Do not call obsolete complete_collection,
 use dictionary-style plan access, or pass registry.all() to plan_routes.
+
+Planner-created routes still expose tuple `bin_ids`; the UI/demo require no
+interface change. For a manual route use `Route(Truck("T1", 1), ("B1",))`.
+Strings, bytes, lists and sets are rejected as ID containers; tuples containing
+unhashable IDs are rejected too. This tightens malformed manual input rather than
+converting it silently. Route IDs are not universally sanitized strings: hashable
+IDs must also resolve in the supplied registry. An error raised while advancing
+a caller's fleet iterator propagates; it is not treated as an empty fleet.
 
 
 | Report API (all take list[Bin]) | Return / empty-data behavior |
@@ -426,6 +441,18 @@ IDs before emptying; a missing ID leaves all route bins unchanged. Completed,
 duplicate, empty and overcapacity routes are rejected. There is no broader
 transaction across separate route objects or simultaneous callers.
 
+The completion validation order is Route type, Truck type, completion flag,
+tuple container, capacity/emptiness, hashability and duplicates, then lookup of
+every selected ID. No reading or completion flag changes on those failures.
+An invalid route object reports `route must be a Route object`; an invalid truck
+reports `route truck must be a Truck object`. Invalid containers report
+`route bin_ids must be a tuple of bin IDs`; unhashable members report
+`route bin_ids must contain hashable bin IDs`. A non-iterable fleet reports
+`fleet must be an iterable of Truck objects`. The existing dashboard `attempt`
+wrapper displays ValueError text and KeyError payloads without representation
+quotes; it does not catch unrelated programming/iterator errors. Atomicity is
+per route: failure of a later route does not undo earlier completed routes.
+
 Callers handle errors at presentation boundaries; no HTTP error/status mapping
 exists in merged main. Unexpected exceptions remain visible to the developer.
 The package has no logger, audit store, telemetry, live monitoring or alert delivery
@@ -444,7 +471,7 @@ City report), session state, domain-error display and stale-plan invalidation.
 The UI has browser/AppTest evidence and is integrated; no formal accessibility or
 instructor acceptance is claimed. PR #14's command-line demo and its acceptance
 test are merged. The Alerts tab's merged severity filter preserves the active
-plan and the package's ordering. The proposed dashboard follow-up names unassigned
+plan and the package's ordering. The merged #28 dashboard follow-up names unassigned
 bins after confirmation, explains empty screens and warns that data is not saved
 to disk. It still clears the saved plan after success; the notice is transient,
 not persistent collection history. Session data is not shared between browser
@@ -452,7 +479,7 @@ sessions and is lost when a session ends; there is no persistent user account.
 
 ### 4.6 Open Issues & Next Steps
 1. Independent reviewer reviews this proposed follow-up; maintainer merges after
-   checks. Earlier SAD revisions (#17 and #23) are already merged. No self-approval.
+   checks. Earlier SAD revisions (#17, #23 and #28) are already merged. No self-approval.
 2. SRS v2 allocation is reconciled here after PR #13 merged. Coordinate remaining
    cross-document references with their owners; do not claim unverified acceptance.
 3. Coordinate SRS/STP/report scope with their owners: domain standard-library
@@ -461,7 +488,10 @@ sessions and is lost when a session ends; there is no persistent user account.
    Windows/Python 3.13.7. This exceeds NFR-2's ten-second full-suite target.
    UI-only time was not measured. Keep that requirement unmet until an agreed update
    or verified performance improvement; do not invent a new acceptance limit.
-4. Coordinate final evidence with Shruti; do not overwrite archived measurements.
+4. Coordinate final evidence with Shruti after #29: regenerate the Test Case
+   Document and final reports for accepted source. #27's reports describe an older
+   revision; their presence is not execution evidence for the new routing source.
+   Coordinate SRS portability wording with Sasyak; do not edit others' deliverables.
 5. Confirm actual course deadline/extension: supplied testing window was 2-6
    November and has elapsed. Do not backdate work or claim instructor acceptance.
 6. PR #15 has merged the 60-second and 120-second silent outcome recordings.
@@ -489,7 +519,7 @@ Its ATM examples are not system requirements.
 This revision follows its section names/numbers directly: title/version/authors,
 revision history and approvals; 1.1-1.4 introduction; 2.1-2.2 overview;
 3.1-3.9 architecture; 4.1-4.6 design; 5.1-5.3 appendices. The component/dependency
-diagram is section 3.3, the two original sequence diagrams are unchanged in 4.2
+diagram is section 3.3, the two domain sequence diagrams are in 4.2
 and a third sequence describes the merged UI flow. API contracts
 are in 4.3 and the threat assessment is in 3.9. No ATM-specific technologies,
 availability promises, PCI-DSS claims, signatures or dates have been copied.
@@ -516,8 +546,20 @@ statements and 56/56 branch outcomes (100% each). UI-only time was not measured.
 app.py is exercised by AppTest but excluded from the src/waste_mgmt coverage
 source. These branch-specific observations must not be combined as a new
 final-main run; the latest follow-up PR records its own exact test result.
-This branch's runtime/AppTest follow-up has separate evidence in its PR; the
-historical observations above are not measurements of that follow-up.
+PR #29 head `dc6bba05aae6dc514008daf0f60a125b407f39d7` was independently reviewed
+with the full suite on Windows/Python 3.13.7: **162 passed in 29.79s**, 174/174
+package statements and 64/64 branch outcomes covered (100% each). Its Windows/
+Python 3.12.10 CI separately passed 162 tests in 14.82s
+([run 42788661473](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/actions/runs/42788661473)).
+The domain-only Windows matrix passed 113 cases each: Python 3.10.11 in 0.42s
+and Python 3.11.9 in 0.68s, covering 154/154 domain statements and 60/60 branch
+outcomes ([run 42788661075](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/actions/runs/42788661075)).
+Those selected cases exclude app/dashboard, demo and report-generator tests.
+They establish no UI compatibility on 3.10/3.11 or ten-second full-suite acceptance.
+The PR merged normally as the stated baseline, preserving its eight substantive
+commits. These exact-head observations are not a fresh execution on the merge
+commit or on this documentation-only revision; the follow-up PR records its own
+validation. Older measurements above remain historical.
 The companion VIVA_VIDEO_NOTES.md is preparation material,
 not proof of personal human understanding or viva readiness. Merged videos are
 separately evidenced by PR #15 and do not establish institutional acceptance.
