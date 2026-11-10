@@ -36,7 +36,7 @@ def test_tc_ui_08_start_empty(app):
     assert app.session_state.plan is None
     assert app.metric[0].value == "0"
     assert app.text[0].value == "No bins registered."
-    assert app.info[0].value == "No alerts."
+    assert any(i.value == "No alerts." for i in app.info)
 
 
 def test_tc_ui_09_register_and_persist(app):
@@ -194,3 +194,27 @@ def test_tc_ui_26_confirmation_identifies_remaining_backlog(app):
     click(app, "Confirm all collections")
     assert app.success[0].value == "All collections confirmed."
     assert app.session_state.registry.get("B2").fill_level == 0
+
+
+def test_tc_ui_27_empty_session_explains_setup_and_data_lifetime(app):
+    assert any(i.value == "No bins registered. Use Register a bin above to get started."
+               for i in app.info)
+    assert any(i.value == "No saved plan. Choose your fleet and select Plan routes."
+               for i in app.info)
+    assert any("not saved to disk" in c.value for c in app.caption)
+    assert not any(b.label == "Confirm all collections" for b in app.button)
+
+
+def test_tc_ui_28_no_trucks_distinguished_from_nothing_due(app):
+    register(app)
+    click(app, "Plan routes")
+    assert any("No bins are due" in c.value for c in app.caption)
+    assert not app.warning
+    reading(app, 90)
+    app.number_input(key="truck_count").set_value(0)
+    click(app, "Plan routes")
+    assert app.session_state.plan.unassigned_bin_ids == ("B1",)
+    assert app.warning[0].value == (
+        "Bins are waiting for collection. Add at least one truck and select Plan routes again.")
+    assert not any("No bins are due" in c.value for c in app.caption)
+    assert next(b for b in app.button if b.label == "Confirm all collections").disabled
