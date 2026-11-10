@@ -25,7 +25,7 @@ dependencies, not my implementation contribution. No empty commits are needed.
 | Why separate modules? | Domain validation/status stay in bins; alerts/routing/reports use the same objects without duplicating policy. |
 | What errors are handled? | Bin rejects invalid readings; alerts assume valid Bin objects and do not sanitize arbitrary external data. |
 
-## Explain the two SAD sequences
+## Explain the three SAD sequences
 1. Simulated sensor looks up a bin, submits a reading, validation precedes
    mutation, caller gets all bins and generates fresh prioritized alerts.
    Invalid values raise ValueError and preserve the previous reading.
@@ -33,9 +33,32 @@ dependencies, not my implementation contribution. No empty commits are needed.
    inclusively and assigned by priority/capacity. After actual trip confirmation,
    complete_route resolves every ID, empties selected bins and marks completion.
    Missing IDs cause KeyError before any emptying; repeated completion is rejected.
+3. The UI renders alerts from `registry.all()`, saves a plan, then calls
+   `complete_route` from Collection routes. After successful confirmation it
+   clears the plan and reruns, regenerating alerts and the city report. Streamlit
+   renders all tab bodies on a script run; opening an already rendered tab alone
+   does not invoke Python. SAD section 4.2 shows this third sequence.
 
 Capacity is bin count, not litres. Routes are priority assignments, not shortest
 paths. Independent plans can overlap; trusted callers manage one active plan.
+
+## Explain the dashboard and UI
+| Question | Answer to understand and demonstrate |
+|---|---|
+| What do helpers do? | bin_rows, alert_rows and route_rows adapt domain values for tables. Validation, classification and planning remain in the package. |
+| What does attempt catch? | ValueError and KeyError only. KeyError's payload avoids extra representation quotes; unrelated programming errors propagate. |
+| How does filtering work? | All/CRITICAL/WARNING selects fresh row dictionaries while preserving priority and tie order. It does not change readings or the saved plan; the selection survives reruns. |
+| Why session_state? | It preserves the registry and one plan across Streamlit reruns, isolated per browser session. There is no disk persistence or shared multi-user dispatch state. |
+| When is a plan invalidated? | Successful registration, reading updates or removal clear it. Failed edits preserve it. Planning again replaces the current plan. |
+| What does planning change? | It saves assignments and backlog; readings are unchanged. plan_routes takes the registry itself, while alerts/reports take registry.all(). |
+| What does confirmation change? | complete_route empties assigned bins. Success clears the saved plan, stores a transient notice and reruns so alerts/metrics refresh. |
+| What if some bins were unassigned? | Only assigned bins are emptied. The success notice names remaining IDs and asks the supervisor to plan again; backlog readings/alerts remain. |
+| Is confirmation atomic across trucks? | No. Validation/lookup prevents partial mutation within one route; an earlier completed route is not rolled back if a later route fails. |
+
+Relevant presentation cases are TC-UI-01..31 across test_dashboard.py and
+test_app.py. Explain severity filtering (21..25), backlog after confirmation (26),
+session/empty-state guidance (27..28), plan invalidation/preservation (29..30) and
+two-truck confirmation (31). IDs are scenarios, not parametrized execution totals.
 
 ## Rehearsal commands
 From a fresh clone/update of the accepted main branch:
@@ -55,6 +78,10 @@ TC-AL-06 demonstrates integration through the real registry/route API.
 Statement coverage measures executed statements. Branch coverage measures
 decision outcomes. Inspect both separately; a combined percentage or green CI
 does not prove every requirement, platform or security property.
+The configured coverage source is `src/waste_mgmt`. Root app.py and demo.py are
+exercised by tests but excluded from that package percentage. Python 3.10/3.11
+evidence is domain-only, not Streamlit/AppTest compatibility. The original
+ten-second full-suite target remains unmet; no accepted replacement is inferred.
 
 ## Suggested spoken segment (rehearse in your own words)
 "My module converts the bin model's status into alerts. Nearly full produces a
@@ -69,6 +96,9 @@ collection flow; reports and routing remain separate components."
 The course requires a 1-minute and a 2-minute working-product sprint outcome
 video. Coordinate your segment within those team recordings; do not assume two
 additional personal videos are required or that four workdays equal four sprints.
+Retain the existing silent, captioned videos. The supplied written requirements
+do not explicitly require narration; this does not establish explicit instructor
+approval. Prepare to explain your own contribution during the live viva.
 
 | Show | Evidence to capture |
 |---|---|
