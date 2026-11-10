@@ -30,6 +30,13 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-RT-10 | routing | Invalid fleet | FR-5..7 | Unit | `test_routing.py::test_tc_rt_10_invalid_fleet` |
 | TC-RT-11 | routing | Missing bin atomic completion | FR-5..7 | Unit | `test_routing.py::test_tc_rt_11_missing_bin_atomic_completion` |
 | TC-RT-12 | routing | Invalid route | FR-5..7 | Unit | `test_routing.py::test_tc_rt_12_invalid_route` |
+| TC-RT-13 | routing | Reject malformed bin ID containers without emptying bins | FR-5..7 | Unit | `test_routing.py::test_tc_rt_13_reject_malformed_bin_id_containers_without_emptying` |
+| TC-RT-14 | routing | Reject invalid route or truck objects | FR-5..7 | Unit | `test_routing.py::test_tc_rt_14_reject_invalid_route_or_truck_objects` |
+| TC-RT-15 | routing | Non-iterable fleet has clear validation error | FR-5..7 | Unit | `test_routing.py::test_tc_rt_15_non_iterable_fleet_has_clear_validation_error` |
+| TC-RT-16 | routing | Fleet generator is consumed once and empty fleet is supported | FR-5..7 | Unit | `test_routing.py::test_tc_rt_16_fleet_generator_is_consumed_once_and_empty_is_supported` |
+| TC-RT-17 | routing | Assignment invariants hold across registry orders | FR-5..7 | Unit | `test_routing.py::test_tc_rt_17_assignment_invariants_across_registry_orders` |
+| TC-RT-18 | routing | Completing trucks out of order preserves backlog | FR-5..7 | Unit | `test_routing.py::test_tc_rt_18_complete_trucks_out_of_order_preserves_backlog` |
+| TC-RT-19 | routing | Missing bin anywhere is atomic and retryable | FR-5..7 | Unit | `test_routing.py::test_tc_rt_19_missing_bin_anywhere_is_atomic_and_retryable` |
 | TC-AL-01 | alerts | Empty and ok | FR-4 | Unit | `test_alerts.py::test_tc_al_01_empty_and_ok` |
 | TC-AL-02 | alerts | Boundaries | FR-4 | Unit | `test_alerts.py::test_tc_al_02_boundaries` |
 | TC-AL-03 | alerts | Priority stability and no mutation | FR-4 | Unit | `test_alerts.py::test_tc_al_03_priority_stability_and_no_mutation` |
