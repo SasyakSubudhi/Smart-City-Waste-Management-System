@@ -2,9 +2,9 @@
 
 Project: Smart City Waste Management System
 
-Date: 2026-11-09
+Date: 2026-11-10
 
-Commit: 3fb2ce3
+Commit: 915aac0
 
 Environment: Python 3.12.10 on Windows 2025Server
 
@@ -39,22 +39,22 @@ Tool: pytest
 | 15 | test_alerts.py | `test_tc_al_08_many_equal_severity_keep_input_order[95-CRITICAL]` | PASS | 0.001 |
 | 16 | test_alerts.py | `test_tc_al_09_emptying_preserves_saved_alert_and_its_format[70-WARNING]` | PASS | 0.001 |
 | 17 | test_alerts.py | `test_tc_al_09_emptying_preserves_saved_alert_and_its_format[90-CRITICAL]` | PASS | 0.001 |
-| 18 | test_app.py | `test_tc_ui_08_start_empty` | PASS | 0.738 |
-| 19 | test_app.py | `test_tc_ui_09_register_and_persist` | PASS | 0.223 |
-| 20 | test_app.py | `test_tc_ui_10_duplicate_id_error` | PASS | 0.190 |
-| 21 | test_app.py | `test_tc_ui_11_empty_id_error` | PASS | 0.162 |
-| 22 | test_app.py | `test_tc_ui_12_sensor_updates_alerts_and_report` | PASS | 0.201 |
-| 23 | test_app.py | `test_tc_ui_13_unknown_bin_error` | PASS | 0.163 |
-| 24 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[-1]` | PASS | 0.207 |
-| 25 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[101]` | PASS | 0.238 |
-| 26 | test_app.py | `test_tc_ui_15_remove_and_unknown_remove` | PASS | 0.205 |
-| 27 | test_app.py | `test_tc_ui_16_plan_and_confirm_collection` | PASS | 0.241 |
-| 28 | test_app.py | `test_tc_ui_17_nothing_due` | PASS | 0.187 |
-| 29 | test_app.py | `test_tc_ui_18_backlog_and_empty_fleet` | PASS | 0.273 |
-| 30 | test_app.py | `test_tc_ui_19_edit_invalidates_saved_plan` | PASS | 0.233 |
-| 31 | test_app.py | `test_tc_ui_20_sessions_are_isolated` | PASS | 0.316 |
-| 32 | test_app.py | `test_tc_ui_24_severity_filter_and_reset` | PASS | 0.295 |
-| 33 | test_app.py | `test_tc_ui_25_filter_no_match_and_collection_refresh` | PASS | 0.280 |
+| 18 | test_app.py | `test_tc_ui_08_start_empty` | PASS | 0.657 |
+| 19 | test_app.py | `test_tc_ui_09_register_and_persist` | PASS | 0.154 |
+| 20 | test_app.py | `test_tc_ui_10_duplicate_id_error` | PASS | 0.146 |
+| 21 | test_app.py | `test_tc_ui_11_empty_id_error` | PASS | 0.127 |
+| 22 | test_app.py | `test_tc_ui_12_sensor_updates_alerts_and_report` | PASS | 0.154 |
+| 23 | test_app.py | `test_tc_ui_13_unknown_bin_error` | PASS | 0.128 |
+| 24 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[-1]` | PASS | 0.172 |
+| 25 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[101]` | PASS | 0.206 |
+| 26 | test_app.py | `test_tc_ui_15_remove_and_unknown_remove` | PASS | 0.174 |
+| 27 | test_app.py | `test_tc_ui_16_plan_and_confirm_collection` | PASS | 0.207 |
+| 28 | test_app.py | `test_tc_ui_17_nothing_due` | PASS | 0.151 |
+| 29 | test_app.py | `test_tc_ui_18_backlog_and_empty_fleet` | PASS | 0.242 |
+| 30 | test_app.py | `test_tc_ui_19_edit_invalidates_saved_plan` | PASS | 0.193 |
+| 31 | test_app.py | `test_tc_ui_20_sessions_are_isolated` | PASS | 0.255 |
+| 32 | test_app.py | `test_tc_ui_24_severity_filter_and_reset` | PASS | 0.252 |
+| 33 | test_app.py | `test_tc_ui_25_filter_no_match_and_collection_refresh` | PASS | 0.232 |
 | 34 | test_bins.py | `test_tc_bin_01_create_valid_bin` | PASS | 0.001 |
 | 35 | test_bins.py | `test_tc_bin_02_invalid_bin_rejected[kwargs0]` | PASS | 0.001 |
 | 36 | test_bins.py | `test_tc_bin_02_invalid_bin_rejected[kwargs1]` | PASS | 0.001 |
@@ -96,14 +96,14 @@ Tool: pytest
 | 72 | test_dashboard.py | `test_tc_ui_21_filter_preserves_rows_order_and_source[WARNING-expected2]` | PASS | 0.001 |
 | 73 | test_dashboard.py | `test_tc_ui_22_filter_empty_and_no_match` | PASS | 0.001 |
 | 74 | test_dashboard.py | `test_tc_ui_23_filter_invalid_severity` | PASS | 0.001 |
-| 75 | test_demo.py | `test_demo_script_runs_full_cycle` | PASS | 0.002 |
+| 75 | test_demo.py | `test_demo_script_runs_full_cycle` | PASS | 0.003 |
 | 76 | test_generate_reports.py | `test_counts_include_skipped_tests` | PASS | 0.001 |
-| 77 | test_generate_reports.py | `test_parse_junit_detects_pass_fail_and_skip` | PASS | 0.013 |
+| 77 | test_generate_reports.py | `test_parse_junit_detects_pass_fail_and_skip` | PASS | 0.010 |
 | 78 | test_generate_reports.py | `test_run_pytest_rejects_old_xml` | PASS | 0.003 |
-| 79 | test_generate_reports.py | `test_run_pytest_rejects_invalid_xml` | PASS | 0.003 |
-| 80 | test_generate_reports.py | `test_skipped_tests_make_report_fail` | PASS | 0.003 |
+| 79 | test_generate_reports.py | `test_run_pytest_rejects_invalid_xml` | PASS | 0.002 |
+| 80 | test_generate_reports.py | `test_skipped_tests_make_report_fail` | PASS | 0.002 |
 | 81 | test_generate_reports.py | `test_failed_pytest_makes_report_fail` | PASS | 0.002 |
-| 82 | test_generate_reports.py | `test_low_coverage_fails` | PASS | 0.003 |
+| 82 | test_generate_reports.py | `test_low_coverage_fails` | PASS | 0.002 |
 | 83 | test_generate_reports.py | `test_failed_coverage_command_fails` | PASS | 0.004 |
 | 84 | test_generate_reports.py | `test_main_returns_failure_when_unit_tests_fail` | PASS | 0.001 |
 | 85 | test_reports.py | `test_tc_rp_01_average_empty_list` | PASS | 0.001 |
@@ -152,7 +152,7 @@ Tool: pytest
 
 ## Execution Time
 
-- Unit tests: 5.29 seconds
+- Unit tests: 4.55 seconds
 - System tests: 0.44 seconds
-- Coverage run: 10.25 seconds
-- Total validation pipeline: 16.21 seconds
+- Coverage run: 9.11 seconds
+- Total validation pipeline: 14.32 seconds
