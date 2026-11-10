@@ -1,18 +1,18 @@
 # Software Requirements Specification (SRS)
 
 **Project:** Smart City Waste Management System
-**Version:** 2.1 (proposed; approval pending)
+**Version:** 2.1
 **Date:** 9 November 2026
 **Authors:** Sasyak Subudhi (PES1UG24AM256), Shriya Vasundhara Singh (PES1UG24AM269), Shreya Yashodhara Singh (PES1UG24AM266), Shruti Choudhary (PES1UG24AM271)
 **Course:** Software Engineering, PES University
-**Status:** Updated after implementation (Sprints 1 and 2); approvals pending
+**Status:** Updated after implementation and UI integration; version 2.1 merged after independent review (PR #21). Course coordinator and repository owner sign-off in the Approvals table is not recorded
 
 ## Revision history
 | Version | Date | Author | Change summary | Approval |
 |---|---|---|---|---|
 | 1.0 | 7 Nov 2026 | Sasyak Subudhi | Initial SRS: FR-1 to FR-8, NFR-1 to NFR-4 (PR #2) | Merged after review |
 | 2.0 | 9 Nov 2026 | Sasyak Subudhi | Added FR-9 to FR-16, NFR-5 and NFR-6, security objectives and requirements, external interfaces, two use-case diagrams and a requirements traceability matrix; FR-2 tightened to whole numbers (see `docs/DEVIATIONS.md`) | Merged after independent review (PR #13) |
-| 2.1 | 9 Nov 2026 | Sasyak Subudhi | Updated for the Streamlit web UI now merged in PR #16 (with SAD #17 and STP #18): clarified NFR-2 (performance) and NFR-6 (portability), separated the domain package from the UI and its dependencies, and qualified the no-network statements. No instructor acceptance is claimed | Pending teammate review |
+| 2.1 | 9 Nov 2026 | Sasyak Subudhi | Updated for the Streamlit web UI now merged in PR #16 (with SAD #17 and STP #18): clarified NFR-2 (performance) and NFR-6 (portability), separated the domain package from the UI and its dependencies, and qualified the no-network statements. No instructor acceptance is claimed | Merged after independent review (PR #21, approved by two teammates) |
 
 ## Approvals
 | Role | Name | Signature / Email | Date |
@@ -73,7 +73,7 @@ A standalone Python application: the domain package `waste_mgmt` with four modul
 - Produce summary statistics and a plain-text city report
 
 ### 2.3 User roles and characteristics
-Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. The Streamlit web UI (see 3.1) is merged (PR #16); a command-line demo script (`demo.py`, PR #14) is pending and not yet merged.
+Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. The Streamlit web UI (see 3.1) is merged (PR #16); a command-line demo script (`demo.py`, PR #14) is merged.
 
 ### 2.4 Operating environment
 Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run locally on Windows with Python 3.13.7 (not part of CI); 3.10 and 3.11 have not been tested.
@@ -84,7 +84,7 @@ The domain package `waste_mgmt` (bins, alerts, routing, reports) uses only the P
 ## 3. External interfaces
 
 ### 3.1 User interfaces
-The domain package has no graphical interface of its own and is used through the Python API. The original project request asks for a UI. A four-tab Streamlit web dashboard (owner: Shreya Yashodhara Singh; `app.py`, `docs/UI.md`) is merged in PR #16 and calls the package's public APIs; a command-line demo (`demo.py`, PR #14) is pending. This records that the UI exists; it does not claim instructor acceptance, production readiness or a browser or accessibility evaluation beyond the automated tests.
+The domain package has no graphical interface of its own and is used through the Python API. The original project request asks for a UI. A four-tab Streamlit web dashboard (owner: Shreya Yashodhara Singh; `app.py`, `docs/UI.md`) is merged in PR #16 and calls the package's public APIs; a command-line demo (`demo.py`, PR #14) is merged. This records that the UI exists; it does not claim instructor acceptance, production readiness or a browser or accessibility evaluation beyond the automated tests.
 
 ### 3.2 Hardware interfaces
 None. Sensor readings are simulated by calling `Bin.update_fill_level`.
@@ -153,7 +153,7 @@ The domain package has no user authentication, authorisation, encryption or netw
 
 ## 6. Quality attributes and acceptance tests
 - **Exit criteria:** all functional requirements implemented and verified by automated tests, no failing test, statement and branch coverage each at least 80%, and the traceability matrix showing a passing test for every requirement. NFR-2 and NFR-6 are partial (see section 5.1 and section 8); the instructor's view on the UI and on test-suite time is not recorded.
-- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), system scenarios SYS-01 to SYS-04 (`tests/test_system.py`), and the dashboard tests (`tests/test_dashboard.py`, `tests/test_app.py`). The demo script test is pending with PR #14.
+- **Acceptance test suites:** unit tests (`tests/test_bins.py`, `test_alerts.py`, `test_routing.py`, `test_reports.py`), system scenarios SYS-01 to SYS-04 (`tests/test_system.py`), and the dashboard tests (`tests/test_dashboard.py`, `tests/test_app.py`). The demo script test is `tests/test_demo.py` (PR #14).
 - **Evidence:** the four reports in `docs/` (Unit Test, System Validation, Code Coverage, Branch Coverage).
 
 ## 7. System models and diagrams
