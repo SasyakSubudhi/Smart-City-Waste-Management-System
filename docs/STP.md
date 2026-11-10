@@ -4,7 +4,7 @@ Project: Smart City Waste Management System
 Identifier: STP-SCWM-1.3\
 Coordinator: Shriya Vasundhara Singh (`vasun26shriya`)  
 Original preparation: 8 November 2026; template alignment: 9 November 2026; status alignment v1.2: 9 November 2026; routing/compatibility update v1.3: 10 November 2026\
-Status: v1.1 and v1.2 merged through PRs #18 and #25; v1.3 routing/compatibility follow-up independently approved and merged through PR #29 on 10 November 2026. This status-only reconciliation requires its own independent review.
+Status: v1.1 and v1.2 merged through PRs #18 and #25; v1.3 routing/compatibility follow-up independently approved and merged through PR #29 on 10 November 2026. Status reconciliation #32 is also independently reviewed and merged; later edits require their own review.
 
 Maintained test plan; approvals for merged revisions remain recorded in section 15. PR #29 approvals apply to its recorded head, not automatically to later edits. IEEE-style test-plan structure; no claim of formal standards certification.
 
@@ -12,7 +12,7 @@ Maintained test plan; approvals for merged revisions remain recorded in section 
 
 Purpose: define scope, strategy, environments, responsibilities, evidence and exit decisions for the Python domain package and merged Streamlit presentation layer. This revision follows the supplied Test_Plan_Template for SE (1).docx sections 1–15, including security validation in 5.1. It plans and records the evidence boundary; it does not sign off the whole course submission.
 
-References: docs/SRS.md (SRS v2.1 merged through PR #21, following v2.0 in PR #13; its proposed performance split still awaits acceptance), docs/SAD.md, docs/ROUTING.md, tests/, .github/workflows/ci.yml, the supplied Test Plan template, and the course checklist. Jira is not required; GitHub branches, PRs and checks supply collaboration evidence.
+References: docs/SRS.md (SRS v2.2 merged through PR #31, following v2.1 in #21 and v2.0 in #13; its proposed performance split still awaits acceptance), docs/SAD.md, docs/ROUTING.md, tests/, .github/workflows/ci.yml, the supplied Test Plan template, and the course checklist. Jira is not required; GitHub branches, PRs and checks supply collaboration evidence.
 
 Definitions: FR = functional requirement; NFR = nonfunctional requirement; SR = security requirement; RTM = requirements traceability matrix; CI = continuous integration. A test ID names a scenario; parametrized pytest instances are counted separately.
 
@@ -33,7 +33,7 @@ Bins and registry, alert generation/formatting, route planning/completion, and r
 | FR-7 | Completing a route empties its bins only; missing bins cause no partial update; repeat completion is rejected |
 | FR-8 | Total, average fill, counts by status and mean fill by waste type; empty average/status/report behavior has TC-RP-01/05/08 assertions |
 | NFR-1 | Boundary, type and missing-entity errors are clear and preserve valid state |
-| NFR-2 | Original full-suite target: below 10 seconds. Currently partial/unmet after UI integration. Record full-suite elapsed time/platform, excluding installation; a core/UI split is only proposed in SRS v2.1 and has no accepted separate UI limit |
+| NFR-2 | Original full-suite target: below 10 seconds. Currently partial/unmet after UI integration. Record full-suite elapsed time/platform, excluding installation; a core/UI split remains proposed in merged SRS v2.2 and has no accepted separate UI limit |
 | NFR-3 | Statements and branch outcomes each at least 80%; inspect each metric separately and disclose measured source/exclusions in section 14 |
 | NFR-4 | Feature branches, local checks, PR, independent approval and green CI evidenced in GitHub |
 
@@ -154,7 +154,7 @@ Course targets: backlog 12 October; Sprint 1 19–23 October; Sprint 2 26–30 O
 
 As checked on 9 November at source main 3eecc7d2de529eba58b52666873081865d8e9069: core modules/system tests, SRS v2.0 #13, demo #14, UI #16, SAD #17, STP v1.1 #18, alert edge tests #19, contribution record #20, SRS v2.1 #21, severity filter #22, SAD/guide update #23 and editorial #8 are merged. That v1.2 status alignment subsequently merged in #25. The v1.3 routing/compatibility follow-up subsequently merged in PR #29 on 10 November 2026 as `b77e22380f2e7252860681a9eded919bd2d204b2`, after independent approvals of head `dc6bba05aae6dc514008daf0f60a125b407f39d7` by Shreya and Sasyak (section 15). Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
 
-Remaining sequence: independently review this status-only reconciliation, rerun regression after further accepted source changes, have the evidence owner regenerate final reports, resolve the partial NFR-2/NFR-6 evidence or acceptance decisions, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
+Remaining sequence: independently review later changes, rerun regression after further accepted source changes, have the evidence owner regenerate final reports, resolve the partial NFR-2/NFR-6 evidence or acceptance decisions, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
 
 ## 8 Test Deliverables
 
@@ -180,7 +180,7 @@ Ownership boundary: Sasyak owns SRS/setup/bins and his correction PRs; Shriya ow
 
 | Risk | Mitigation / unresolved boundary |
 |---|---|
-| Requirement/document drift across open PRs | Review this STP follow-up against merged SRS v2.1 on main and reconcile later accepted requirement changes |
+| Requirement/document drift across open PRs | Review later STP changes against merged SRS v2.2 (#31) and reconcile later accepted requirement changes |
 | Old routing kit interface | Preserve registry/object APIs and run the integrated regression suite |
 | Report evidence becomes stale | Keep tested source, actual run date/platform and exit status; evidence owner regenerates after source integration |
 | Coverage mistaken for acceptance | Check each requirement's assertions and process/manual evidence, not only percentages |
@@ -190,7 +190,7 @@ Ownership boundary: Sasyak owns SRS/setup/bins and his correction PRs; Shriya ow
 
 ## 11 Assumptions & Dependencies
 
-This revision uses the requirement IDs and qualifications of merged SRS v2.1 on main (PR #21), following v2.0 in #13. STP v1.1 is already merged in #18; this follow-up preserves the prior evidence while synchronizing UI/demo and performance status. The proposed core/UI timing split is not instructor-approved. Section 6.1 now supplies domain-only Windows evidence for Python 3.10.11/3.11.9; NFR-6 remains qualified because it does not establish UI compatibility on those versions or untested platforms. No broad acceptance is inferred. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
+This revision uses the requirement IDs and qualifications of merged SRS v2.2 on main (PR #31), following v2.1 in #21 and v2.0 in #13. STP v1.1 is already merged in #18; this follow-up preserves the prior evidence while synchronizing UI/demo and performance status. The proposed core/UI timing split is not instructor-approved. Section 6.1 now supplies domain-only Windows evidence for Python 3.10.11/3.11.9; NFR-6 remains qualified because it does not establish UI compatibility on those versions or untested platforms. No broad acceptance is inferred. The tests use a standalone in-memory model and trusted callers; there is no real dispatch or persistence guarantee. Source, test collection and dependencies must match the recorded evidence. Follow-up API/UI changes require affected-case review. Existing reviews and attribution are preserved; approval is never inferred from document preparation.
 
 ## 12 Suspension & Resumption Criteria
 
@@ -230,7 +230,7 @@ Also suspend final sign-off when the tested revision cannot be identified or a r
 | SR-4 | TC-AL-03, TC-RP-09 |
 | SR-5 | GitHub ruleset and pull request history |
 
-This exceeds the course's 7–10 minimum test-case requirement. The listed automated IDs exist in `tests/`; process checks and compatibility targets are not automated test IDs. FR-9 to FR-16, NFR-5, NFR-6 and SR-1 to SR-5 refer to the merged SRS v2.1 on main (PR #21, following #13). Keep the Test Case Document synchronized with actual test names after sprint changes.
+This exceeds the course's 7–10 minimum test-case requirement. The listed automated IDs exist in `tests/`; process checks and compatibility targets are not automated test IDs. FR-9 to FR-16, NFR-5, NFR-6 and SR-1 to SR-5 refer to the merged SRS v2.2 on main (PR #31, following #21 and #13). Keep the Test Case Document synchronized with actual test names after sprint changes.
 
 This is requirement-to-evidence planning. It does not replace case-level expected/actual records. NFR-2/5/6 are explicitly partial, process requirements need repository evidence, and a clean test run does not prove every planned scope item is delivered.
 
@@ -255,8 +255,9 @@ Provide execution summaries per reviewed source and a final summary after integr
 | Merged editorial follow-up | Shreya Yashodhara Singh | [Approved #8 head 1aeac72](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/8#pullrequestreview-5825669243); merged as 5b46c9c4a09d254db1f8106355944a05680c2337 |
 | Merged v1.2 status alignment | Sasyak Subudhi | [Approved #25 head 41fbe66](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/25#pullrequestreview-5829776673); merged as 88259bba045cac83481e203601dd939c44e95def |
 | Merged v1.3 routing/compatibility follow-up | Shreya Yashodhara Singh and Sasyak Subudhi | [Shreya approved #29 head dc6bba0](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/29#pullrequestreview-5839459117); [Sasyak approved the same head](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/29#pullrequestreview-5839470092); merged on 10 November 2026 as b77e22380f2e7252860681a9eded919bd2d204b2 |
-| Status-only reconciliation of the merged v1.3 record | Independent teammate reviewer | Pending for these new wording edits only; PR #29 approvals are not reused |
+| Merged status reconciliation #32 | Sasyak Subudhi | [Approved head ca1ebaf](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/32#pullrequestreview-5840913287); merged on 10 November 2026 as dc5842ee696c4831202881a1445997d39af7e599 |
+| Later editorial revisions | Independent teammate review required | Consult the relevant live PR; earlier approvals do not approve later edits |
 | Repository owner / release coordinator | Sasyak Subudhi | Final integration/release sign-off not claimed |
 | Instructor / course acceptance | Course evaluator | Not recorded; confirm UI/deadline/recording exceptions where needed |
 
-Routing/STP baseline PRs #3/#4, template alignment #18, editorial #8, status alignment #25 and v1.3 routing/compatibility follow-up #29 are merged with their actual records. The earlier measurements in sections 6.1 and 14 remain tied to their recorded source revisions; this status-only edit claims no new execution or final-report regeneration. Its own required checks and independent review must pass before merge. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
+Routing/STP baseline PRs #3/#4, template alignment #18, editorial #8, status alignment #25, v1.3 routing/compatibility follow-up #29 and status reconciliation #32 are merged with their actual records. The earlier measurements in sections 6.1 and 14 remain tied to their recorded source revisions; this status-only edit claims no new execution or final-report regeneration. Later revisions require their own successful checks and independent review before merge. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
