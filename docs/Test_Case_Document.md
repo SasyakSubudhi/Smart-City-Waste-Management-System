@@ -2,7 +2,7 @@
 
 **Project:** Smart City Waste Management System
 
-Updated after the sprints to match the implemented behaviour. Each test case is implemented in code under `tests/`; the Test ID is derived from the test function name.
+This is a static catalog of pytest test functions, not an execution report. Parametrized functions can generate multiple JUnit test instances. Use the final run's JUnit XML for collected/executed counts and results.
 
 | Test ID | Module | Description | Requirement | Type | Automated in |
 |---|---|---|---|---|---|
@@ -30,6 +30,13 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-RT-10 | routing | Invalid fleet | FR-5..7 | Unit | `test_routing.py::test_tc_rt_10_invalid_fleet` |
 | TC-RT-11 | routing | Missing bin atomic completion | FR-5..7 | Unit | `test_routing.py::test_tc_rt_11_missing_bin_atomic_completion` |
 | TC-RT-12 | routing | Invalid route | FR-5..7 | Unit | `test_routing.py::test_tc_rt_12_invalid_route` |
+| TC-RT-13 | routing | Reject malformed bin id containers without emptying | FR-5..7 | Unit | `test_routing.py::test_tc_rt_13_reject_malformed_bin_id_containers_without_emptying` |
+| TC-RT-14 | routing | Reject invalid route or truck objects | FR-5..7 | Unit | `test_routing.py::test_tc_rt_14_reject_invalid_route_or_truck_objects` |
+| TC-RT-15 | routing | Non iterable fleet has clear validation error | FR-5..7 | Unit | `test_routing.py::test_tc_rt_15_non_iterable_fleet_has_clear_validation_error` |
+| TC-RT-16 | routing | Fleet generator is consumed once and empty is supported | FR-5..7 | Unit | `test_routing.py::test_tc_rt_16_fleet_generator_is_consumed_once_and_empty_is_supported` |
+| TC-RT-17 | routing | Assignment invariants across registry orders | FR-5..7 | Unit | `test_routing.py::test_tc_rt_17_assignment_invariants_across_registry_orders` |
+| TC-RT-18 | routing | Complete trucks out of order preserves backlog | FR-5..7 | Unit | `test_routing.py::test_tc_rt_18_complete_trucks_out_of_order_preserves_backlog` |
+| TC-RT-19 | routing | Missing bin anywhere is atomic and retryable | FR-5..7 | Unit | `test_routing.py::test_tc_rt_19_missing_bin_anywhere_is_atomic_and_retryable` |
 | TC-AL-01 | alerts | Empty and ok | FR-4 | Unit | `test_alerts.py::test_tc_al_01_empty_and_ok` |
 | TC-AL-02 | alerts | Boundaries | FR-4 | Unit | `test_alerts.py::test_tc_al_02_boundaries` |
 | TC-AL-03 | alerts | Priority stability and no mutation | FR-4 | Unit | `test_alerts.py::test_tc_al_03_priority_stability_and_no_mutation` |
@@ -62,24 +69,44 @@ Updated after the sprints to match the implemented behaviour. Each test case is 
 | TC-UI-21 | dashboard | Filter preserves rows order and source | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_21_filter_preserves_rows_order_and_source` |
 | TC-UI-22 | dashboard | Filter empty and no match | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_22_filter_empty_and_no_match` |
 | TC-UI-23 | dashboard | Filter invalid severity | FR-1..8 | Unit | `test_dashboard.py::test_tc_ui_23_filter_invalid_severity` |
-| TC-UI-08 | app | Start empty | FR-1..8 | UI | `test_app.py::test_tc_ui_08_start_empty` |
-| TC-UI-09 | app | Register and persist | FR-1..8 | UI | `test_app.py::test_tc_ui_09_register_and_persist` |
-| TC-UI-10 | app | Duplicate id error | FR-1..8 | UI | `test_app.py::test_tc_ui_10_duplicate_id_error` |
-| TC-UI-11 | app | Empty id error | FR-1..8 | UI | `test_app.py::test_tc_ui_11_empty_id_error` |
-| TC-UI-12 | app | Sensor updates alerts and report | FR-1..8 | UI | `test_app.py::test_tc_ui_12_sensor_updates_alerts_and_report` |
-| TC-UI-13 | app | Unknown bin error | FR-1..8 | UI | `test_app.py::test_tc_ui_13_unknown_bin_error` |
-| TC-UI-14 | app | Out of range preserves state | FR-1..8 | UI | `test_app.py::test_tc_ui_14_out_of_range_preserves_state` |
-| TC-UI-15 | app | Remove and unknown remove | FR-1..8 | UI | `test_app.py::test_tc_ui_15_remove_and_unknown_remove` |
-| TC-UI-16 | app | Plan and confirm collection | FR-1..8 | UI | `test_app.py::test_tc_ui_16_plan_and_confirm_collection` |
-| TC-UI-17 | app | Nothing due | FR-1..8 | UI | `test_app.py::test_tc_ui_17_nothing_due` |
-| TC-UI-18 | app | Backlog and empty fleet | FR-1..8 | UI | `test_app.py::test_tc_ui_18_backlog_and_empty_fleet` |
-| TC-UI-19 | app | Edit invalidates saved plan | FR-1..8 | UI | `test_app.py::test_tc_ui_19_edit_invalidates_saved_plan` |
-| TC-UI-20 | app | Sessions are isolated | FR-1..8 | UI | `test_app.py::test_tc_ui_20_sessions_are_isolated` |
-| TC-UI-24 | app | Severity filter and reset | FR-1..8 | UI | `test_app.py::test_tc_ui_24_severity_filter_and_reset` |
-| TC-UI-25 | app | Filter no match and collection refresh | FR-1..8 | UI | `test_app.py::test_tc_ui_25_filter_no_match_and_collection_refresh` |
-| TC-UI-26 | app | Confirmation identifies remaining backlog | FR-1..8 | UI | `test_app.py::test_tc_ui_26_confirmation_identifies_remaining_backlog` |
-| TC-UI-27 | app | Empty session explains setup and data lifetime | FR-1..8 | UI | `test_app.py::test_tc_ui_27_empty_session_explains_setup_and_data_lifetime` |
-| TC-UI-28 | app | No trucks distinguished from nothing due | FR-1..8 | UI | `test_app.py::test_tc_ui_28_no_trucks_distinguished_from_nothing_due` |
-| TC-UI-29 | app | Registry changes clear saved plan | FR-1..8 | UI | `test_app.py::test_tc_ui_29_registry_changes_clear_saved_plan` |
-| TC-UI-30 | app | Failed edits preserve collectable plan | FR-1..8 | UI | `test_app.py::test_tc_ui_30_failed_edits_preserve_collectable_plan` |
-| TC-UI-31 | app | Filter preserves two truck plan and confirmation | FR-1..8 | UI | `test_app.py::test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation` |
+| TC-UI-08 | app | Start empty | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_08_start_empty` |
+| TC-UI-09 | app | Register and persist | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_09_register_and_persist` |
+| TC-UI-10 | app | Duplicate id error | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_10_duplicate_id_error` |
+| TC-UI-11 | app | Empty id error | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_11_empty_id_error` |
+| TC-UI-12 | app | Sensor updates alerts and report | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_12_sensor_updates_alerts_and_report` |
+| TC-UI-13 | app | Unknown bin error | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_13_unknown_bin_error` |
+| TC-UI-14 | app | Out of range preserves state | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_14_out_of_range_preserves_state` |
+| TC-UI-15 | app | Remove and unknown remove | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_15_remove_and_unknown_remove` |
+| TC-UI-16 | app | Plan and confirm collection | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_16_plan_and_confirm_collection` |
+| TC-UI-17 | app | Nothing due | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_17_nothing_due` |
+| TC-UI-18 | app | Backlog and empty fleet | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_18_backlog_and_empty_fleet` |
+| TC-UI-19 | app | Edit invalidates saved plan | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_19_edit_invalidates_saved_plan` |
+| TC-UI-20 | app | Sessions are isolated | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_20_sessions_are_isolated` |
+| TC-UI-24 | app | Severity filter and reset | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_24_severity_filter_and_reset` |
+| TC-UI-25 | app | Filter no match and collection refresh | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_25_filter_no_match_and_collection_refresh` |
+| TC-UI-26 | app | Confirmation identifies remaining backlog | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_26_confirmation_identifies_remaining_backlog` |
+| TC-UI-27 | app | Empty session explains setup and data lifetime | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_27_empty_session_explains_setup_and_data_lifetime` |
+| TC-UI-28 | app | No trucks distinguished from nothing due | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_28_no_trucks_distinguished_from_nothing_due` |
+| TC-UI-29 | app | Registry changes clear saved plan | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_29_registry_changes_clear_saved_plan` |
+| TC-UI-30 | app | Failed edits preserve collectable plan | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_30_failed_edits_preserve_collectable_plan` |
+| TC-UI-31 | app | Filter preserves two truck plan and confirmation | FR-1..8 | Streamlit AppTest | `test_app.py::test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation` |
+| AUTO-DEMO-DEMO-SCRIPT-RUNS-FULL-CYCLE | demo | Demo script runs full cycle | Tooling / smoke (not mapped to FR) | Support / smoke | `test_demo.py::test_demo_script_runs_full_cycle` |
+| AUTO-SMOKE-PACKAGE-IMPORTS | smoke | Package imports | Tooling / smoke (not mapped to FR) | Support / smoke | `test_smoke.py::test_package_imports` |
+| AUTO-GENERATE-REPORTS-COUNTS-INCLUDE-SKIPPED-TESTS | generate_reports | Counts include skipped tests | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_counts_include_skipped_tests` |
+| AUTO-GENERATE-REPORTS-PARSE-JUNIT-DETECTS-PASS-FAIL-AND-SKIP | generate_reports | Parse junit detects pass fail and skip | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_parse_junit_detects_pass_fail_and_skip` |
+| AUTO-GENERATE-REPORTS-RUN-PYTEST-REJECTS-OLD-XML | generate_reports | Run pytest rejects old xml | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_run_pytest_rejects_old_xml` |
+| AUTO-GENERATE-REPORTS-RUN-PYTEST-REJECTS-INVALID-XML | generate_reports | Run pytest rejects invalid xml | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_run_pytest_rejects_invalid_xml` |
+| AUTO-GENERATE-REPORTS-SKIPPED-TESTS-MAKE-REPORT-FAIL | generate_reports | Skipped tests make report fail | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_skipped_tests_make_report_fail` |
+| AUTO-GENERATE-REPORTS-FAILED-PYTEST-MAKES-REPORT-FAIL | generate_reports | Failed pytest makes report fail | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_failed_pytest_makes_report_fail` |
+| AUTO-GENERATE-REPORTS-LOW-COVERAGE-FAILS | generate_reports | Low coverage fails | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_low_coverage_fails` |
+| AUTO-GENERATE-REPORTS-FAILED-COVERAGE-COMMAND-FAILS | generate_reports | Failed coverage command fails | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_failed_coverage_command_fails` |
+| AUTO-GENERATE-REPORTS-MAIN-RETURNS-FAILURE-WHEN-UNIT-TESTS-FAIL | generate_reports | Main returns failure when unit tests fail | Tooling / smoke (not mapped to FR) | Support / smoke | `test_generate_reports.py::test_main_returns_failure_when_unit_tests_fail` |
+
+## Scope and interpretation
+
+- Routing TC-RT-13–19 test validation, assignment invariants, backlog, and **per-route** atomic completion; they do not establish a fleet-wide transaction.
+- TC-UI dashboard helper tests and Streamlit AppTest cases are distinct. AppTest is not a real-browser compatibility test.
+- Demo, smoke, and report-generator tests are explicitly cataloged with AUTO IDs, not silently omitted.
+- Root `app.py` and `demo.py` are outside configured `src/waste_mgmt` package coverage.
+- Python 3.10/3.11 Windows compatibility evidence is domain-only; it does not prove Streamlit UI compatibility.
+- The original ten-second full-suite target remains unmet absent new accepted evidence or requirement change.
