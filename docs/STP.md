@@ -4,9 +4,9 @@ Project: Smart City Waste Management System
 Identifier: STP-SCWM-1.3\
 Coordinator: Shriya Vasundhara Singh (`vasun26shriya`)  
 Original preparation: 8 November 2026; template alignment: 9 November 2026; status alignment v1.2: 9 November 2026; routing/compatibility update v1.3: 10 November 2026\
-Status: v1.1 and v1.2 merged through PRs #18 and #25; this v1.3 routing-regression follow-up awaits independent review and merge.
+Status: v1.1 and v1.2 merged through PRs #18 and #25; v1.3 routing/compatibility follow-up independently approved and merged through PR #29 on 10 November 2026. This status-only reconciliation requires its own independent review.
 
-Maintained test plan; approvals for merged revisions remain recorded in section 15. This v1.3 follow-up does not borrow them. IEEE-style test-plan structure; no claim of formal standards certification.
+Maintained test plan; approvals for merged revisions remain recorded in section 15. PR #29 approvals apply to its recorded head, not automatically to later edits. IEEE-style test-plan structure; no claim of formal standards certification.
 
 ## 1 Introduction
 
@@ -152,9 +152,9 @@ NFR-2 target; the proposed core/UI split still awaits acceptance.
 
 Course targets: backlog 12 October; Sprint 1 19–23 October; Sprint 2 26–30 October; testing 2–6 November 2026. Those targets are historical and are not replaced by invented completion dates. Repository work is evidenced on 7–9 November; confirm the current submission deadline with the instructor.
 
-As checked on 9 November at source main 3eecc7d2de529eba58b52666873081865d8e9069: core modules/system tests, SRS v2.0 #13, demo #14, UI #16, SAD #17, STP v1.1 #18, alert edge tests #19, contribution record #20, SRS v2.1 #21, severity filter #22, SAD/guide update #23 and editorial #8 are merged. That v1.2 status alignment subsequently merged in #25. The present v1.3 routing/compatibility follow-up needs its own independent review/merge. Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
+As checked on 9 November at source main 3eecc7d2de529eba58b52666873081865d8e9069: core modules/system tests, SRS v2.0 #13, demo #14, UI #16, SAD #17, STP v1.1 #18, alert edge tests #19, contribution record #20, SRS v2.1 #21, severity filter #22, SAD/guide update #23 and editorial #8 are merged. That v1.2 status alignment subsequently merged in #25. The v1.3 routing/compatibility follow-up subsequently merged in PR #29 on 10 November 2026 as `b77e22380f2e7252860681a9eded919bd2d204b2`, after independent approvals of head `dc6bba05aae6dc514008daf0f60a125b407f39d7` by Shreya and Sasyak (section 15). Two actual silent recordings were recorded on 9 November and merged to main in PR #15 after Shreya approved their head; merge commit 84d6bd4a4613129a335a08defe01dd0620d5325b. Recording and repository review/merge are complete. Their source is main 1344aaf; they show 86 passing tests and 100% measured coverage. Spoken narration/instructor acceptance is not claimed.
 
-Remaining sequence: review this STP alignment, rerun regression after further accepted source changes, have the evidence owner regenerate final reports, resolve the partial NFR-2/NFR-6 evidence or acceptance decisions, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
+Remaining sequence: independently review this status-only reconciliation, rerun regression after further accepted source changes, have the evidence owner regenerate final reports, resolve the partial NFR-2/NFR-6 evidence or acceptance decisions, confirm course acceptance of the merged silent recordings and freeze the agreed release. This plan does not assign completion dates for work not performed.
 
 ## 8 Test Deliverables
 
@@ -254,8 +254,9 @@ Provide execution summaries per reviewed source and a final summary after integr
 | Merged STP v1.1 independent review | Sasyak Subudhi | [Approved #18 head 301e073](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/18#pullrequestreview-5825328284); merged as cf88a21f0e2f5a5d60cb66cce8665aca56170a5f |
 | Merged editorial follow-up | Shreya Yashodhara Singh | [Approved #8 head 1aeac72](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/8#pullrequestreview-5825669243); merged as 5b46c9c4a09d254db1f8106355944a05680c2337 |
 | Merged v1.2 status alignment | Sasyak Subudhi | [Approved #25 head 41fbe66](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/25#pullrequestreview-5829776673); merged as 88259bba045cac83481e203601dd939c44e95def |
-| Independent review of this v1.3 follow-up | Requested on the new PR | Pending for this revision only; no self-approval or borrowed approval |
+| Merged v1.3 routing/compatibility follow-up | Shreya Yashodhara Singh and Sasyak Subudhi | [Shreya approved #29 head dc6bba0](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/29#pullrequestreview-5839459117); [Sasyak approved the same head](https://github.com/SasyakSubudhi/Smart-City-Waste-Management-System/pull/29#pullrequestreview-5839470092); merged on 10 November 2026 as b77e22380f2e7252860681a9eded919bd2d204b2 |
+| Status-only reconciliation of the merged v1.3 record | Independent teammate reviewer | Pending for these new wording edits only; PR #29 approvals are not reused |
 | Repository owner / release coordinator | Sasyak Subudhi | Final integration/release sign-off not claimed |
 | Instructor / course acceptance | Course evaluator | Not recorded; confirm UI/deadline/recording exceptions where needed |
 
-Routing/STP baseline PRs #3/#4, template alignment #18, editorial #8 and status alignment #25 are merged with their actual records. This v1.3 follow-up is a separate proposal: required CI and independent review must pass before it merges. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
+Routing/STP baseline PRs #3/#4, template alignment #18, editorial #8, status alignment #25 and v1.3 routing/compatibility follow-up #29 are merged with their actual records. The earlier measurements in sections 6.1 and 14 remain tied to their recorded source revisions; this status-only edit claims no new execution or final-report regeneration. Its own required checks and independent review must pass before merge. Repository approvals do not imply course/instructor acceptance or a changed performance threshold.
