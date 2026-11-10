@@ -166,3 +166,40 @@ def test_tc_rt_17_assignment_invariants_across_registry_orders(
         assert all(0 < len(r.bin_ids) <= r.truck.capacity_bins for r in plan.routes)
         assert [(b.bin_id, b.fill_level) for b in bins.all()] == before
         assert plan_routes(bins, fleet) == plan
+
+
+def test_tc_rt_18_complete_trucks_out_of_order_preserves_backlog():
+    bins = registry(("A", 100), ("B", 95), ("C", 90), ("D", 80), ("quiet", 69))
+    plan = plan_routes(bins, [Truck("T1", 1), Truck("T2", 1)])
+    assert plan.unassigned_bin_ids == ("C", "D")
+    assert complete_route(plan.routes[1], bins) is None
+    assert [r.completed for r in plan.routes] == [False, True]
+    assert {b.bin_id: b.fill_level for b in bins.all()} == {
+        "A": 100, "B": 0, "C": 90, "D": 80, "quiet": 69}
+    fresh = plan_routes(bins, [Truck("next", 2)])
+    assert fresh.routes[0].bin_ids == ("A", "C")
+    assert fresh.unassigned_bin_ids == ("D",)
+    assert not any(r.completed for r in fresh.routes)
+    assert complete_route(plan.routes[0], bins) is None
+    assert all(r.completed for r in plan.routes)
+    assert plan.unassigned_bin_ids == ("C", "D")
+    assert {b.bin_id: b.fill_level for b in bins.all()} == {
+        "A": 0, "B": 0, "C": 90, "D": 80, "quiet": 69}
+
+
+@pytest.mark.parametrize("missing_id", ["A", "B", "C"])
+def test_tc_rt_19_missing_bin_anywhere_is_atomic_and_retryable(missing_id):
+    bins = registry(("A", 100), ("B", 90), ("C", 80), ("quiet", 10))
+    route = plan_routes(bins, [Truck("T", 3)]).routes[0]
+    removed = bins.get(missing_id)
+    bins.remove(missing_id)
+    before = {b.bin_id: b.fill_level for b in bins.all()}
+    with pytest.raises(KeyError, match=missing_id):
+        complete_route(route, bins)
+    assert {b.bin_id: b.fill_level for b in bins.all()} == before
+    assert route.completed is False
+    bins.add(removed)
+    complete_route(route, bins)
+    assert route.completed is True
+    assert {b.bin_id: b.fill_level for b in bins.all()} == {
+        "A": 0, "B": 0, "C": 0, "quiet": 10}
