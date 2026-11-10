@@ -102,12 +102,18 @@ window has elapsed. Log real recording dates and locations after recording.
   Non-iterable fleets raise ValueError, while one-use/empty generators work.
   Domain-only Windows CI verifies Python 3.10.11/3.11.9; it does not test the UI
   on those versions. See SAD sections 4.3, 4.4 and 5.3 for exact evidence.
+- SAD v1.5 #30 merged as 93c82bf after Sasyak and Shriya independently approved
+  head 43af049. The architecture/error-contract reconciliation is integrated.
+- SRS v2.2 #31 merged as d9719bf after Shriya approved head b26c453. Its Windows
+  domain-only Python 3.10/3.11 evidence correction is integrated; UI compatibility
+  on those versions and institutional acceptance remain unverified.
 
 ## Remaining acceptance checks
-Independent review/integration of this SAD/error-contract reconciliation;
-fresh Test Case Document and final reports coordinated with Shruti after #29
-(#27's merged reports describe an earlier source); SRS portability wording with
-Sasyak; actual board owners/points;
+At main d9719bf, Shruti's fresh Test Case Document and four final reports remain
+pending after #29: the published reports still cite 915aac0 and the case document
+does not yet list TC-RT-13..19. #30's SAD integration and #31's SRS portability
+correction are completed, not open tasks. Subsequent editorial changes require
+their own PR review; earlier approvals do not cover them. Also verify actual board owners/points;
 instructor deadline/extension, silent-format acceptance and final demo/viva readiness.
 Sasyak must coordinate NFR-2: Shriya measured the full UI-inclusive suite:
 109 passed in 33.99s on Windows/Python 3.13.7 (core plus dashboard/AppTest).
@@ -115,7 +121,7 @@ UI-only time was not measured. This exceeds the ten-second full-suite requiremen
 Passing coverage/CI
 does not make that timing requirement pass. Domain modules use the standard
 library; the Streamlit app has external dependencies and a local browser/server
-boundary. Merged SRS v2.1 (#21) already distinguishes this scope and describes the
+boundary. Merged SRS v2.2 (#31), following v2.1 (#21), distinguishes this scope and describes the
 proposed core/UI timing split. That proposal still requires acceptance; it does
 not turn the original full-suite target into a pass. These checks remain pending or
 unverified until the relevant evidence/decision exists.
