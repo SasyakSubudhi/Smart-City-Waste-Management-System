@@ -1,11 +1,11 @@
 # Software Requirements Specification (SRS)
 
 **Project:** Smart City Waste Management System
-**Version:** 2.1
-**Date:** 9 November 2026
+**Version:** 2.2
+**Date:** 10 November 2026
 **Authors:** Sasyak Subudhi (PES1UG24AM256), Shriya Vasundhara Singh (PES1UG24AM269), Shreya Yashodhara Singh (PES1UG24AM266), Shruti Choudhary (PES1UG24AM271)
 **Course:** Software Engineering, PES University
-**Status:** Updated after implementation and UI integration; version 2.1 merged after independent review (PR #21). Course coordinator and repository owner sign-off in the Approvals table is not recorded
+**Status:** Updated after implementation and UI integration; version 2.1 merged after independent review (PR #21). Version 2.2 (portability evidence correction) is proposed in its own pull request and is pending independent review. Course coordinator and repository owner sign-off in the Approvals table is not recorded
 
 ## Revision history
 | Version | Date | Author | Change summary | Approval |
@@ -13,6 +13,7 @@
 | 1.0 | 7 Nov 2026 | Sasyak Subudhi | Initial SRS: FR-1 to FR-8, NFR-1 to NFR-4 (PR #2) | Merged after review |
 | 2.0 | 9 Nov 2026 | Sasyak Subudhi | Added FR-9 to FR-16, NFR-5 and NFR-6, security objectives and requirements, external interfaces, two use-case diagrams and a requirements traceability matrix; FR-2 tightened to whole numbers (see `docs/DEVIATIONS.md`) | Merged after independent review (PR #13) |
 | 2.1 | 9 Nov 2026 | Sasyak Subudhi | Updated for the Streamlit web UI now merged in PR #16 (with SAD #17 and STP #18): clarified NFR-2 (performance) and NFR-6 (portability), separated the domain package from the UI and its dependencies, and qualified the no-network statements. No instructor acceptance is claimed | Merged after independent review (PR #21, approved by two teammates) |
+| 2.2 | 10 Nov 2026 | Sasyak Subudhi | Recorded verified Windows domain-only evidence for Python 3.10.11 and 3.11.9 (PR #29 compatibility workflow) in section 2.4, NFR-6 and the matrix. Streamlit/UI compatibility on those versions remains unverified and the original ten-second full-suite target (NFR-2) remains unmet. No instructor acceptance is claimed | Pending independent review (this pull request) |
 
 ## Approvals
 | Role | Name | Signature / Email | Date |
@@ -76,7 +77,7 @@ A standalone Python application: the domain package `waste_mgmt` with four modul
 Administrators and supervisors are non-programmers in the real world; in this project they are represented by the Python API. The Streamlit web UI (see 3.1) is merged (PR #16); a command-line demo script (`demo.py`, PR #14) is merged.
 
 ### 2.4 Operating environment
-Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs Python 3.12 on Windows, and the suite was also run locally on Windows with Python 3.13.7 (not part of CI); 3.10 and 3.11 have not been tested.
+Target: Python 3.10 or later on any operating system. Actually tested so far: CI runs the full suite, including the Streamlit UI, on Windows with Python 3.12, and the suite was also run locally on Windows with Python 3.13.7 (not part of CI). A separate CI workflow runs only the domain package tests (bins, alerts, routing, reports, system and smoke cases; 113 tests, no Streamlit) on Windows with CPython 3.10.11 and 3.11.9, and they passed. The UI has not been tested on 3.10 or 3.11, and no other operating system has been tested.
 
 ### 2.5 Constraints
 The domain package `waste_mgmt` (bins, alerts, routing, reports) uses only the Python standard library at runtime and has no network service. The merged web UI (PR #16) adds one direct dependency declared in `requirements.txt`, Streamlit (`streamlit>=1.40`), which brings transitive packages, and it runs through a local Streamlit server viewed in a browser; the tests need `pytest` and `pytest-cov`. There is no hardware or database; capacity is counted in bins per truck, not litres.
@@ -128,7 +129,7 @@ Each requirement has a test reference in section 8.
 | NFR-3 | Quality | Statement and branch coverage shall each be at least 80%. | Code and Branch Coverage Reports |
 | NFR-4 | Process | Code shall be maintained in Git with changes merged only via reviewed pull requests passing CI. | GitHub pull request history and branch ruleset |
 | NFR-5 | Determinism | The same inputs shall always give the same ordering of alerts, routes and report lines. | Tie-break and stability tests for alerts and routing; report-line ordering is not separately tested |
-| NFR-6 | Portability | The domain package shall run on Python 3.10 or later using only the standard library. The Streamlit UI is a separate layer with its own declared dependency (`streamlit>=1.40`, plus transitive packages), so the standard-library-only statement does not apply to it. | CI: Windows, Python 3.12. Observed local run (not CI): Windows, Python 3.13.7. Python 3.10 and 3.11 are untested; no portability or UI performance acceptance is claimed beyond these observations |
+| NFR-6 | Portability | The domain package shall run on Python 3.10 or later using only the standard library. The Streamlit UI is a separate layer with its own declared dependency (`streamlit>=1.40`, plus transitive packages), so the standard-library-only statement does not apply to it. | CI full suite: Windows, Python 3.12. Observed local run (not CI): Windows, Python 3.13.7. CI domain-only runs (no Streamlit): Windows, CPython 3.10.11 and 3.11.9, 113 tests passed on each (PR #29). The UI on 3.10 and 3.11 and other operating systems are untested; no portability or UI performance acceptance is claimed beyond these observations |
 
 ### 5.2 Security
 
@@ -191,7 +192,7 @@ Test IDs come from the test function names (for example `TC-BIN-03` is `test_tc_
 | NFR-3 | Coverage at least 80% | Non-functional | High | all | Code and Branch Coverage Reports | P |
 | NFR-4 | Reviewed pull requests with green CI | Non-functional | High | process | GitHub PR history, branch ruleset | P |
 | NFR-5 | Deterministic ordering | Non-functional | Medium | alerts, routing, reports | TC-AL-03, TC-RT-02 (alerts and routing only) | Partial: report-line order not tested |
-| NFR-6 | Python 3.10+; domain package standard library only (UI needs Streamlit) | Non-functional | Low | all | CI Python 3.12; local Python 3.13.7 | Partial: 3.10 and 3.11 untested; UI dependency noted |
+| NFR-6 | Python 3.10+; domain package standard library only (UI needs Streamlit) | Non-functional | Low | all | CI Python 3.12 (full); local Python 3.13.7; CI domain-only Python 3.10.11 and 3.11.9 | Partial: domain package verified on 3.10.11 and 3.11.9 on Windows; UI on those versions and other platforms untested; UI dependency noted |
 | SR-1 | Validate reading type and range | Security | High | bins | TC-BIN-03, TC-BIN-11, TC-BIN-12 | P |
 | SR-2 | Validate bin creation | Security | High | bins | TC-BIN-02 | P |
 | SR-3 | Verify before change; no double completion | Security | High | routing | TC-RT-08, TC-RT-11, TC-RT-12, SYS-04 | P |
