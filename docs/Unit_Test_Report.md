@@ -2,9 +2,9 @@
 
 Project: Smart City Waste Management System
 
-Date: 2026-11-10
+Date: 2026-11-11
 
-Commit: e293216
+Commit: c849638
 
 Environment: Python 3.14.0 on Darwin 25.6.0
 
@@ -39,31 +39,31 @@ Tool: pytest
 | 15 | test_alerts.py | `test_tc_al_08_many_equal_severity_keep_input_order[95-CRITICAL]` | PASS | 0.000 |
 | 16 | test_alerts.py | `test_tc_al_09_emptying_preserves_saved_alert_and_its_format[70-WARNING]` | PASS | 0.000 |
 | 17 | test_alerts.py | `test_tc_al_09_emptying_preserves_saved_alert_and_its_format[90-CRITICAL]` | PASS | 0.000 |
-| 18 | test_app.py | `test_tc_ui_08_start_empty` | PASS | 0.343 |
-| 19 | test_app.py | `test_tc_ui_09_register_and_persist` | PASS | 0.066 |
-| 20 | test_app.py | `test_tc_ui_10_duplicate_id_error` | PASS | 0.063 |
-| 21 | test_app.py | `test_tc_ui_11_empty_id_error` | PASS | 0.052 |
+| 18 | test_app.py | `test_tc_ui_08_start_empty` | PASS | 0.345 |
+| 19 | test_app.py | `test_tc_ui_09_register_and_persist` | PASS | 0.067 |
+| 20 | test_app.py | `test_tc_ui_10_duplicate_id_error` | PASS | 0.064 |
+| 21 | test_app.py | `test_tc_ui_11_empty_id_error` | PASS | 0.053 |
 | 22 | test_app.py | `test_tc_ui_12_sensor_updates_alerts_and_report` | PASS | 0.065 |
 | 23 | test_app.py | `test_tc_ui_13_unknown_bin_error` | PASS | 0.053 |
 | 24 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[-1]` | PASS | 0.073 |
 | 25 | test_app.py | `test_tc_ui_14_out_of_range_preserves_state[101]` | PASS | 0.073 |
-| 26 | test_app.py | `test_tc_ui_15_remove_and_unknown_remove` | PASS | 0.072 |
-| 27 | test_app.py | `test_tc_ui_16_plan_and_confirm_collection` | PASS | 0.097 |
-| 28 | test_app.py | `test_tc_ui_17_nothing_due` | PASS | 0.064 |
-| 29 | test_app.py | `test_tc_ui_18_backlog_and_empty_fleet` | PASS | 0.102 |
-| 30 | test_app.py | `test_tc_ui_19_edit_invalidates_saved_plan` | PASS | 0.083 |
-| 31 | test_app.py | `test_tc_ui_20_sessions_are_isolated` | PASS | 0.100 |
-| 32 | test_app.py | `test_tc_ui_24_severity_filter_and_reset` | PASS | 0.110 |
-| 33 | test_app.py | `test_tc_ui_25_filter_no_match_and_collection_refresh` | PASS | 0.102 |
-| 34 | test_app.py | `test_tc_ui_26_confirmation_identifies_remaining_backlog` | PASS | 0.132 |
-| 35 | test_app.py | `test_tc_ui_27_empty_session_explains_setup_and_data_lifetime` | PASS | 0.057 |
-| 36 | test_app.py | `test_tc_ui_28_no_trucks_distinguished_from_nothing_due` | PASS | 0.084 |
-| 37 | test_app.py | `test_tc_ui_29_registry_changes_clear_saved_plan[register]` | PASS | 0.085 |
-| 38 | test_app.py | `test_tc_ui_29_registry_changes_clear_saved_plan[remove]` | PASS | 0.086 |
-| 39 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[duplicate-bin B1 already registered]` | PASS | 0.099 |
-| 40 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[reading-fill level must be between 0 and 100]` | PASS | 0.097 |
-| 41 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[remove-bin missing not found]` | PASS | 0.097 |
-| 42 | test_app.py | `test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation` | PASS | 0.120 |
+| 26 | test_app.py | `test_tc_ui_15_remove_and_unknown_remove` | PASS | 0.073 |
+| 27 | test_app.py | `test_tc_ui_16_plan_and_confirm_collection` | PASS | 0.101 |
+| 28 | test_app.py | `test_tc_ui_17_nothing_due` | PASS | 0.065 |
+| 29 | test_app.py | `test_tc_ui_18_backlog_and_empty_fleet` | PASS | 0.104 |
+| 30 | test_app.py | `test_tc_ui_19_edit_invalidates_saved_plan` | PASS | 0.085 |
+| 31 | test_app.py | `test_tc_ui_20_sessions_are_isolated` | PASS | 0.101 |
+| 32 | test_app.py | `test_tc_ui_24_severity_filter_and_reset` | PASS | 0.112 |
+| 33 | test_app.py | `test_tc_ui_25_filter_no_match_and_collection_refresh` | PASS | 0.104 |
+| 34 | test_app.py | `test_tc_ui_26_confirmation_identifies_remaining_backlog` | PASS | 0.133 |
+| 35 | test_app.py | `test_tc_ui_27_empty_session_explains_setup_and_data_lifetime` | PASS | 0.058 |
+| 36 | test_app.py | `test_tc_ui_28_no_trucks_distinguished_from_nothing_due` | PASS | 0.086 |
+| 37 | test_app.py | `test_tc_ui_29_registry_changes_clear_saved_plan[register]` | PASS | 0.086 |
+| 38 | test_app.py | `test_tc_ui_29_registry_changes_clear_saved_plan[remove]` | PASS | 0.085 |
+| 39 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[duplicate-bin B1 already registered]` | PASS | 0.097 |
+| 40 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[reading-fill level must be between 0 and 100]` | PASS | 0.106 |
+| 41 | test_app.py | `test_tc_ui_30_failed_edits_preserve_collectable_plan[remove-bin missing not found]` | PASS | 0.098 |
+| 42 | test_app.py | `test_tc_ui_31_filter_preserves_two_truck_plan_and_confirmation` | PASS | 0.122 |
 | 43 | test_bins.py | `test_tc_bin_01_create_valid_bin` | PASS | 0.000 |
 | 44 | test_bins.py | `test_tc_bin_02_invalid_bin_rejected[kwargs0]` | PASS | 0.000 |
 | 45 | test_bins.py | `test_tc_bin_02_invalid_bin_rejected[kwargs1]` | PASS | 0.000 |
@@ -183,7 +183,7 @@ Tool: pytest
 
 ## Execution Time
 
-- Unit tests: 2.93 seconds
-- System tests: 0.18 seconds
-- Coverage run: 3.15 seconds
-- Total validation pipeline: 6.42 seconds
+- Unit tests: 2.94 seconds
+- System tests: 0.19 seconds
+- Coverage run: 3.26 seconds
+- Total validation pipeline: 6.53 seconds
