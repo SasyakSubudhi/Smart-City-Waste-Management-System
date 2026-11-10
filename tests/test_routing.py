@@ -114,3 +114,29 @@ def test_tc_rt_14_reject_invalid_route_or_truck_objects(route):
     with pytest.raises(ValueError, match="Route|Truck"):
         complete_route(route, bins)
     assert bins.get("A").fill_level == 90
+
+
+@pytest.mark.parametrize("fleet", [None, 1, True])
+def test_tc_rt_15_non_iterable_fleet_has_clear_validation_error(fleet):
+    bins = registry(("A", 90))
+    with pytest.raises(ValueError, match="fleet must be an iterable of Truck objects"):
+        plan_routes(bins, fleet)
+    assert bins.get("A").fill_level == 90
+
+
+def test_tc_rt_16_fleet_generator_is_consumed_once_and_empty_is_supported():
+    bins = registry(("A", 100), ("B", 90), ("C", 80))
+    supplied = []
+
+    def fleet():
+        for truck_id in ("T2", "T1"):
+            supplied.append(truck_id)
+            yield Truck(truck_id, 1)
+
+    plan = plan_routes(bins, fleet())
+    assert supplied == ["T2", "T1"]
+    assert [(r.truck.truck_id, r.bin_ids) for r in plan.routes] == [
+        ("T2", ("A",)), ("T1", ("B",))]
+    assert plan.unassigned_bin_ids == ("C",)
+    assert plan_routes(bins, iter(())).unassigned_bin_ids == ("A", "B", "C")
+    assert [b.fill_level for b in bins.all()] == [100, 90, 80]

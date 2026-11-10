@@ -41,7 +41,11 @@ def plan_routes(registry: BinRegistry, trucks, threshold: int = 70) -> RoutingPl
     """
     if type(threshold) is not int or not 0 <= threshold <= 100:
         raise ValueError("threshold must be an integer between 0 and 100")
-    fleet = list(trucks)
+    try:
+        truck_iterator = iter(trucks)
+    except TypeError as error:
+        raise ValueError("fleet must be an iterable of Truck objects") from error
+    fleet = list(truck_iterator)
     if any(not isinstance(truck, Truck) for truck in fleet):
         raise ValueError("fleet entries must be Truck objects")
     if len({truck.truck_id for truck in fleet}) != len(fleet):
