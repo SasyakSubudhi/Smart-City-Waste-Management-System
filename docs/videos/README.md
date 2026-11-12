@@ -1,12 +1,18 @@
 # Sprint outcome screen recordings
 
-Both files are real, silent Windows screen captures recorded on 9 November 2026.
-Names and module credits are visible on screen. There is no voice narration.
+The original Windows screen captures were recorded on 9 November 2026.
+The narrated editions pair that footage with the team members' voice notes.
+Names and module credits are visible in both editions.
 
-| Outcome | Video | Duration |
-|---|---|---|
-| Sprint 1 | [sprint1_demo.mp4](sprint1_demo.mp4) | 1 minute |
-| Sprint 2 | [sprint2_demo.mp4](sprint2_demo.mp4) | 2 minutes |
+| Outcome | Narrated edition | Original silent edition | Duration |
+|---|---|---|---|
+| Sprint 1 | [Narrated video](sprint1_demo_narrated.mp4) | [Original video](sprint1_demo.mp4) | 1 minute |
+| Sprint 2 | [Narrated video](sprint2_demo_narrated.mp4) | [Original video](sprint2_demo.mp4) | 2 minutes |
+
+Sprint 1 narration features Sasyak. Sprint 2 includes Sasyak, Shreya, Shriya
+and Shruti. The Sprint 2 test footage shows the 86-test run from the recorded
+source revision. Shruti's excerpts introduce her contribution and explain
+the scope of the displayed coverage.
 
 Download the MP4s if the GitHub inline viewer does not play them. Both are below
 the chosen 25 MB web-upload threshold, so external viewing links are unnecessary.
@@ -32,9 +38,8 @@ video was not reused. Product output and test results were not replaced with
 preset success screens. Only capture padding was trimmed for readability, and
 the actual CI-window capture is joined to the end of the integrated-flow clip.
 
-The team's proposed silent format uses readable captions/module credits. Confirm
-any separate instructor requirement for spoken narration before final submission.
-These captures demonstrate current outcomes; they do not backdate sprint evidence.
+The captions and module credits are visible in both editions. The footage
+documents outcomes observed on the source revision above.
 
 ## Review before merge
 
