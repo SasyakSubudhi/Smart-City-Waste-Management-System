@@ -1,8 +1,12 @@
-# Recorded captions and timing
+# Original footage scene summaries and timing
 
-Silent footage; times are approximate boundaries of the recorded live steps.
-The video itself includes headings and module credits. Sidecar SRT display depends
-on the player and is optional. No voice narration is claimed.
+The timings below describe the original silent recordings. The narrated editions
+use the same footage, so both editions show the same on-screen headings and
+module credits.
+
+The optional [Sprint 1 SRT](sprint1_captions.srt) and
+[Sprint 2 SRT](sprint2_captions.srt) files summarize scenes at these approximate
+times. Load the matching SRT as a separate subtitle track in a compatible player.
 
 ## Sprint 1 60 seconds
 

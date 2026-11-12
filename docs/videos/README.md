@@ -2,7 +2,7 @@
 
 The original Windows screen captures were recorded on 9 November 2026.
 The narrated editions pair that footage with the team members' voice notes.
-Names and module credits are visible in both editions.
+Both editions show the same on-screen headings and module credits.
 
 | Outcome | Narrated edition | Original silent edition | Duration |
 |---|---|---|---|
@@ -38,13 +38,15 @@ video was not reused. Product output and test results were not replaced with
 preset success screens. Only capture padding was trimmed for readability, and
 the actual CI-window capture is joined to the end of the integrated-flow clip.
 
-The captions and module credits are visible in both editions. The footage
-documents outcomes observed on the source revision above.
+The optional [Sprint 1 SRT](sprint1_captions.srt) and
+[Sprint 2 SRT](sprint2_captions.srt) files are separate scene summaries.
+Load the matching SRT alongside either edition in a player that supports
+external subtitles. See [scene timing notes](CAPTIONS.md) for the recorded
+sequence.
 
 ## Review before merge
 
 Check playback, legibility, required content, source/CI match and the actual test
-summary. Optional SRT files are sidecar caption tracks; the video already contains
-visible headings and credits. No browser/private meeting content is intended for
+summary. No browser/private meeting content is intended for
 these clips. Request independent review from Shreya or Shruti and merge only after
 approval and required CI checks pass.
