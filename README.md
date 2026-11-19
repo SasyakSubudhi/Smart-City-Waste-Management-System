@@ -24,6 +24,12 @@ python generate_reports.py    # regenerate the four test reports in docs/
 | `docs/` | SRS, SAD, STP, Test Case Document, deviations note and test reports |
 | `docs/videos/` | Sprint 1 (1 minute) and Sprint 2 (2 minute) demo videos |
 | `.github/workflows/ci.yml` | CI: runs tests on every push and pull request |
+| `.github/workflows/domain-compatibility.yml` | CI: domain tests on Python 3.10 and 3.11 |
+| `.github/workflows/release.yml` | CD: publishes a GitHub Release after CI passes on `main` |
+| `build_release.py` | Packages the app, package and four reports into the release zip |
+
+## Continuous delivery
+When a pull request merges and the CI workflow passes on `main`, the Release workflow checks out that commit, regenerates the four validation reports, runs `python build_release.py` and publishes `smart-city-waste-management.zip` as a GitHub Release tagged `v1.0.<run number>`. Download it from the repository's Releases page, extract it and run `python -m pip install -r requirements.txt` then `python -m streamlit run app.py`. Nothing is deployed to a server.
 
 ## Documents
 - Requirements: `docs/SRS.md` | Architecture: `docs/SAD.md` | Test plan: `docs/STP.md`
