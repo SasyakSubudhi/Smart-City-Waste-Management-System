@@ -1,0 +1,56 @@
+name: Release
+
+# Continuous delivery: after the CI workflow passes on a push to main,
+# rebuild the validation reports for that exact commit, package the app
+# and publish it as a GitHub Release.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Regenerate validation reports for the released commit
+        env:
+          REPORT_COMMIT: ${{ github.event.workflow_run.head_sha }}
+        run: python generate_reports.py
+
+      - name: Package the release
+        run: python build_release.py --output smart-city-waste-management.zip
+
+      - name: Publish the GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          TAG: v1.0.${{ github.run_number }}
+        run: >-
+          gh release create "$TAG" smart-city-waste-management.zip
+          --target "$SHA"
+          --title "Smart City Waste Management $TAG"
+          --generate-notes
